@@ -11,13 +11,23 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
+<part id="1"/>
+<part id="2"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="main.c" partName="main.c" path="E:/workspace/USBSpeedTest/lpc1768/main.c" title="main.c" tooltip="E:/workspace/USBSpeedTest/lpc1768/main.c" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="main.c" partName="main.c" path="E:/workspace/USBSpeedTest/lpc1768/main.c" title="main.c" tooltip="E:/workspace/USBSpeedTest/lpc1768/main.c" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/embedded/main.c"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="105" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="19" selectionOffset="53" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.cdt.ui.editor.CEditor" name="USB_Receiver_Sender.c" partName="USB_Receiver_Sender.c" path="E:/workspace/USBSpeedTest/lpc1768/USB_Receiver_Sender.c" title="USB_Receiver_Sender.c" tooltip="E:/workspace/USBSpeedTest/lpc1768/USB_Receiver_Sender.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/embedded/USB_Receiver_Sender.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="8" selectionOffset="378" selectionTopPixel="0"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.cdt.ui.editor.CEditor" name="usbhw.c" partName="usbhw.c" path="E:/workspace/USBSpeedTest/lpc1768/USB_Stack/usbhw.c" title="usbhw.c" tooltip="E:/workspace/USBSpeedTest/lpc1768/USB_Stack/usbhw.c" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/embedded/USB_Stack/usbhw.c"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4593" selectionTopPixel="2300"/>
 </editor>
 </editors>
 <views>
@@ -206,54 +216,38 @@
 <view id="org.eclipse.cdt.dsf.debug.ui.disassembly.view"/>
 <fastViewBars/>
 <viewLayoutRec closeable="false" id="org.eclipse.debug.ui.DebugView"/>
-<layout>
-<mainWindow>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@10e73e0">
-<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">
-<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="org.eclipse.ui.internal.ViewStack@10e73e0">&#x0A;<folder activePageID="org.coocox.builder.ui.views.ProjectView" appearance="2" expanded="2">&#x0A;<page content="org.coocox.builder.ui.views.ProjectView" label="Project"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="stickyFolderRight" ratio="0.74972975" ratioLeft="1387" ratioRight="463" relationship="2" relative="org.eclipse.ui.internal.ViewStack@10e73e0">
-<folder appearance="2" expanded="2">
-<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<info folder="true" part="stickyFolderRight" ratio="0.74972975" ratioLeft="1387" ratioRight="463" relationship="2" relative="org.eclipse.ui.internal.ViewStack@10e73e0">&#x0A;<folder appearance="2" expanded="2">&#x0A;<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
 <page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@12f7431" ratio="0.69928646" ratioLeft="686" ratioRight="295" relationship="4" relative="org.eclipse.ui.internal.ViewStack@10e73e0">
-<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">
-<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@12f7431" ratio="0.69928646" ratioLeft="686" ratioRight="295" relationship="4" relative="org.eclipse.ui.internal.ViewStack@10e73e0">&#x0A;<folder activePageID="org.eclipse.debug.ui.DebugView" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.debug.ui.DebugView" label="Debug"/>
 <page content="org.eclipse.debug.ui.BreakpointView" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@844a08" ratio="0.5" ratioLeft="925" ratioRight="925" relationship="2" relative="org.eclipse.ui.internal.ViewStack@12f7431">
-<folder activePageID="org.coocox.codebugger.trace.ui.traceview" appearance="2" expanded="2">
-<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@844a08" ratio="0.5" ratioLeft="925" ratioRight="925" relationship="2" relative="org.eclipse.ui.internal.ViewStack@12f7431">&#x0A;<folder activePageID="org.coocox.codebugger.trace.ui.traceview" appearance="2" expanded="2">&#x0A;<page content="org.coocox.codebugger.trace.ui.traceview" label="Semihosting"/>
 <page content="org.eclipse.debug.ui.VariableView" label="Variables"/>
 <page content="org.eclipse.debug.ui.ExpressionView" label="LabelNotFound"/>
 <page content="org.eclipse.debug.ui.MemoryView" label="LabelNotFound"/>
 <page content="org.eclipse.cdt.debug.ui.memory.memorybrowser.MemoryBrowser" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 <part id="1"/>
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@17b9f29" ratio="0.74972975" ratioLeft="1387" ratioRight="463" relationship="2" relative="org.eclipse.ui.internal.ViewStack@10e73e0">
-<folder activePageID="org.eclipse.cdt.dsf.debug.ui.disassembly.view" appearance="2" expanded="2">
-<page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="Disassembly"/>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@17b9f29" ratio="0.74972975" ratioLeft="1387" ratioRight="463" relationship="2" relative="org.eclipse.ui.internal.ViewStack@10e73e0">&#x0A;<folder activePageID="org.eclipse.cdt.dsf.debug.ui.disassembly.view" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.cdt.dsf.debug.ui.disassembly.view" label="Disassembly"/>
 <page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
 <page content="org.eclipse.debug.ui.RegisterView" label="LabelNotFound"/>
 <page content="org.coocox.coassistant.view.CoAssistantView_debug" label="LabelNotFound"/>
-<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
-<part id="0"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
 </presentation>
 </folder>
 </info>
@@ -266,13 +260,6 @@
 <navigationHistory>
 <editors>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/main.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/example/USB_CDC.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Stack/cdcuser.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/example/USB_CDC.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_CDC.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Stack/cdcuser.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/main.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
 <editor factoryID="org.coocox.builder.ui.persistent.PersistentElementFactory" id="org.coocox.welcome.ui.WelcomePage">
 <org.coocox.welcome.ui.WelcomePage/>
@@ -283,151 +270,163 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender_temp.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Stack/usbcfg.h"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/main.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Receiver_Sender.c"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" path="/embedded/USB_Stack/usbhw.c"/>
 </editors>
 <item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="1">
-<position info="not_deleted" x="591" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="1">
-<position info="not_deleted" x="591" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="cdcuser.c" index="2">
-<position info="not_deleted" x="13907" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="1">
-<position info="not_deleted" x="964" y="0"/>
-</item>
-<item historyLabel="cdcuser.c" index="2">
-<position info="not_deleted" x="12654" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="80" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="3">
-<position info="not_deleted" x="786" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="3">
-<position info="not_deleted" x="228" y="11"/>
-</item>
-<item historyLabel="USB_CDC.c" index="4">
-<position info="not_deleted" x="77" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="72" y="0"/>
-</item>
-<item historyLabel="cdcuser.c" index="5">
-<position info="not_deleted" x="12654" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="72" y="0"/>
-</item>
-<item historyLabel="USB_CDC.c" index="4">
-<position info="not_deleted" x="77" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="6">
-<position info="not_deleted" x="271" y="0"/>
-</item>
-<item historyLabel="main.c" index="0">
-<position info="not_deleted" x="75" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="6">
-<position info="not_deleted" x="663" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="6">
-<position info="not_deleted" x="663" y="0"/>
-</item>
-<item historyLabel="main.c" index="7">
-<position info="not_deleted" x="75" y="0"/>
-</item>
-<item historyLabel="main.c" index="7">
 <position info="not_deleted" x="52" y="0"/>
 </item>
-<item historyLabel="USB_Receiver_Sender.c" index="6">
-<position info="not_deleted" x="666" y="0"/>
-</item>
-<item historyLabel="main.c" index="7">
+<item historyLabel="main.c" index="0">
 <position info="not_deleted" x="52" y="0"/>
 </item>
-<item historyLabel="main.c" index="7">
-<position info="not_deleted" x="52" y="0"/>
-</item>
-<item historyLabel="main.c" index="7">
-<position info="not_deleted" x="52" y="0"/>
-</item>
-<item historyLabel="main.c" index="7">
-<position info="not_deleted" x="52" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="8">
+<item historyLabel="USB_Receiver_Sender.c" index="1">
 <position info="not_deleted" x="681" y="0"/>
 </item>
-<item historyLabel="welcome" index="9"/>
-<item historyLabel="main.c" index="10">
+<item historyLabel="welcome" index="2"/>
+<item historyLabel="main.c" index="3">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="4">
+<position info="not_deleted" x="258" y="19"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="6">
+<position info="not_deleted" x="231" y="15"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="7">
+<position info="not_deleted" x="875" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender_temp.c" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="7">
+<position info="not_deleted" x="875" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender_temp.c" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="7">
+<position info="not_deleted" x="182" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="107" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="59" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="59" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="9">
+<position info="not_deleted" x="251" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="56" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="10">
+<position info="not_deleted" x="387" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
 <position info="not_deleted" x="52" y="0"/>
 </item>
 <item historyLabel="USB_Receiver_Sender.c" index="11">
+<position info="not_deleted" x="317" y="15"/>
+</item>
+<item historyLabel="usbcfg.h" index="12">
+<position info="not_deleted" x="5347" y="15"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="11">
+<position info="not_deleted" x="317" y="15"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="13">
+<position/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="13">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="5">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="14">
+<position info="not_deleted" x="249" y="0"/>
+</item>
+<item historyLabel="main.c" index="15">
+<position info="not_deleted" x="52" y="0"/>
+</item>
+<item historyLabel="main.c" index="15">
+<position info="not_deleted" x="53" y="19"/>
+</item>
+<item historyLabel="USB_Receiver_Sender.c" index="16">
 <position info="not_deleted" x="258" y="19"/>
 </item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="53" y="19"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="13">
-<position info="not_deleted" x="231" y="15"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="53" y="19"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="13">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="53" y="19"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="52" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="14">
-<position info="not_deleted" x="875" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender_temp.c" index="15">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="14">
-<position info="not_deleted" x="875" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender_temp.c" index="15">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="USB_Receiver_Sender.c" index="14">
-<position info="not_deleted" x="182" y="0"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="52" y="0"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="107" y="0"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="59" y="0"/>
-</item>
-<item historyLabel="main.c" index="12">
-<position info="not_deleted" x="59" y="0"/>
-</item>
-<item active="true" historyLabel="main.c" index="12">
-<position info="not_deleted" x="52" y="0"/>
+<item active="true" historyLabel="usbhw.c" index="17">
+<position info="not_deleted" x="4252" y="8"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -436,11 +435,17 @@
 <actionBarAdvisor/>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_Receiver_Sender_temp.c" tooltip="embedded/USB_Receiver_Sender_temp.c">
-<persistable path="/embedded/USB_Receiver_Sender_temp.c"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usbhw.c" tooltip="embedded/USB_Stack/usbhw.c">
+<persistable path="/embedded/USB_Stack/usbhw.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_Receiver_Sender.c" tooltip="embedded/USB_Receiver_Sender.c">
 <persistable path="/embedded/USB_Receiver_Sender.c"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usbcfg.h" tooltip="embedded/USB_Stack/usbcfg.h">
+<persistable path="/embedded/USB_Stack/usbcfg.h"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_Receiver_Sender_temp.c" tooltip="embedded/USB_Receiver_Sender_temp.c">
+<persistable path="/embedded/USB_Receiver_Sender_temp.c"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.systemExternalEditor" name="lpc17xx-vcom.inf" tooltip="embedded/INF/lpc17xx-vcom.inf">
 <persistable path="/embedded/INF/lpc17xx-vcom.inf"/>
@@ -473,11 +478,8 @@
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_CDC.c" tooltip="lpc1768/example/USB_CDC.c">
 <persistable path="/lpc1768/example/USB_CDC.c"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="usbhw.c" tooltip="lpc1768/USB_Stack/usbhw.c">
-<persistable path="/lpc1768/USB_Stack/usbhw.c"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_CDC.c" tooltip="lpc1768/example/USB_CDC.c">
-<persistable path="/lpc1768/example/USB_CDC.c"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.cdt.ui.editor.CEditor" name="USB_Receiver_Sender.c" tooltip="embedded/USB_Receiver_Sender.c">
+<persistable path="/embedded/USB_Receiver_Sender.c"/>
 </file>
 </mruList>
 </workbench>

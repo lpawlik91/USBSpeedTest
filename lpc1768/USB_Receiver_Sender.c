@@ -11,7 +11,7 @@
 #include "cdcuser.h"
 #include "serial.h"
 
-#define MAX_TEMP_BUFFOR 32
+#define MAX_TEMP_BUFFOR 64
 
 void USB_Receiver_Sender()
 {
