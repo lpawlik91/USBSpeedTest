@@ -73,21 +73,20 @@ int doTest(libusb_device_handle* dev_handle, int bufforSize, int count, double* 
 	unsigned char *data_out = new unsigned char[bufforSize]; //data to write
 	unsigned char* data_in = new unsigned char[bufforSize];
 	generateSymulatedData(data_out, bufforSize);
-	int howManyBytesIsSend; //used to find out how many bytes were written
+	int howManyBytesIsSend; 
 	int howManyBytesReceived;
 
 	time_t start_t, end_t;
     *timeResult = 0;
 
-	//std::cout<<"Data->"<<data_out<<"<-"<<std::endl; //just to see the data we want to write : abcd
-	//std::cout<<"Writing Data..."<<std::endl;
+	
 	time(&start_t);
 	for(int i = 0; i < count; ++i)
 	{
 		int sendStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, &howManyBytesIsSend, 0); 
 		if(sendStatus == 0 && howManyBytesIsSend == bufforSize)
 		{
-			//std::cout<<"Writing Successful!"<<std::endl;
+			//here was printing data for debugging only
 		}
 		else
 		{
@@ -100,7 +99,7 @@ int doTest(libusb_device_handle* dev_handle, int bufforSize, int count, double* 
 		int readStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
 		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
 		{
-			//printf("\n\nactual_length: %d, Read: %s\n", actual_length, data_r);
+			//here was printing data for debugging only
 		} 
 		else 
 		{
