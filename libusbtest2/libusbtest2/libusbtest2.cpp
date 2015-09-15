@@ -5,142 +5,183 @@
 #include "libusb.h"
 #include <cstdlib>
 #include <cstdio>
+#include <ctime>
 #include <iostream>
 
-using namespace std;
 
-int _tmain(int argc, _TCHAR* argv[])
+#define BUFFOR_MAX 64
+#define LAND_TIGER_VID 0x1fc9
+#define LAND_TIGER_PID 0x2002
+
+
+
+int generateSymulatedData(unsigned char* data, const int size)
 {
-
-
-	libusb_device **devs; //pointer to pointer of device, used to retrieve a list of devices
-	libusb_device_handle *dev_handle; //a device handle
-	libusb_context *ctx = NULL; //a libusb session
-	int r; //for return values
-	ssize_t cnt; //holding number of devices in list
-	r = libusb_init(&ctx); //initialize the library for the session we just declared
-	if(r < 0) {
-		cout<<"Init Error "<<r<<endl; //there was an error
-		return 1;
+	for(int i = 0, letterIterator = 0; i < size; ++i)
+	{
+		if('a' + letterIterator > 'z') letterIterator = 0;
+		*(data + i) = 'a' + letterIterator++ ;
 	}
-	libusb_set_debug(ctx, 3); //set verbosity level to 3, as suggested in the documentation
-
-	cnt = libusb_get_device_list(ctx, &devs); //get the list of devices
-	if(cnt < 0) {
-		cout<<"Get Device Error"<<endl; //there was an error
-		return 1;
-	}
-
-
-	dev_handle = libusb_open_device_with_vid_pid(ctx, 0x1fc9, 0x2002); //0x125f, 0xa15a); //these are vendorID and productID I found for my usb device
-	if(dev_handle == NULL)
-		cout<<"Cannot open device"<<endl;
-	else
-		cout<<"Device Opened"<<endl;
-
-	
-	libusb_free_device_list(devs, 1); //free the list, unref the devices in it
-
-	unsigned char *data = new unsigned char[5]; //data to write
-	data[0]='a';data[1]='b';data[2]='c';data[3]='d';data[4]='\0'; //some dummy values 
-
-	int actual; //used to find out how many bytes were written
-	if(libusb_kernel_driver_active(dev_handle, 0) == 1) { //find out if kernel driver is attached
-		cout<<"Kernel Driver Active"<<endl;
-		if(libusb_detach_kernel_driver(dev_handle, 0) == 0) //detach it
-			cout<<"Kernel Driver Detached!"<<endl;
-	}
-	r = libusb_claim_interface(dev_handle, 1);//0); //claim interface 0 (the first) of device (mine had jsut 1)
-	if(r < 0) {
-		cout<<"Cannot Claim Interface"<<endl;
-		return 1;
-	}
-	cout<<"Claimed Interface"<<endl;
-	
-	cout<<"Data->"<<data<<"<-"<<endl; //just to see the data we want to write : abcd
-	cout<<"Writing Data..."<<endl;
-	//r = libusb_bulk_transfer(dev_handle, (129 | LIBUSB_ENDPOINT_OUT), data, 4, &actual, 0); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
-	r = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data, 5, &actual, 0); //my device's out endpoint was 2, found with trial- the device had 2 endpoints: 2 and 129
-	if(r == 0 && actual == 5) //we wrote the 4 bytes successfully
-		cout<<"Writing Successful!"<<endl;
-	else
-		cout<<"Write Error"<<endl;
-
-
-	unsigned char data_r[5];
-	int actual_length;
-	int r2 = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_r, sizeof(data), &actual_length, 0);
-	if (r2 == 0 && actual_length == sizeof(data)) {
-		printf("\n\nRead: %s\n", data_r);
-
-	} else {
-		printf("\n\nError Read: %c");
-		//error();
-	}
-	
-	r = libusb_release_interface(dev_handle, 1); //0); //release the claimed interface
-	if(r!=0) {
-		cout<<"Cannot Release Interface"<<endl;
-		return 1;
-	}
-	cout<<"Released Interface"<<endl;
-
-	libusb_close(dev_handle); //close the device we opened
-	libusb_exit(ctx); //needs to be called to end the
-
-	delete[] data; //delete the allocated memory for data
-
-	int a;
-	cin >> a;
+	*(data + size - 1) = '\0';
 	return 0;
 }
 
-
-/*
-
-void printdev(libusb_device *dev) 
+libusb_context* getContext()
 {
-	libusb_device_descriptor desc;
-	int r = libusb_get_device_descriptor(dev, &desc);
-	if (r < 0) {
-		cout<<"failed to get device descriptor"<<endl;
-		return;
+	libusb_context* ctx = NULL;
+	int r = libusb_init(&ctx);
+	if(r < 0) {
+		std::cout<<"Init Context error Error "<< r <<std::endl;
+		return NULL;
 	}
+	return ctx;
+}
 
-	cout<<"Number of possible configurations: "<<(int)desc.bNumConfigurations<<"  ";
-	cout<<"Device Class: "<<(int)desc.bDeviceClass<<"  ";
-	//cout<<"VendorID: "<<desc.idVendor<<"  ";
-	//cout<<"ProductID: "<<desc.idProduct<<endl;
-	printf("VendorID: %x, ProductID: %x \n",desc.idVendor, desc.idProduct);
-	libusb_config_descriptor *config;
-	int status = libusb_get_config_descriptor(dev, 0, &config);
-	
-	
-	if(status != 0) return;
+libusb_device_handle* getDeviceHandle(libusb_context* ctx)
+{
+	libusb_device_handle* dev_handle = libusb_open_device_with_vid_pid(ctx, LAND_TIGER_VID, LAND_TIGER_PID);
+	if(dev_handle == NULL)
+		std::cout<<"Cannot open device"<<std::endl;
+	else
+		std::cout<<"Device Opened"<<std::endl;
 
-	 cout<<"Interfaces: "<<(int)(config->bNumInterfaces)<<" ||| ";
-
-
-	const libusb_interface *inter;
-	const libusb_interface_descriptor *interdesc;
-	const libusb_endpoint_descriptor *epdesc;
-	for(int i=0; i<(int)config->bNumInterfaces; i++) {
-		inter = &config->interface[i];
-		cout<<"Number of alternate settings: "<<inter->num_altsetting<<" | ";
-		for(int j=0; j<inter->num_altsetting; j++) {
-			interdesc = &inter->altsetting[j];
-			cout<<"Interface Number: "<<(int)interdesc->bInterfaceNumber<<" | ";
-			cout<<"Number of endpoints: "<<(int)interdesc->bNumEndpoints<<" | ";
-			for(int k=0; k<(int)interdesc->bNumEndpoints; k++) {
-				epdesc = &interdesc->endpoint[k];
-				cout<<"Descriptor Type: "<<(int)epdesc->bDescriptorType<<" | ";
-				cout<<"EP Address: "<<(int)epdesc->bEndpointAddress<<" | ";
-			}
-		}
-	}
-	cout<<endl<<endl<<endl;
-	libusb_free_config_descriptor(config);
+	return dev_handle;
 
 }
 
-*/
+int proceedWithInitLibUsb(libusb_device_handle* dev_handle, libusb_context* ctx)
+{
+		
+	if(libusb_kernel_driver_active(dev_handle, 0) == 1) { //find out if kernel driver is attached
+		std::cout<<"Kernel Driver Active"<<std::endl;
+		if(libusb_detach_kernel_driver(dev_handle, 0) == 0) //detach it
+			std::cout<<"Kernel Driver Detached!"<<std::endl;
+	}
+	int status = libusb_claim_interface(dev_handle, 1);
+	if(status < 0) 
+	{
+		std::cout<<"Cannot Claim Interface"<<std::endl;
+		return 1;
+	}
+	std::cout<<"Claimed Interface"<<std::endl;
+
+	return 0;
+}
+
+int doTest(libusb_device_handle* dev_handle, int bufforSize, int count, double* timeResult)
+{
+	unsigned char *data_out = new unsigned char[bufforSize]; //data to write
+	unsigned char* data_in = new unsigned char[bufforSize];
+	generateSymulatedData(data_out, bufforSize);
+	int howManyBytesIsSend; //used to find out how many bytes were written
+	int howManyBytesReceived;
+
+	time_t start_t, end_t;
+    *timeResult = 0;
+
+	//std::cout<<"Data->"<<data_out<<"<-"<<std::endl; //just to see the data we want to write : abcd
+	//std::cout<<"Writing Data..."<<std::endl;
+	time(&start_t);
+	for(int i = 0; i < count; ++i)
+	{
+		int sendStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, &howManyBytesIsSend, 0); 
+		if(sendStatus == 0 && howManyBytesIsSend == bufforSize)
+		{
+			//std::cout<<"Writing Successful!"<<std::endl;
+		}
+		else
+		{
+			std::cout<< "Write Error" << std::endl;
+			delete [] data_out;			
+			return 1;
+		}
+		
+		
+		int readStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
+		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
+		{
+			//printf("\n\nactual_length: %d, Read: %s\n", actual_length, data_r);
+		} 
+		else 
+		{
+			std::cout << "Read Error: " << readStatus << std::endl;
+			delete[] data_in;
+			return 1;
+		}
+		
+	}
+	time(&end_t);
+	*timeResult = difftime(end_t, start_t);
+	delete[] data_in;
+	delete [] data_out;
+	return 0;
+}
+
+int closeLibUsb(libusb_device_handle* dev_handle, libusb_context* ctx)
+{
+	int status = libusb_release_interface(dev_handle, 1); 
+	if(status != 0) {
+		std::cout<<"Cannot Release Interface"<<std::endl;
+		return 1;
+	}
+	std::cout<<"Released Interface"<<std::endl;
+
+	libusb_close(dev_handle);
+	libusb_exit(ctx); 
+	return 0;
+}
+
+int main(int argc, char* argv[])
+{
+	if(argc < 3) 
+	{
+		std::cout << "use: libusbtest <bufforSize> <count>" << std::endl;
+		std::cout << "Note that max buffer of LandTiger is " << BUFFOR_MAX << "Bytes" << std::endl;
+		int t;
+		std::cin >> t;
+		return 0; 
+	}
+	
+	int bufforSize = atoi(argv[1]);
+	if(bufforSize > BUFFOR_MAX) 
+	{
+		std::cout << "bufforSize is grather than 64B, setting 64 as default" << std::endl;
+		bufforSize = BUFFOR_MAX;
+	}
+
+	int count = atoi(argv[2]);
+
+	std::cout << "Total size to send/receive: " << bufforSize << " x " << count << " = " << bufforSize * count << " Bytes" << std::endl;
+	
+	libusb_context *ctx = getContext(); 
+	libusb_device_handle* dev_handle = getDeviceHandle(ctx);
+	if(ctx == NULL || dev_handle == NULL)
+	{
+		return 1;
+	}
+	int initStatus = proceedWithInitLibUsb(dev_handle, ctx);
+	if(initStatus != 0) 
+	{
+		std::cout << "proceedWithInitLibUsb exited with errors!" << std::endl;
+		return 1;
+	}
+	double testResult = 0.;
+	int testStatus = doTest(dev_handle, bufforSize, count, &testResult);
+	if(testStatus != 0) 
+	{
+		std::cout << "There was an error during tests!!" << std::endl;
+	}
+	else
+	{
+		std::cout << "Sending of: " << bufforSize * count << "Bytes using bufferSize=" << bufforSize << " takes " << testResult << "s." << std::endl;
+
+	}
+
+
+	if(closeLibUsb(dev_handle, ctx) != 0)
+	{
+		return 1;
+	}
+
+	return 0;
+}
