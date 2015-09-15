@@ -136,8 +136,6 @@ int main(int argc, char* argv[])
 	{
 		std::cout << "use: libusbtest <bufforSize> <count>" << std::endl;
 		std::cout << "Note that max buffer of LandTiger is " << BUFFOR_MAX << "Bytes" << std::endl;
-		int t;
-		std::cin >> t;
 		return 0; 
 	}
 	
