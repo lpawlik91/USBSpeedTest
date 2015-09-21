@@ -1,0 +1,284 @@
+\documentclass{BscUS}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+%\usepackage[OT4]{fontenc}
+\usepackage{verbatim}
+%\usepackage{libertine}
+\usepackage{fourier}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+
+\usepackage{amsmath}
+\usepackage{gensymb}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{nameref}
+
+\usepackage{array}
+
+ \usepackage{multirow}
+ \usepackage[table,xcdraw]{xcolor}
+
+\usepackage{fancyvrb}
+\DefineVerbatimEnvironment{packet}{Verbatim}{xleftmargin=40mm,baselinestretch=1,samepage=true}
+\DefineVerbatimEnvironment{code}{Verbatim}{xleftmargin=36pt,samepage=true,tabsize=4}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhf{}
+\fancyhead[RE,LO]{\leftmark}
+\fancyhead[LE,RO]{\thepage}
+\renewcommand{\headrulewidth}{1pt} 
+
+%%\renewcommand{\labelenumi}{\Roman{enumi}}
+
+\graphicspath{{img}}
+
+\title{Opracowanie systemu szybkiego przesyłania danych z wykorzystaniem standardu USB}
+
+\author{Łukasz Pawlik}
+\promoter{dr inż. Bartosz Mindur}
+\where{Kraków}
+\when{2015}
+
+
+
+
+\begin{document}
+
+\pagestyle{plain}
+
+% ******* title and statement page *******
+\maketitle
+
+\makestatement
+
+\newpage
+\thispagestyle{plain}
+Merytoryczna ocena pracy przez Opiekuna:
+\vspace{\stretch{14}}
+
+
+Ocena końcowa pracy przez Opiekuna: 
+\vspace{\stretch{1}}
+
+\hspace{2cm} Data: \hspace{6cm}  Podpis: ..............................
+\vspace{\stretch{1}}
+\pagebreak
+\newpage
+\thispagestyle{plain}
+Merytoryczna ocena pracy przez Recenzenta:
+\vspace{\stretch{14}}
+
+
+Ocena końcowa pracy przez Recenzenta: 
+\vspace{\stretch{1}}
+
+\hspace{2cm} Data: \hspace{6cm}  Podpis: ..............................
+\vspace{\stretch{1}}
+\pagebreak
+\newpage
+\thispagestyle{plain}
+\vspace*{\stretch{18}}
+
+
+% ************* contents list ************
+\clearpage
+%\pagenumbering{arabic}
+\tableofcontents
+
+\newpage
+
+
+\chapter{Wstęp}
+\label{chap1}
+\pagestyle{fancy}
+%Celem niniejszego dokumentu jest ogólne scharakteryzowanie zalet biblioteki libUSB na podstawie <TBD>
+Celem niniejszej pracy jest doświadczalne sprawdzenie czy możliwe jest uzyskanie prędkości większej bądź równej 140MBit/s czyli 17,5 MB/s.
+\newline
+W dokumencie zawarty jest prosty i zrozumiały opis, obrazujący różnice pomiędzy standardami USB. Znajduje się wprowadzenie do bibliotek umożliwiających korzystanie z API przygotowanego dla deweloperów chcących w łatwy i przystępny sposób korzystać z udogodnień portów USB.
+\newline
+W rozdziale "\nameref{USBStandardChapter}" znajduje się dokładny opis standardów USB jakie do dnia dzisiejszego zostały opracowane. 
+Rozdział doskonale obrazuje różnice jakie z biegiem lat uwydatniły się i jak chęć udoskonalenia standardu wpłynęła na jego dalszy rozwój.
+\newline
+W rozdziale "\nameref{librariesChapter}" przedstawiony został opis palety bibliotek które umożliwiają łatwy i szybki dostęp do portu USB. Najważniejsze z bibliotek zostały opisane w późniejszych rozdziałach.
+\newline
+W rozdziale "\nameref{libUsbChapter}" przedstawiony został dokładny opis biblioteki libUSB. 
+\newline
+W rozdziale "\nameref{microcontrollerChapter}" został przedstawiony dokładnie opis mikrokontrolera LandTiger LPC1768 na którym wykonane zostały testy i zostały zebrane dane potrzebne do tej pracy.
+\newline
+<TBD>
+
+\chapter{USB}
+\label{USBStandardChapter}
+Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym.
+\newline
+USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.
+\newline
+USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia zasilające elektroniczne urządzenia.
+\section{Złącza}
+Istnieją trzy podstawowe wielkości złączy USB. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych).
+\newline
+W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=15cm]{./img/micro-usb-type}
+\caption{Połączenie przewodów w micro-USB}
+\end{figure}
+
+%
+% USB ON THE GO ??
+%
+\section{Historia}
+USB zapoczątkowało w 1994 siedem firm: Compaq, DEC, IBM, Intel, Microsoft, NEC, Nortel. Celem było uproszczenie podłączenia zewnętrznych urządzeń do komputera zastępując stare złącza w płytach głównych wprowadzając rozwiązania na problemy znalezione w starych oraz upraszczając software.
+Pierwszy układ scalony wspierający USB został wyprodukowany przez Intel 1995r.
+\newline
+
+\subsection{USB1.x}
+Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych.
+\subsection{USB2.0}
+USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
+
+
+Przyszłe modyfikacje do specyfikacji USB zostały zaimplementowane przez "Engineering Change Notitices" (ECN). Najważniejsze z ECNów zostały dołączone do specyfikacji USB2.0 dostępnej na stronie internetowej USB.org.
+\newline
+Przykłady ECNow:
+\newline
+Złącze Mini-A oraz Mini-B: wydane w październiku 2000r.
+\newline
+
+
+\subsection{USB3.0}
+
+Standard USB3.0 został wydany w listopadzie 2008r. definiujący zupełnie nowy tryb "SuperSpeed". Port USB zwyczajowo jest w kolorze niebieskim i kompatybilny z urządzeniami USB2.0 oraz kablami.
+\newline
+Dokładnie 17 listopada 2008r. ogłoszono iż specyfikacja dla wersji 3.0 została całkowicie ukończona i została zaakceptowana przez "USB Implementers Forum" (USB-IF), czyli głównej instytucji zajmującej się specyfikacjami standardu USB. To pozwoliło na szybkie udostępnienie standardu deweloperom.
+\newline
+Nowa magistrala "SuperSpeed" dostarcza czwarty typ transferu z możliwością przesyłania sygnału z prędkością 5GBit/s, ale poprzez użycie kodowania 8b/10b przepustowość wynosi 4Gbit/s. Specyfikacja uznaje za zasadne osiągniecie prędkości w okolicach 3,2 Gbit/s (400 MB/s) co w założeniach powinno się zwiększać wraz z rozwijaniem hardwaru. Komunikacja odbywa się w obu kierunkach dla SuperSpeed (kierunek nie jest naprzemienny i nie jest kontrolowany przez hosta, jak to ma miejsce do wersji USB2.0).
+\newline
+Podobnie jak w poprzednich wersjach standardu, porty USB3.0 działają dwóch wariantach zasilania: niskiego poboru mocy (low-power: 150mA) oraz wysokiego poboru mocy (high-power: 900mA). Zapewniając odpowiedni jednocześnie pozwalają na przesył danych z prędkością SuperSpeed.
+\newline
+Została dodatkowo zdefiniowana specyfikacja zasilania (w wersji 1.2 wydana w w grudniu 2010r.) która zwiększała dopuszczalny pobór mocy do 1,5A, ale nie pozwala na współbieżne przesyłanie danych. Specyfikacja wymaga aby fizyczne porty same w sobie były wstanie obsłużyć 5A, ale ogranicza pobór do 1,5 A.
+
+\subsection{USB3.1}
+W styczniu 2013r. w prasie pojawiły się informacje o planach udoskonalenia standardu USB3.0 do 10Gbit/s. Zakończyło się to stworzeniem nowej wersji standardu - USB3.1. Wersja ta została wydana 31 lipca 2013r. wprowadzając szybszy typ przesyłania danych zwany "SuperSpeed USB 10 Gbit/s". Zaprezentowano również nowe logo stylizowane na zasadzie "Superspeed+". Standard USB3.1 zwiększył szybkość przesyłu sygnału do 10Gbit/s. Udało się też zredukować obciążenie łącza do 3\% dzięki zmianie kodowania na 128b/132b.
+\newline
+Przy pierwszych testach prędkośi USB3.1 udało się uzyskać prędkość 7,2Gbit/s.
+\newline
+Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
+
+
+\chapter{Biblioteki}
+\label{librariesChapter}
+\section{libUSB}
+LibUSB jest biblioteką stworzoną w 2007 roku. Napisana w języku C  pozwala na prosty i łatwy dostęp do urządzenia USB. Jest w 100\% przeznaczona dla użytku developera. Biblioteka ma za zadanie ułatwić pisanie aplikacji opartych na komunikacji USB z mikrokontrolerem.
+Biblioteka libUSB jest przenośna a co za tym idzie dostępna na wiele platform (Linux, OS X, Windows, Android, OpenBSD, etc.) wraz z niezmiennym API.
+Nie są wymagane dodatkowe uprawnienia aby komunikacja z urządzeniem przebiegała poprawnie.
+Wspiera standardy USB: 
+\begin{itemize}
+\item USB1.0 
+\item USB1.1 
+\item USB2.0 
+\item USB3.0
+\end{itemize}
+
+Funkcjonalność biblioteki:
+\begin{enumerate}
+
+\item wszystkie typy transferu są wspierane (control, bulk, interrupt, isochronous)
+\item 2 interfejsy
+\begin{enumerate}
+\item synchroniczny (prosty)
+\item asynchroniczny (bardziej złożony ale bardziej efektywny)
+\end{enumerate}
+\item stosowanie wątków jest bezpieczne
+\item lekka biblioteka z prostym API
+\item kompatybilna wstecznie (do wersji libUSB-0.1)
+\end{enumerate}
+
+\section{winUSB}
+
+Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów które potrzebują szybkiego i bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z portami USB z poziomu user-mode. W Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
+
+Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z aparatów cyfrowych, Media Transfer Protocol pozwala na przesyłanie plików muzycznych z cyfrowych urządzeń odtwarzających muzykę oraz pliki video z urządzeń pozwalających na ich odtworzenie.
+
+ 
+%MTP is a key part of WMDRM10-PD,[1] a digital rights management (DRM) service for the Windows Media platform.
+
+MTP jest częścią frameworku "Windows Media" blisko związanym z odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
+
+Twórcy standardu USB ustandaryzowali MTP jako pełnoprawną klasę dla urządzeń USB w maju 2008r.
+Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. %//[odnosnik] odnosnik.
+
+
+
+\section{porównanie libUSB oraz winUSB}
+
+\newpage
+
+\chapter{libUSB API}
+\label{libUsbChapter}
+\chapter{Mikrokontroler}
+\label{microcontrollerChapter}
+\begin{figure}[h]
+\centering
+\includegraphics{./img/landTiger}
+\caption{Mikrokontroler LandTiger wraz z wyświetlaczem}
+\end{figure}
+
+Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę PowerMCU i można ją zakupić od wielu dostawców na eBay lub innych serwisach świadczących usługi zakupów przez internet. Średni koszt waha się w granicach \$70 za płytkę wraz z wyświetlaczem LCD 3,2 cala o rozdzielczości 320x240 pikseli, z zasilaczem oraz zestawem kabli.
+\newline
+Funkcjonalności:
+\begin{enumerate} [label=(\alph*)]
+\item 2 porty RS232, jeden z nich wspiera ISP (In-system Programming)
+\item 2 interfejsy magistrali CAN (Controller Area Network)
+\item interfejs RS485
+\item interfejs Ethernetowy RJ45-10/100M 
+\item przetwornik cyfrowo-analogowy (DAC) wraz wmontowanym głośnikiem (wyjściem interfejsu) oraz sterownikiem dźwięku (LM386)
+\item przetwornik analogowo-cyfrowy (ADC) wraz z wbudowanym potencjomentrem (wejściem interfejsu).
+\item Kolorowy 3,2 cala (lub 2,8 cala) dotykowy wyświetlacz LCD o rozdzielczości 320x240 pikseli. 
+\item interfejs USB2.0 (USB Host oraz USB Device)
+\item interfejs kard SD/MMC
+\item interfejs I2C połączony z 2Kbit pamięcią EEPROM
+\item interfejs SPI połączony z 16Mbit pamięcią flash
+\item 2 user keys, 2 function keys
+\item 8 diód typu LED
+\item pięciokierunkowy joystick
+\item wsparcie dla pobierania ISP
+\item pobieranie z użyciem JTAG, interfejs dla debugowania
+\item zintegrowany emulator kompilacji JLINK - wspiera możliwość debugownia online (po kablu USB podłączonym do PC) dla środowisk deweloperskich tj. KEIL, IAR, CooCox i innych
+\item dodatkowe 5V port zasilający (możliwe jest też za pomocą portu USB 
+\end{enumerate}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/landTiger3}
+\caption{Mikrokontroler LandTiger wraz z opisem poszczególnych elemetnów}
+%example\caption{Krzywa plastyczności wyrażająca zależność odkształcenia od naprężenia podczas rozciągania materiału ciągliwego \cite{bib7}} 
+\end{figure}
+LandTiger jest oparty na LPC1768. Wbudowany hardware wspiera ISP aby umożliwić załadowanie kodu (z użyciem bin2hex oraz flashmagic).
+\newline
+Alternatywą jest to, że kod może zostać załadowany za pomocą emulatora JLINK JTAG/SWD lub za pomocą zewnętrznego urządzenia JTAG.
+\newline
+Port COM1 (UART0) wspiera komunikacje z PC w obie strony. Wszelkie funkcje portu USB są wspierane z minimalnymi zmianami w oprogramowaniu. Podobnie jest z Ethernetem, z niewielkimi  zmianami w oficjalnym kodzie dla LPC1768 kod jest w stanie się uruchomić na LandTigerze.
+\newline
+Wyświetlacz LCD jest oparty na kontrolerze SSD1289. Wyświetlacz może zostać odłączony od płyty. Używa 8-bitowej magistrali \(P2_0..P2_7\). Kontroler ekranu dotykowego jest dostarczony razem z modułem wyświetlacza. Interfejs pomiędzy ekranem dotykowym a LPC1768 jest możliwy dzięki SPI.
+\newline
+Główne różnice pomiędzy LandTigerem a LPC1768:
+\begin{enumerate} [label=(\alph*)]
+\item płyta po podłączeniu do PC nie pokazuje się jako zewnętrzne urządzenie magazynujące
+\item aby ściągnąć nowe pliki binarne należy użyć ISP lub JTAG
+\item brak wsparcia dla serialowego portu po linku USB, należy używać RS232 lub portu USB
+\item brak wsparcia dla logicznego systemu plików
+\item brak wsparcia dla 4 diód typu LED (istnieje możliwość użycia inncyh).
+\end{enumerate}
+\newpage
+
+
+
+\end{document}

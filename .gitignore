@@ -7,3 +7,8 @@ libusb-1.0.19/Win32/
 *.suo
 *.sdf
 *.opensdf
+praca/*.aux
+praca/*.log
+praca/*.toc
+praca/*.gz
+praca/*.out
