@@ -223,6 +223,127 @@ Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod
 
 \chapter{libUSB API}
 \label{libUsbChapter}
+
+\section{najważniejsze struktury}
+\subsection{libusb\_context}
+libusb\_context jest strukturą reprezentującą sesję libusb.
+\newline
+Koncepcja indywidualnych sesji libusb pozwala aby program mógł korzystać z dwóch bibliotek (lub dynamicznie ładować dwa moduły) z których obie nie zależnie korzystają z libusb. To zapobiega ingerencji (interferencji) pomiędzy dwoma programami używającymi libusb. Dla przykładu libusb\_set\_debug() nie zaingeruje w działanie innego programu korzystającego z libusb, natomiast libusb\_exit() nie wyczyści pamięci używanej przez inny program libusb.
+\newline
+Sesje tworzone są za pomocą libusb\_init() oraz czyszczone za pomocą libusb\_exit(). Jeśli zagwarantowane jest to, że dana aplikacja jest jedyną która korzysta z libusb, twórca jej nie musi przejmować się kontekstami (strukturą libusb\_context), wystarczy aby przekazywał do wszystkich funkcji, gdzie struktura jest wymagana wartość NULL. Jest to równoważne z użyciem domyślnego kontekstu.
+
+\subsection{libusb\_device\_handle}
+Struktura reprezentująca uchwyt do urządzenia USB.
+\newline
+Jest to nieprzejrzysty typ, użycie jest możliwe tylko za pomocą wskaźnika, zazwyczaj dostarczanego za pomocą funkcji libusb\_open().
+\newline
+Uchwyt do urządzenia USB jest używany do wykonywania operacji wejścia/wyjścia. Po zakończeniu wszystkich operacji należy wywołać libusb\_close().
+
+\section{najważniejsze funkcje}
+\subsection{libusb\_init}
+Inicjalizacja biblioteki.
+\newline
+Funkcja musi zostać wywołana przed wywołaniem jakiejkolwiek innej funkcji z biblioteki libUsb.
+\newline
+Jeśli w argumencie nie zostanie dostarczony żaden wskaźnik (wyjściowy) kontekstu, zostanie stworzony domyślny kontekst. W przypadku jeśli domyślny kontekst już istnieje zostanie on ponownie użyty (bez ponownej inicjalizacji).
+\newline
+Funkcja zwraca wartość 0 w wypadku powodzenia, w przeciwnym wypadku zwraca kod błędu.
+\subsection{libusb\_open\_device\_with\_vid\_pid}
+Wygodna funkcja służąca odszukaniu konkretnego urządzenia na podstawie jego vendorId oraz productId (są to parametry charakteryzujące każde urządzenie).
+\newline
+Ta funkcja jest używana w przypadkach kiedy z góry jest znane vendorId oraz productId. Najczęściej są to przypadki pisania aplikacji aby przetestować jakąś określoną funkcjonalność. Funkcja pozwala uniknąć wywołanie libusb\_get\_device\_list() i dbania o odpowiednie czyszczenie pamięci po liście.
+\newline
+Pierwszym parametrem jest kontekst uzyskany za pomocą libusb\_init().
+\newline
+Kolejnymi parametrami są vendorId oraz productId.
+\newline
+Funkcja zwraca uchwyt do znalezionego urządzenia, lub NULL w wypadku kiedy nie może znaleźć pożądanego urządzenia (o podanym productId oraz vendorId) lub błędu.
+\subsection{libusb\_kernel\_driver\_active}
+Funkcja sprawdzająca czy sterownik jądra kernela jest aktywny na interfejsie.
+\newline
+W wypadku kiedy sterownik jądra jest aktywny nie możliwe jest zgłoszenie użycia interfejsu, a co za tym idzie libUSB nie może wykonać operacji wejścia/wyjścia.
+\newline
+Funkcjonalność jest nie dostępna w systemie Windows.
+\newline
+Do funkcji należy przekazać uchwyt do urządzenia oraz numer interfejsu.
+\newline
+Funkcja zwraca wartość 0, jeśli żaden sterownik jądra nie jest aktywny, wartość 1 w wypadku jeśli istnieje aktywny sterownik jądra.
+\newline
+W wypadku błędów: LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostanie odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana oraz inny kod błędu w wypadku innego błędu.
+\subsection{libusb\_detach\_kernel\_driver}
+Dzięki funkcji możliwe jest odłączenie sterownika jądra kernela od interfejsu.
+\newline
+Sukces operacji umożliwi zgłoszenie użycia interfejsu i wykonanie operacji wejścia/wyjścia.
+\newline
+Funkcjonalność nie jest dostępna dla systemu Windows.
+\newline
+Parametrami są uchwyt do urządzenia oraz numer interfejsu.
+\newline
+Funkcja zwraca wartość 0 w momencie powodzenia, LIBUSB\_ERROR\_NOT\_FOUND jeśli żaden sterownik nie był aktywny, LIBUSB\_ERROR\_INVALID\_PARAM jeśli interfejs nie istniej, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana lub inny kod błędu w wypadku inne błędu.
+\subsection{libusb\_claim\_interface}
+Dzięki funkcji libusb\_claim\_interface() możliwe jest zgłoszenie użycia danego interfejsu dla danego urządzenia.
+\newline
+Wywołanie funkcji jest wymagane przed wykonaniem operacji wejścia/wyjścia dla dowolnego punktu końcowego interfejsu.
+\newline
+Jest dozwolone wywołanie funkcji dla interfejsu już wcześniej zgłoszonego, w tym wypadku zostanie zwrócona wartość 0 bez wykonywania żadnych operacji.
+\newline
+W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie odłączony (jeśli to konieczne), w przypadku niepowodzenia zostanie zwrócony błąd odłączenia.
+\newline
+Sama procedura wewnątrz funkcji nie jest skomplikowana, nie wymaga wysyłania czegokolwiek po magistrali. Są to proste instrukcje mówiące systemowi operacyjnemu iż aplikacja chce korzystać z danego interfejsu.
+\newline
+Nie jest to funkcja blokująca.
+\newline
+Parametrami są uchwyt do urządzenia oraz numer interfejsu zgłaszanego.
+\newline
+Wartość 0 zostaje zwrócona w wypadku powodzenia operacji.
+\newline
+W wypadku niepowodzenia kody błędu t.j. LIBUSB\_ERROR\_NOT\_FOUND jeśli podany interfejs nie istnieje, LIBUSB\_ERROR\_BUSY jeśli inny program lub sterownik zarezerwował dany interfejs, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
+\subsection{libusb\_bulk\_transfer}
+Dzięki funkcji możliwy jest przesył większej grupy danych.
+\newline
+Kierunek jest określony na podstawie bitów kierunkowych punktu końcowego interfejsu.
+\newline
+Dla odczytu, jeden z parametrów określa ilość danych jaka jest spodziewana przy odczycie. Jeżeli odebrana zostanie mniejsza ilość danych niż oczekiwana, funkcja po prostu zwróci te dane wraz z dodatkowym parametrem określającym ilość otrzymanych danych. Istotne przy odczycie jest to aby sprawdzić czy ilość oczekiwanych danych jest taka jak odczytana.
+\newline
+W wypadku zapisu również należy sprawdzić czy ilość danych wysłanych pokrywa się z ilością danych skierowaną do wysyłki.
+\newline
+Wskazana jest również weryfikacja ilości danych wysłanych/odebranych w wypadku wystąpienia timeoutu (funkcja zwróci kod błędu określający timeout). libUSB może podzielić wysyłane dane na mniejsze części i timeout może wystąpić po wysłaniu kilku z nich. Ważne jest to, że nie oznacza to iż nic nie zostało wysłane/odebrane, dlatego należy sprawdzić ilość elementów wysłanych/odebranych i dostosować odpowiednio kolejne kroki.
+\newline
+Funkcja przyjmuje następujące parametry: uchwyt urządzenia z którym aplikacja będzie się komunikować, adres punktu końcowego interfejsu po którym będzie odbywała się komunikacja, wskaźnik do pamięci danych która ma zostać przetransferowana (w wypadku zapisu) lub odebrana (w wypadku odczytu), ilość danych do wysłania (w przypadku zapisu) lub oczekiwana ilość danych do odebrania (w przypadku odczytu), ilość danych przetransferowanych (w obu przypadkach), maksymalna długość czasu na wykonanie operacji, dla nieograniczonego należy użyć wartości równej 0.
+\newline
+W przypadku poprawności działania funkcja zwraca wartość 0 oraz ilość przetransferowanych danych przekazanych do funkcji za pomocą wskaźnika.
+\newline
+W przeciwnym wypadku funkcja zwraca: LIBUSB\_ERROR\_TIMEOUT jeśli transfer przekroczył określony czas, LIBUSB\_ERROR\_PIPE jeśli wystąpił błąd związany z punktem końcowym, LIBUSB\_ERROR\_OVERFLOW jeśli urządzenie wysłało więcej danych niż przewidziane w buforze, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
+\subsection{libusb\_release\_interface}
+Funkcja zwalnia rezerwacje wcześniej zgłoszonego interfejsu za pomocą funkcji libusb\_claim\_interface().
+\newline
+Zwolnienie wszystkich interfejsów jest wymagane przed zamknięciem urządzenia.
+\newline
+Nie jest to blokująca funkcja.
+\newline
+W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie ponownie podłączony zaraz po zwolnieniu interfejsu.
+\newline
+Parametrami są: uchwyt urządzenia oraz numer interfejsu dla niego poprzednio zarezerwowanego.
+\newline
+Metoda zwraca 0 gdy wszystkie operacje się powiodą.
+\newline
+W przeciwnym wypadku zwraca: LIBUSB\_ERROR\_NOT\_FOUND jeśli interfejs nie został poprzednio zarezerwowany (zgłoszony do użycia), LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
+\subsection{libusb\_close}
+Zwalnia uchwyt do urządzenia.
+\newline
+Funkcja powinna być wołana na wszystkich używanych uprzednio uchwytach.
+\newline
+Funkcja pokrótce niszczy referencje stworzoną za pomocą libus\_open() dla danego urządzenia.
+\newline
+Jest to funkcja nie blokująca.
+\newline
+Parametrem jest uchwyt przeznaczony do zamknięcia.
+\subsection{libusb\_exit}
+Funkcja zamyka dostęp do biblioteki.
+\newline
+Powinna być wołana po zamknięciu wszystkich otwartych urządzeń ale przed zakończeniem działania programu.
+\newline
+Parametrem jest contekst który ma zostać zamknięty, w wypadku wartości NULL wybierany jest domyślny.
 \chapter{Mikrokontroler}
 \label{microcontrollerChapter}
 \begin{figure}[h]
