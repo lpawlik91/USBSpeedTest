@@ -373,12 +373,65 @@ Funkcja pokrótce niszczy referencje stworzoną za pomocą libus\_open() dla dan
 Jest to funkcja nie blokująca.
 \newline
 Parametrem jest uchwyt przeznaczony do zamknięcia.
+
 \subsection{libusb\_exit}
 Funkcja zamyka dostęp do biblioteki.
 \newline
 Powinna być wołana po zamknięciu wszystkich otwartych urządzeń ale przed zakończeniem działania programu.
 \newline
 Parametrem jest contekst który ma zostać zamknięty, w wypadku wartości NULL wybierany jest domyślny.
+
+%% asyn interface
+\subsection{libusb\_alloc\_transfer}
+Funkcja przygotowuje transfer z wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
+\newline
+Funkcja zwraca uchwyt do zainicjalizowanego transferu. Kiedy wszystkie operacje zostaną na nim wykonane należy wywołać libusb\_free\_transfer().
+\newline
+Transfer przygotowywany dla nie izochronicznego punktu końcowego należy wywoływać z wartością zero jako ilość izochronicznych pakietów.
+\newline
+Dla transferów izochronicznych wymagane jest podanie prawidłowej wartości deskryptorów pakietów jakie mają zostać zalokowane w pamięci. Zwracany transfer nie jest domyślnie zainicjalizowany jako izochroniczny, wymagane dodatkowo jest ustawienie pola libusb\_iso\_packets oraz type.
+\newline
+Alokowanie transferu jako izochroniczny (z podana ilością deskryptorów pakietów do zalokowania) a następnie używanie transferu jako nie izochroniczny jest w 100\% bezpieczne ale pod warunkiem jeśli pole num\_iso\_packets jest ustawione na zero oraz pole type jest ustawione prawidłowo.
+\newline
+Funkcja jako prametr przyjmuje ilość izochronicznych deskryptorów pakietów.
+\newline
+Zwracaną jest zalokowany transfer lub NULL w wypadku błędu.
+\subsection{libusb\_fill\_bulk\_transfer}
+Funkcja pozwala na łatwe przygotowanie struktury libusb\_transfer na transfer masowy.
+\newline
+Parametrami są:
+\begin{itemize}
+\item uchwyt do ustawianego transferu
+\item uchwyt do urządzenia dla którego ustawiany jest transfer
+\item adres punktu końcowego gdzie dane mają zostać wysłane
+\item bufor danych do wysłania/odebrania
+\item długość (wielkość) wysyłanych/odbieranych danych
+\item wskaźnik do funkcji która ma się wywołać po zakończeniu transferu (callback)
+\item dodatkowe dane, które programista może opcjonalnie wysłać do funkcji wywołanej po zakończeniu transferu 
+\item czas oczekiwania w milisekundach na zakończenie transferu
+\end{itemize}
+\subsection{libusb\_submit\_transfer}
+Funkcja wykonuje podany (ustawiony) transfer.
+\newline
+Funkcja wykonuje operacje na interfejsie po czym bezzwłocznie kończy działanie.
+\newline
+Jedynym parametrem jaki przyjmuje funkcja jest wskaźnik do transferu jaki ma zostać wykonany.
+\newline
+W wypadku kiedy wszystko się powiedzie funkcja zwraca wartość równą 0, w pozostałych przypadkach zwraca kod błędu tj. LIBUSB\_ERROR\_NO\_DEVICE w wypadku kiedy urządzenie nie jest podłączone, LIBUSB\_ERROR\_BUSY w przypadku jeśli akcja została już wykonana, LIBUSB\_ERROR\_NOT\_SUPPORTED jeśli flagi transferu (ustawienia) są nie wspierane przez system operacyjny oraz inne.
+\subsection{libusb\_free\_transfer}
+Funkcja odpowiada za zwolnienie pamięci zajętą przez strukturę libusb\_transfer
+\newline
+Funkcja ta powinna być zawołana dla wszystkich transferów zaalokowanych przez libus\_alloc\_transfer().
+\newline
+Jeśli dodatkowo flaga LIBUSB\_TRANSFER\_FREE\_BUFFER jest ustawiona oraz bufor transferu jest nie zerowy, pamięć po nim zostanie również zwolniona za pomocą standardowej funkcji alokującej (np. free()).
+\newline
+Dozwolone jest zawołanie funkcji z parametrem równym NULL, w takim przypadku funkcja zakończy się bez błędu (ale nic nie zostanie zwolnione).
+\newline
+Nie dozwolone jest zwalnianie pamięci po nie zakończonym (aktywnym) jeszcze transferze, czyli takim który wystartował ale jeszcze nie wywołany został callback do niego (lub timeout).
+\newline
+Parametrem funkcji jest wskaźnik do transferu do zwolnienia.
+
+%---------
 \chapter{Mikrokontroler}
 \label{microcontrollerChapter}
 \begin{figure}[h]
