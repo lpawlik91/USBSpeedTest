@@ -1,19 +1,39 @@
 // libusbtest2.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "libusb.h"
 #include <cstdlib>
 #include <cstdio>
 #include <ctime>
 #include <iostream>
 #include <pthread.h>
-
+#include <unistd.h>
 
 #define BUFFOR_MAX 64
 #define LAND_TIGER_VID 0x1fc9
 #define LAND_TIGER_PID 0x2002
 
+
+pthread_mutex_t sender_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t receiver_lock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t sender_cond = PTHREAD_COND_INITIALIZER;
+pthread_cond_t receiver_cond = PTHREAD_COND_INITIALIZER;
+
+struct TransferStatus
+{
+	int allCompleted;
+	libusb_transfer* senderHandler;
+	libusb_transfer* receiverHandler;
+	int sendCount;
+	int receivedCount;
+	int needToBeSendReceived;
+	libusb_context* ctx;
+	int waitForSender;
+	int waitForReceiver;
+	int particularSendComplete;
+	int particularReceiveComplete;
+};
 
 
 int generateSymulatedData(unsigned char* data, const int size)
@@ -37,6 +57,8 @@ libusb_context* getContext()
 	}
 	return ctx;
 }
+
+
 
 libusb_device_handle* getDeviceHandle(libusb_context* ctx)
 {
@@ -69,71 +91,134 @@ int proceedWithInitLibUsb(libusb_device_handle* dev_handle, libusb_context* ctx)
 	return 0;
 }
 
-template <int num>
 static void LIBUSB_CALL cb_send(struct libusb_transfer *transfer)
 {
 	if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
 		fprintf(stderr, "\ndupadupa\n\n");
 		//request_exit(2);
 	}
+	TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
+	//ts->completed = 1;
+	ts->sendCount++;
+	printf("async cb_send length=%d actual_length=%d sendCount=%d\n",
+		transfer->length, transfer->actual_length, ts->sendCount);
+	pthread_mutex_lock(&receiver_lock);
+	ts->waitForReceiver = 0;
+	ts->particularSendComplete = 1;
+	pthread_cond_signal(&receiver_cond);
+	pthread_mutex_unlock(&receiver_lock);
 
-	printf("async cb_send length=%d actual_length=%d\n",
-		transfer->length, transfer->actual_length);
-//	if (next_state() < 0)
-	//	request_exit(2);
 }
 
-int doTest(libusb_device_handle* dev_handle, int bufforSize, int count, double* timeResult, libusb_transfer* transfer)
+static void LIBUSB_CALL cb_read(struct libusb_transfer *transfer)
+{
+	if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
+		fprintf(stderr, "\ndupadupa\n\n");
+		//request_exit(2);
+		return ;
+	}
+	TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
+	ts->receivedCount++;
+	ts->particularReceiveComplete = 1;
+	printf("cb_read: receivedCount==%d, needToBeSendReceived==%d\n", ts->receivedCount, ts->needToBeSendReceived);
+	//int* completed = static_cast<int*>(transfer->user_data);
+
+	printf("Data read Correctly! \n");
+	pthread_mutex_lock(&sender_lock);
+	ts->waitForSender = 0;
+	pthread_cond_signal(&sender_cond);
+	pthread_mutex_unlock(&sender_lock);
+	if(ts->receivedCount == ts->needToBeSendReceived)
+	{
+		ts->allCompleted = 1;
+//		return;
+	}
+
+}
+void* handlerThread(void* arg)
+{
+	std::cout << "test Thread" << std::endl;
+	TransferStatus* transferStatus = static_cast<TransferStatus*>(arg);
+	//int test;
+	while(transferStatus->allCompleted != 1) 
+	{
+		pthread_mutex_lock(&receiver_lock);
+		while(transferStatus->waitForReceiver) {
+			std::cout << "RECEIVED: In loop. " << std::endl;	
+			pthread_cond_wait(&receiver_cond, &receiver_lock);
+		}
+		transferStatus->waitForReceiver = 1;
+
+		pthread_mutex_unlock(&receiver_lock);
+		transferStatus->particularReceiveComplete = 0;
+		libusb_submit_transfer(transferStatus->receiverHandler);
+		while(transferStatus->particularReceiveComplete == 0)
+			libusb_handle_events(transferStatus->ctx);
+		std::cout << "RECIVED: success " << std::endl;
+	}
+	std::cout << "tutaj nie powinno byc..." << std::endl << std::endl;
+}
+
+int doTest(libusb_context* ctx, libusb_device_handle* dev_handle, int bufforSize, int count, double* timeResult, libusb_transfer* transfer, libusb_transfer* listener, pthread_t* listenerThread)
 {
 	unsigned char *data_out = new unsigned char[bufforSize]; //data to write
-	unsigned char* data_in = new unsigned char[bufforSize];
 	generateSymulatedData(data_out, bufforSize);
 	int howManyBytesIsSend; 
 	int howManyBytesReceived;
+	TransferStatus transferStatus;
+	transferStatus.allCompleted = 0;
+	
+	transferStatus.sendCount = 0;
+	transferStatus.receivedCount = 0;
+	transferStatus.senderHandler = transfer;
+	transferStatus.receiverHandler = listener;
+	transferStatus.needToBeSendReceived = count;
+	transferStatus.ctx = ctx;
+	transferStatus.waitForSender = 0;
+	transferStatus.waitForReceiver = 1;
+	unsigned char *data_in = new unsigned char[bufforSize]; //data to write
+	libusb_fill_bulk_transfer(transfer, dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, cb_send, &transferStatus, 0);
+	libusb_fill_bulk_transfer(listener, dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, bufforSize, cb_read, &transferStatus, 0);
+
 
 	time_t start_t, end_t;
     *timeResult = 0;
 
 
-	//*timeResult = 0.0;
+	*timeResult = 0.0;
+	//if(i == 0) 
+	if(pthread_create(listenerThread, NULL, handlerThread, &transferStatus) != 0)
+	{
+		std::cerr << "Error creating listener thread." << std::endl;
+		return 1;
+	}
+	
+	std::cout << "count: " << count;
 	time(&start_t);
 	for(int i = 0; i < count; ++i)
 	{
-		const int d = i;
-	
-		libusb_fill_bulk_transfer(transfer, dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, cb_send<1>, NULL, 0);
+		pthread_mutex_lock(&sender_lock);
+	//	pthread_mutex_lock(&sender_lock);
+		
+		while(transferStatus.waitForSender){
+			std::cout << "SENDING: in loop" << std::endl;
+			pthread_cond_wait(&sender_cond, &sender_lock);
+		}
+		transferStatus.waitForSender = 1;
+
+		pthread_mutex_unlock(&sender_lock);
+		transferStatus.particularSendComplete = 0;
 		libusb_submit_transfer(transfer);
-		/*
-		int sendStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, &howManyBytesIsSend, 0); 
-		if(sendStatus == 0 && howManyBytesIsSend == bufforSize)
-		{
-			//here was printing data for debugging only
-		}
-		else
-		{
-			std::cout<< "Write Error" << std::endl;
-			delete [] data_out;			
-			return 1;
-		}
+		while(transferStatus.particularSendComplete == 0)
+			libusb_handle_events(ctx);
 		
+		std::cout << "SENDING: it Goes further! .. handling status: %d "  << std::endl;
 		
-		int readStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
-		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
-		{
-			//here was printing data for debugging only
-		} 
-		else 
-		{
-			std::cout << "Read Error: " << readStatus << std::endl;
-			delete[] data_in;
-			return 1;
-		}*/
-		
+			//if(i = 0) usleep(200);
 	}
 	time(&end_t);
+	pthread_join(*listenerThread, NULL);
 	*timeResult = difftime(end_t, start_t); 
-	delete[] data_in;
-	//delete [] data_out;
 	return 0;
 }
 
@@ -169,13 +254,26 @@ int main(int argc, char* argv[])
 
 	int count = atoi(argv[2]);
 
+
+	if(pthread_mutex_init(&sender_lock, NULL) != 0 || pthread_mutex_init(&receiver_lock, NULL) != 0)
+	{
+		std::cerr << "Mutex Init Failed!" << std::endl;
+		return 1;
+	}
+
 	std::cout << "Total size to send/receive: " << bufforSize << " x " << count << " = " << bufforSize * count << " Bytes" << std::endl;
 	
+
+
+
 	libusb_context *ctx = getContext(); 
 	libusb_device_handle* dev_handle = getDeviceHandle(ctx);
 	libusb_transfer* transfer1 = libusb_alloc_transfer(0);
+	libusb_transfer* respForTransfer1 = libusb_alloc_transfer(0);
+	pthread_t eventHandlerThread;
 
-	if(ctx == NULL || dev_handle == NULL || transfer1 == NULL)
+	libusb_transfer* listener = libusb_alloc_transfer(0);
+		if(ctx == NULL || dev_handle == NULL || transfer1 == NULL)
 	{
 		return 1;
 	}
@@ -186,9 +284,11 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	double testResult = 0.;
-	
 
-	int testStatus = doTest(dev_handle, bufforSize, count, &testResult, transfer1);
+	int testStatus = doTest(ctx, dev_handle, bufforSize, count, &testResult, transfer1, listener, &eventHandlerThread);
+	//pthread_join(eventHandlerThread, NULL);
+	pthread_mutex_destroy(&sender_lock);
+	pthread_mutex_destroy(&receiver_lock);
 	if(testStatus != 0) 
 	{
 		std::cout << "There was an error during tests!!" << std::endl;
@@ -198,7 +298,7 @@ int main(int argc, char* argv[])
 		std::cout << "Sending of: " << bufforSize * count << "Bytes using bufferSize=" << bufforSize << " takes " << testResult << "s." << std::endl;
 
 	}
-
+	libusb_free_transfer(listener);
 	libusb_free_transfer(transfer1);
 	if(closeLibUsb(dev_handle, ctx) != 0)
 	{
