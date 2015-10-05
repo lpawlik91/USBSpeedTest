@@ -9,7 +9,16 @@ Mode::~Mode()
 }
 void Mode::printFinalInformation()
 {
-	std::cout << "Sending of: " << _bufforSize * _count << "Bytes using bufferSize=" << _bufforSize << " takes " << _timeResult << "s." << std::endl;
+	_debugPrinter << "Sending of: " << _bufforSize * _count << "Bytes using bufferSize=" << _bufforSize << " takes " << _timeResult << "s.\n";
+	if(_printOnlyResult)
+	{
+		unsigned allSendReceivedData = _bufforSize * _count;
+		double sendingTime = _timeResult/2;
+		double receivingTime = _timeResult/2;
+
+		printf("%d\t%u\t%u\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f", _bufforSize, _count, allSendReceivedData, _timeResult, sendingTime, receivingTime,
+							allSendReceivedData/_timeResult, allSendReceivedData/sendingTime, allSendReceivedData/receivingTime);
+	}
 }
 void Mode::initProcedures()
 {
@@ -46,16 +55,16 @@ void Mode::getDeviceHandle()
 		throw std::runtime_error("Cannot open device!");
 		//std::cout<<"Cannot open device"<<std::endl;
 	else
-		std::cout<<"Device Opened"<<std::endl;
+		_debugPrinter << "Device Opened\n";
 
 //	return dev_handle;
 }
 void Mode::proceedWithInitUsb()
 {
 	if(libusb_kernel_driver_active(_dev_handle, 0) == 1) { //find out if kernel driver is attached
-		std::cout<<"Kernel Driver Active"<<std::endl;
+		_debugPrinter << "Kernel Driver Active\n";
 		if(libusb_detach_kernel_driver(_dev_handle, 0) == 0) //detach it
-			std::cout<<"Kernel Driver Detached!"<<std::endl;
+			_debugPrinter << "Kernel Driver Detached!\n";
 	}
 	int status = libusb_claim_interface(_dev_handle, 1);
 	if(status < 0) 
@@ -64,7 +73,7 @@ void Mode::proceedWithInitUsb()
 		//std::cout<<"Cannot Claim Interface"<<std::endl;
 		//return 1;
 	}
-	std::cout<<"Claimed Interface"<<std::endl;
+	_debugPrinter << "Claimed Interface\n";
 }
 void Mode::closeLibUsb()
 {
@@ -74,7 +83,7 @@ void Mode::closeLibUsb()
 //		std::cout<<"Cannot Release Interface"<<std::endl;
 //		return 1;
 	}
-	std::cout<<"Released Interface"<<std::endl;
+	_debugPrinter << "Released Interface\n";
 
 	libusb_close(_dev_handle);
 	libusb_exit(_ctx); 

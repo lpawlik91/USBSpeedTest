@@ -9,7 +9,7 @@
 class AsynchMode : public Mode
 {
 public:
-	AsynchMode(int bufforSize, int count, int vid, int pid);
+	AsynchMode(int bufforSize, int count, int vid, int pid, bool printOnlyResult);
 	virtual ~AsynchMode();
 	virtual int doTest() override;
 	virtual void initProcedures() override;

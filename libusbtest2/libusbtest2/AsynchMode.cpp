@@ -27,8 +27,7 @@ namespace ThreadHelper
 	static void LIBUSB_CALL cb_read(struct libusb_transfer *transfer)
 	{
 		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
-			fprintf(stderr, "\ndupadupa\n\n");
-			//request_exit(2);
+			std::cerr << "Reading data error!" << std::endl;
 			return ;
 		}
 		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
@@ -50,8 +49,8 @@ namespace ThreadHelper
 	static void LIBUSB_CALL cb_send(struct libusb_transfer *transfer)
 	{
 		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
-			fprintf(stderr, "\ndupadupa\n\n");
-			//request_exit(2);
+			std::cerr << "Sending data error!" << std::endl;
+			return ;
 		}
 		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
 		ts->sendCount++;
@@ -88,11 +87,11 @@ namespace ThreadHelper
 
 
 
-AsynchMode::AsynchMode(int bufforSize, int count, int vid, int pid) : Mode(bufforSize, count, vid, pid), 
-									_sender_lock(PTHREAD_MUTEX_INITIALIZER), 
-									_receiver_lock(PTHREAD_MUTEX_INITIALIZER),
-									_sender_cond(PTHREAD_COND_INITIALIZER),
-									_receiver_cond(PTHREAD_COND_INITIALIZER)
+AsynchMode::AsynchMode(int bufforSize, int count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult), 
+											_sender_lock(PTHREAD_MUTEX_INITIALIZER), 
+											_receiver_lock(PTHREAD_MUTEX_INITIALIZER),
+											_sender_cond(PTHREAD_COND_INITIALIZER),
+											_receiver_cond(PTHREAD_COND_INITIALIZER)
 {
 	//std::cout << "AsynchMode::AsynchMode" << std::endl;
 }
