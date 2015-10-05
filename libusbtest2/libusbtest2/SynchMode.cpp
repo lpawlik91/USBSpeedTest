@@ -1,6 +1,6 @@
 #include "SynchMode.hpp"
 
-SynchMode::SynchMode(int bufforSize, int count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult)
+SynchMode::SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult)
 {
 	//std::cout << "SynchMode::SynchMode" << std::endl;
 }

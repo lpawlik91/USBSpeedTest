@@ -87,7 +87,7 @@ namespace ThreadHelper
 
 
 
-AsynchMode::AsynchMode(int bufforSize, int count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult), 
+AsynchMode::AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult), 
 											_sender_lock(PTHREAD_MUTEX_INITIALIZER), 
 											_receiver_lock(PTHREAD_MUTEX_INITIALIZER),
 											_sender_cond(PTHREAD_COND_INITIALIZER),

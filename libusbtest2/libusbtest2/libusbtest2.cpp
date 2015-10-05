@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 		selectedMode = 'S';
 	}
 		
-	int bufforSize = atoi(argv[2]);
+	unsigned bufforSize = atoi(argv[2]);
 	if(bufforSize > BUFFOR_MAX) 
 	{
 		debugPrinter << "bufforSize is grather than 64B, setting 64 as default\n";

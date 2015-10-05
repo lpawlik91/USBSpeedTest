@@ -16,7 +16,7 @@ void Mode::printFinalInformation()
 		double sendingTime = _timeResult/2;
 		double receivingTime = _timeResult/2;
 
-		printf("%d\t%u\t%u\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f", _bufforSize, _count, allSendReceivedData, _timeResult, sendingTime, receivingTime,
+		printf("%d\t%u\t%u\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n", _bufforSize, _count, allSendReceivedData, _timeResult, sendingTime, receivingTime,
 							allSendReceivedData/_timeResult, allSendReceivedData/sendingTime, allSendReceivedData/receivingTime);
 	}
 }

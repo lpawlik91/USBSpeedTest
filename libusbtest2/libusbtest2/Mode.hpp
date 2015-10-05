@@ -10,7 +10,7 @@
 class Mode
 {
 public:
-	Mode(int bufforSize, int count, int vid, int pid, bool printOnlyResult) : _bufforSize(bufforSize), _count(count), _vid(vid), _pid(pid), _printOnlyResult(printOnlyResult)
+	Mode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult) : _bufforSize(bufforSize), _count(count), _vid(vid), _pid(pid), _printOnlyResult(printOnlyResult)
 	{
 		_debugPrinter.set(!printOnlyResult);
 	}
@@ -26,7 +26,7 @@ public:
 	
 protected:
 	int _bufforSize;
-	int _count;
+	unsigned _count;
 	int _vid;
 	int _pid;
 	double _timeResult;
