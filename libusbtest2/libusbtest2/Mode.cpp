@@ -41,7 +41,6 @@ void Mode::getContext()
 }	
 void Mode::getDeviceHandle()
 {
-	printf("vid: 0x%x, pid: 0x%x", _vid, _pid);
 	_dev_handle = libusb_open_device_with_vid_pid(_ctx, _vid, _pid);
 	if(_dev_handle == NULL)
 		throw std::runtime_error("Cannot open device!");

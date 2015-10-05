@@ -2,7 +2,7 @@
 
 SynchMode::SynchMode(int bufforSize, int count, int vid, int pid) : Mode(bufforSize, count, vid, pid)
 {
-
+	//std::cout << "SynchMode::SynchMode" << std::endl;
 }
 SynchMode::~SynchMode()
 {
