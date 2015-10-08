@@ -1,0 +1,4 @@
+set terminal jpeg 
+set output "firsPlot.jpg"
+plot[0:100] "S_10737420.data" using 1:7 with lines
+
