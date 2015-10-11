@@ -1,0 +1,35 @@
+fileBase="S_107374200"
+send = "Send"
+receive="Receive"
+sendReceive="SendReceive"
+dataExt=".data"
+jpgExt=".jpg"
+
+fileInput=fileBase.dataExt
+fileOutput=fileBase.sendReceive.jpgExt
+
+set terminal jpeg 
+set output fileOutput
+set xlabel "buffor [B]"
+set ylabel "predkość [B/s]"
+plot[22:70] fileInput using 1:7 notitle with lines
+
+fileOutput=fileBase.send.jpgExt
+
+set terminal jpeg 
+set output fileOutput
+set xlabel "buffor [B]"
+set ylabel "predkość [B/s]"
+plot[22:70] fileInput using 1:8 notitle with lines
+
+fileOutput=fileBase.receive.jpgExt
+
+set terminal jpeg 
+set output fileOutput
+set xlabel "buffor [B]"
+set ylabel "predkość [B/s]"
+plot[22:70] fileInput using 1:9 notitle with lines
+
+
+
+

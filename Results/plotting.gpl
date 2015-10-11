@@ -1,6 +1,0 @@
-set terminal jpeg 
-set output "firsPlot.jpg"
-set xlabel "buffor [B]"
-set ylabel "predkość [B/s]"
-plot[0:60] "S_10737420.data" using 1:7 notitle with lines
-
