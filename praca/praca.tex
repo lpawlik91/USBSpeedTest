@@ -129,6 +129,7 @@ Ocena końcowa pracy przez Recenzenta:
 \newpage
 
 
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 \chapter{Wstęp}
 \label{chap1}
 \pagestyle{fancy}
@@ -500,137 +501,151 @@ Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jes
 \item możliwości prędkości są mocno ograniczone poprzez funkcje blokujące
 
 \end{itemize}
-\section{implementacja}
-Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb.
+\chapter{implementacja}
+Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu aby uzyskać możliwość łatwego dodawania nowych udoskonaleń.
 
-\subsection{Funkcja getContext}
-W listingu \ref{lst:getContext} przedstawione zostało ciało funkcji getContext().
+\section{Klasa Mode}
+Klasa Mode jest nadzbiorem funkcjonalności. Klasa ta obudowuje podstawowe funkcjonalności takie jak:
+\begin{itemize}
+\item inicjalizacja
+\subitem pobieranie kontekstu
+\subitem pobieranie uchwytu urządzenia
+\subitem rejestracja interfejsu
+\item oczyszczanie pamięci
+\end{itemize}
+Klasa zawiera również czysto wirtualną metodę doTest(), której odpowiednie implementacje w klasach dziedziczących dostarcza funkcjonalności testom.
+\begin{lstlisting}[caption={Deklaracja klasy Mode},label={lst:CMode}]
+class Mode
+{
+public:
+	Mode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult) : _bufforSize(bufforSize), _count(count), _vid(vid), _pid(pid), _printOnlyResult(printOnlyResult)
+	{
+		_debugPrinter.set(!printOnlyResult);
+	}
+	virtual ~Mode();
+	virtual int generateSymulatedData(unsigned char*, const int);
+	virtual void printFinalInformation();
+	virtual void initProcedures();
+	virtual void getContext();
+	virtual void getDeviceHandle();
+	virtual void proceedWithInitUsb();
+	virtual void closeLibUsb();
+	virtual int doTest() = 0;
+	
+protected:
+	int _bufforSize;
+	unsigned _count;
+	int _vid;
+	int _pid;
+	double _timeResult;
+	DebugPrinter _debugPrinter;
+	bool _printOnlyResult;
+	libusb_context* _ctx;
+	libusb_device_handle* _dev_handle;
+
+};
+\end{lstlisting}
+\subsection{Metoda getContext}
+W listingu \ref{lst:Mode_getContext} przedstawione zostało ciało metody getContext() klasy Mode.
 \newline
-Funkcja nie przyjmuje żadnego argumentu, natomiast zwraca kontekst który jest później przekazywany do wielu metod jako argument. W rozdziale \ref{libUsbChapter} wspomniane zostało iż możliwe jest używanie kontekstu domyślnego, wtedy zamiast tej funkcji i wartości zwracanej (pozyskanego kontekstu) w każdym użyciu uzyskanego przez getContext() wskaźnika należałoby wpisać wartość NULL. 
+Metoda nie przyjmuje żadnego argumentu, natomiast inicjalizuje kontekst i zapamiętuje go jako składnik w składowej klasy. W rozdziale \ref{libUsbChapter} wspomniane zostało iż możliwe jest używanie kontekstu domyślnego, wtedy zamiast użycia libusb\_init() należałoby przypisać wskaźnikowi do kontekstu wartość równą NULL. 
 \newline
 Aby używać domyślnego kontekstu należy mieć pewność iż aplikacja/wątek jest jedynym użytkownikiem libUSB.
 \newline
-\begin{lstlisting}[caption={Funkcja getContext()},label={lst:getContext}]
-libusb_context* getContext()
-{
-	libusb_context* ctx = NULL;
-	int r = libusb_init(&ctx);
+W wypadku niepoprawnego działania wyrzucany jest błąd (ważne aby był przechwycony w funkcji main).
+\begin{lstlisting}[caption={Metoda Mode::getContext()},label={lst:Mode_getContext}]
+void Mode::getContext()
+{	
+	int r = libusb_init(&_ctx);
 	if(r < 0) {
-		std::cout<<"Init Context error Error "<< r <<std::endl;
-		return NULL;
-	}
-	return ctx;
-}
-\end{lstlisting}
-\subsection{Funkcja getDeviceHandler}
-Funkcja nie przyjmuje żadnego argumentu. Zwracany jest uchwyt do LandTiger'a, lub wartość NULL w wypadku błędu (np. braku podłączonego i uruchomionego mikrokontrolera).
-Ciało funkcji zostało przedstawione w Listingu \ref{lst:getDeviceHandle}
-\begin{lstlisting}[caption={Funkcja getDeviceHandler()},label={lst:getDeviceHandle}]
-libusb_device_handle* getDeviceHandle(libusb_context* ctx)
-{
-	libusb_device_handle* dev_handle = libusb_open_device_with_vid_pid(ctx, LAND_TIGER_VID, LAND_TIGER_PID);
-	if(dev_handle == NULL)
-		std::cout<<"Cannot open device"<<std::endl;
-	else
-		std::cout<<"Device Opened"<<std::endl;
+		throw std::runtime_error("Init Context error");
 
-	return dev_handle;
+	}
 }
 \end{lstlisting}
-\subsection{Funkcja proceedWithInitLibUsb}
-Funkcja odpowiedzialna za dokończenie procedur inicjalizacyjnych. Ciało funkcji zostało przedstawione w Listingu \ref{lst:proceedWithInitLibUsb}. Funkcja sprawdza dodatkowo czy sterownik jądra kernela jest aktywny, dla platformy Windows funkcja zwróci wartość LIBUSB\_ERROR\_NOT\_SUPPORTED (!= 1) i zachowa się analogicznie jak w wypadku nie aktywnego sterownika w systemie UNIX (warunek bedzie nie spełniony).
+\subsection{Metoda getDeviceHandler}
+Metoda nie przyjmuje żadnego argumentu. Ustawiany jest uchwyt do urządzenia na podstawie jego vendorId oraz productId (testy były wykonane na mikrokontrolerze LandTige). W wypadku niepowodzenia zostanie zgłoszony odpowiedni błąd (np. braku podłączonego i uruchomionego mikrokontrolera).
+Ciało funkcji zostało przedstawione w Listingu \ref{lst:Mode_getDeviceHandle}
+\begin{lstlisting}[caption={Metoda Mode::getDeviceHandler()},label={lst:Mode_getDeviceHandle}]
+void Mode::getDeviceHandle()
+{
+	_dev_handle = libusb_open_device_with_vid_pid(_ctx, _vid, _pid);
+	if(_dev_handle == NULL)
+		throw std::runtime_error("Cannot open device!");
+	else
+		_debugPrinter << "Device Opened\n";
+}
+\end{lstlisting}
+\subsection{Metoda proceedWithInitLibUsb}
+Metoda odpowiedzialna za dokończenie procedur inicjalizacyjnych. Ciało metody zostało przedstawione w Listingu \ref{lst:Mode_proceedWithInitLibUsb}. Metoda sprawdza dodatkowo czy sterownik jądra kernela jest aktywny, dla platformy Windows funkcja zwróci wartość LIBUSB\_ERROR\_NOT\_SUPPORTED (!= 1) i zachowa się analogicznie jak w wypadku nie aktywnego sterownika w systemie UNIX (warunek bedzie nie spełniony).
 \newline
 Kolejnym krokiem jest rezerwacja przez program konkretnego interfejsu za pomocą funkcji libusb\_claim\_interface.
-\begin{lstlisting}[caption={Funkcja proceedWithInitLibUsb()},label={lst:proceedWithInitLibUsb}]
-int proceedWithInitLibUsb(libusb_device_handle* dev_handle, libusb_context* ctx)
+\newline
+W wypadku niepoprawnego działania metoda wyrzuci runtime\_error który należy obsłużyć  w funkcji main().
+\begin{lstlisting}[caption={Metoda Mode::proceedWithInitLibUsb()},label={lst:Mode_proceedWithInitLibUsb}]
+void Mode::proceedWithInitUsb()
 {
-		
-	if(libusb_kernel_driver_active(dev_handle, 0) == 1) { //find out if kernel driver is attached
-		std::cout<<"Kernel Driver Active"<<std::endl;
-		if(libusb_detach_kernel_driver(dev_handle, 0) == 0) //detach it
-			std::cout<<"Kernel Driver Detached!"<<std::endl;
+	if(libusb_kernel_driver_active(_dev_handle, 0) == 1) { //find out if kernel driver is attached
+		_debugPrinter << "Kernel Driver Active\n";
+		if(libusb_detach_kernel_driver(_dev_handle, 0) == 0) //detach it
+			_debugPrinter << "Kernel Driver Detached!\n";
 	}
-	int status = libusb_claim_interface(dev_handle, 1);
+	int status = libusb_claim_interface(_dev_handle, 1);
 	if(status < 0) 
 	{
-		std::cout<<"Cannot Claim Interface"<<std::endl;
-		return 1;
+		throw std::runtime_error("Cannot Claim Interface");
 	}
-	std::cout<<"Claimed Interface"<<std::endl;
-
-	return 0;
+	_debugPrinter << "Claimed Interface\n";
 }
 \end{lstlisting}
-\subsection{Funkcja doTest}
-Funkcja w całości przedstawiona w Listingu \ref{lst:doTest} i jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony pomiędzy PC a mikrokontrolerem.
-\newline
-Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt dość sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger.
-\begin{lstlisting}[caption={Funkcja doTest()},label={lst:doTest}]
-int doTest(libusb_device_handle* dev_handle, int bufforSize, int count, double* timeResult)
+
+\subsection{Metoda initProcedures()}
+Metoda przedstawiona w listingu \ref{lst:Mode_initProcedures} odpowiada za wywołanie procedur inicjalizacji w odpowiedniej kolejności.
+\begin{lstlisting}[caption={Metoda Mode::initProcedures()},label={lst:Mode_initProcedures}]
+void Mode::initProcedures()
 {
-	unsigned char *data_out = new unsigned char[bufforSize]; //data to write
-	unsigned char* data_in = new unsigned char[bufforSize];
-	generateSymulatedData(data_out, bufforSize);
-	int howManyBytesIsSend; 
-	int howManyBytesReceived;
-
-	time_t start_t, end_t;
-    *timeResult = 0;
-
-	
-	time(&start_t);
-	for(int i = 0; i < count; ++i)
-	{
-		int sendStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, bufforSize, &howManyBytesIsSend, 0); 
-		if(sendStatus == 0 && howManyBytesIsSend == bufforSize)
-		{
-			//here was printing data for debugging only
-		}
-		else
-		{
-			std::cout<< "Write Error" << std::endl;
-			delete [] data_out;			
-			return 1;
-		}
-		
-		
-		int readStatus = libusb_bulk_transfer(dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
-		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
-		{
-			//here was printing data for debugging only
-		} 
-		else 
-		{
-			std::cout << "Read Error: " << readStatus << std::endl;
-			delete[] data_in;
-			return 1;
-		}
-		
-	}
-	time(&end_t);
-	*timeResult = difftime(end_t, start_t);
-	delete[] data_in;
-	delete [] data_out;
-	return 0;
+	getContext(); 
+	getDeviceHandle();
+	proceedWithInitUsb();
 }
 \end{lstlisting}
-\subsection{Funkcja closeLibUsb}
-Funkcja przedstawiona w Listingu \ref{lst:closeLibUsb} odpowiada za zwolnienie interfesju oraz zasobów uprzednio zajętych na czas testu.
-\begin{lstlisting}[caption={Funkcja closeLibUsb()},label={lst:closeLibUsb}]
-int closeLibUsb(libusb_device_handle* dev_handle, libusb_context* ctx)
+\subsection{Metoda closeLibUsb}
+Metoda przedstawiona w Listingu \ref{lst:Mode_closeLibUsb} odpowiada za zwolnienie interfesju oraz zasobów uprzednio zajętych na czas testu.
+\begin{lstlisting}[caption={Metoda Mode::closeLibUsb()},label={lst:Mode_closeLibUsb}]
+void Mode::closeLibUsb()
 {
-	int status = libusb_release_interface(dev_handle, 1); 
+	int status = libusb_release_interface(_dev_handle, 1); 
 	if(status != 0) {
-		std::cout<<"Cannot Release Interface"<<std::endl;
-		return 1;
+		throw std::runtime_error("Cannot Relase Interface");
 	}
-	std::cout<<"Released Interface"<<std::endl;
-
-	libusb_close(dev_handle);
-	libusb_exit(ctx); 
-	return 0;
+	_debugPrinter << "Released Interface\n";
+	libusb_close(_dev_handle);
+	libusb_exit(_ctx); 
 }
 \end{lstlisting}
+
+
+\subsection{Metoda printFinalInformation}
+Metoda mająca na zadanie wypisanie ostatecznych wyników. Wyniki mogą zostać przedstawione jako czytelna zwykła informacja dla użytkownika lub w postaci kolumnowej (używanej przy tworzeniu wykresów).
+\begin{lstlisting}[caption={Metoda Mode::printFinalInformation()},label={lst:Mode_printFinalInformation}]
+void Mode::printFinalInformation()
+{
+	_debugPrinter << "Sending of: " << _bufforSize * _count << "Bytes using bufferSize=" << _bufforSize << " takes " << _timeResult << "s.\n";
+	if(_printOnlyResult)
+	{
+		unsigned allSendReceivedData = _bufforSize * _count;
+		double sendingTime = _timeResult/2;
+		double receivingTime = _timeResult/2;
+
+		printf("%d\t%u\t%u\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n", _bufforSize, _count, allSendReceivedData, _timeResult, sendingTime, receivingTime,
+							allSendReceivedData/_timeResult, allSendReceivedData/sendingTime, allSendReceivedData/receivingTime);
+	}
+}
+\end{lstlisting}
+\iffalse
+%% to bedzie na koncu
+%
+%
 \subsection{główny program synchronicznie przesyłający dane}
 Kod przedstawiony w Listingu \ref{lst:synchronicMain} doskonale ukazuje prostotę korzystania z libUSB. Użytkownik zobligowany jest do wprowadzenia wielkości bufora danych oraz ilości powtórzeń określających ile razy dany bufor zostanie wysłany do mikrokontrolera. Następnie zostaje wykonana inicjalizacja z użyciem wyżej wymienionych funkcji oraz test główny również opisany powyżej. Całość zostaje zakończona czyszczeniem zarezerwowanych zasobów. W kodzie widoczne są wszelkiego rodzaju komunikaty o błędach oraz przy inicjalizacji aby użytkownik miał świadomość jak wielkich rozmiarów test będzie wykonywany.
 \begin{lstlisting}[caption={Funkcja main()},label={lst:synchronicMain}]
@@ -687,5 +702,326 @@ int main(int argc, char* argv[])
 	return 0;
 }
 \end{lstlisting}
+\fi
+\section{Klasa SynchMode}
+Klasa SynchMode odpowiada odpowiednią konfigurację USB dla przesyłu synchronicznego. 
+
+\begin{lstlisting}[caption={Deklaracja klasy SynchMode},label={lst:CSynchMode}]
+class SynchMode : public Mode
+{
+public:
+	SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	virtual ~SynchMode();
+	virtual int doTest() override;
+
+private:
+
+};
+\end{lstlisting}
+Klasa używa wszystkich domyślnych ustawień (nie przeciąża żadnej metody wirtualnej), oczywiście metoda doTest() wymaga implementacji.
+\subsection{Metoda doTest}
+Metoda w całości przedstawiona w listingu \ref{lst:SynchMode_doTest} i jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony pomiędzy PC a mikrokontrolerem.
+\newline
+Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt dość sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger.
+\begin{lstlisting}[caption={Metoda SynchMode::doTest()},label={lst:SynchMode_doTest}]
+int SynchMode::doTest()
+{
+	unsigned char *data_out = new unsigned char[_bufforSize]; //data to write
+	unsigned char* data_in = new unsigned char[_bufforSize];
+	generateSymulatedData(data_out, _bufforSize);
+	int howManyBytesIsSend; 
+	int howManyBytesReceived;
+
+	time_t start_t, end_t;
+    	_timeResult = 0;
+
+	
+	time(&start_t);
+	for(int i = 0; i < _count; ++i)
+	{
+		int sendStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, &howManyBytesIsSend, 0); 
+		if(sendStatus == 0 && howManyBytesIsSend == _bufforSize)
+		{
+			//here was printing data for debugging only
+		}
+		else
+		{
+			delete [] data_out;
+			throw std::runtime_error("Write Error!");
+		}
+		
+		
+		int readStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
+		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
+		{
+			//here was printing data for debugging only
+		} 
+		else 
+		{
+			delete[] data_in;
+			throw std::runtime_error("Read Error! ");
+		}
+		
+	}
+	time(&end_t);
+	_timeResult = difftime(end_t, start_t);
+	delete[] data_in;
+	delete [] data_out;
+	return 0;
+}
+\end{lstlisting}
+\section{Klasa AsynchMode}
+Klasa AsynchMode odpowiada odpowiednią konfigurację USB dla przesyłu asynchronicznego. 
+
+\begin{lstlisting}[caption={Deklaracja klasy SynchMode},label={lst:CAsynchMode}]
+class AsynchMode : public Mode
+{
+public:
+	AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	virtual ~AsynchMode();
+	virtual int doTest() override;
+	virtual void initProcedures() override;
+	void closeLibUsb() override;
+private:
+	pthread_mutex_t _sender_lock;
+	pthread_mutex_t _receiver_lock;
+	pthread_cond_t _sender_cond;
+	pthread_cond_t _receiver_cond;
+
+	libusb_transfer* _senderTransfer;
+	libusb_transfer* _receiverTransfer;
+	pthread_t _receiverThread;
+
+};
+\end{lstlisting}
+Klasa zawiera wzbogaconą inicjalizację o alokacje transferów (wysyłającego oraz odbierającego) oraz inicjalizację mutexów.
+\newline
+Dosyć istotnym elementem jest przedstawiony w listingu \ref{lst:ThreadHelper} dodatkowy namespace ułatwiający obsługę callbacków. Znajduje się w nim zarówno obsługa wątku nasłuchującego jak i obsługa poszczególnych zdarzeń.
+\begin{lstlisting}[caption={Deklaracja klasy SynchMode},label={lst:ThreadHelper}]
+namespace ThreadHelper
+{
+	struct TransferStatus
+	{
+		time_t startTest;
+		time_t stopTest;
+		int allCompleted;
+		libusb_transfer* senderHandler;
+		libusb_transfer* receiverHandler;
+		int sendCount;
+		int receivedCount;
+		int needToBeSendReceived;
+		libusb_context* ctx;
+		int waitForSender;
+		int waitForReceiver;
+		int particularSendComplete;
+		int particularReceiveComplete;
+		pthread_mutex_t* sender_lock;
+		pthread_mutex_t* receiver_lock;
+		pthread_cond_t* sender_cond;
+		pthread_cond_t* receiver_cond;
+	};
+
+	static void LIBUSB_CALL cb_read(struct libusb_transfer *transfer)
+	{
+		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
+			std::cerr << "Reading data error!" << std::endl;
+			return ;
+		}
+		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
+		ts->receivedCount++;
+		ts->particularReceiveComplete = 1;
+	
+		pthread_mutex_lock(ts->sender_lock);
+		ts->waitForSender = 0;
+		pthread_cond_signal(ts->sender_cond);
+		pthread_mutex_unlock(ts->sender_lock);
+		if(ts->receivedCount == ts->needToBeSendReceived)
+		{
+			time(&ts->stopTest);
+			ts->allCompleted = 1;
+		}
+
+	}
+
+	static void LIBUSB_CALL cb_send(struct libusb_transfer *transfer)
+	{
+		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
+			std::cerr << "Sending data error!" << std::endl;
+			return ;
+		}
+		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
+		ts->sendCount++;
+		pthread_mutex_lock(ts->receiver_lock);
+		ts->waitForReceiver = 0;
+		ts->particularSendComplete = 1;
+		pthread_cond_signal(ts->receiver_cond);
+		pthread_mutex_unlock(ts->receiver_lock);
+
+	}
+	
+	void* receiverThread(void* arg)
+	{
+		TransferStatus* transferStatus = static_cast<TransferStatus*>(arg);
+		while(transferStatus->allCompleted != 1) 
+		{
+			pthread_mutex_lock(transferStatus->receiver_lock);
+			while(transferStatus->waitForReceiver) {
+				pthread_cond_wait(transferStatus->receiver_cond, transferStatus->receiver_lock);
+			}
+			transferStatus->waitForReceiver = 1;
+
+			pthread_mutex_unlock(transferStatus->receiver_lock);
+			transferStatus->particularReceiveComplete = 0;
+			libusb_submit_transfer(transferStatus->receiverHandler);
+			while(transferStatus->particularReceiveComplete == 0)
+				libusb_handle_events(transferStatus->ctx);
+		}
+	}
+
+}
+\end{lstlisting}
+\subsection{Metoda initProcedures oraz closeLibUsb}
+W wypadku Asynchronicznego przesyłania danych należy wykonać kilka dodatkowych operacji inicjalizacyjnych. Są to alokacje transferów oraz inicjalizacja mutexów.
+Calość widoczna w listingu \ref{AsynchMode_initProcedures}.
+\begin{lstlisting}[caption={Metoda AsynchMode::initProcedures},label={lst:AsynchMode_initProcedures}]
+void AsynchMode::initProcedures()
+{
+	Mode::initProcedures();
+	_senderTransfer = libusb_alloc_transfer(0);	
+	_receiverTransfer = libusb_alloc_transfer(0);
+	if(_senderTransfer == NULL || _receiverTransfer == NULL)
+	{
+		throw std::runtime_error("Transfer allocation Error");
+	}
+
+	if(pthread_mutex_init(&_sender_lock, NULL) != 0 || pthread_mutex_init(&_receiver_lock, NULL) != 0)
+	{
+		throw std::runtime_error("Mutex Init Failed!");
+	}
+
+}
+\end{lstlisting}
+Analogicznie sytuacja przedstawia się sytuacja w wypadku zwalniania zasobów. Dodatkową czynnością jest usunięcie mutexów oraz zwolnienie transferów. Całość dostępna w listingu \ref{lst:AsynchMode_closeLibUsb}.
+\begin{lstlisting}[caption={Metoda AsynchMode::closeLibUsb},label={lst:AsynchMode_closeLibUsb}]
+void AsynchMode::closeLibUsb()
+{
+	pthread_mutex_destroy(&_sender_lock);
+	pthread_mutex_destroy(&_receiver_lock);
+	libusb_free_transfer(_senderTransfer);
+	libusb_free_transfer(_receiverTransfer);
+	Mode::closeLibUsb();
+}
+\end{lstlisting}
+\subsection{Metoda doTest}
+Podobnie jak w wypadku Synchronicznego mechanizmu tak i teraz należy dostarczyć implementacje metody doTest(). Jej działanie jest znacznie odmienne, polega na wystartowaniu drugiego wątku nasłuchującego odpowiedzi. Całość synchronizowana jest za pomocą mutexów (listing \ref{lst:AsynchMode_doTest} oraz \ref{lst:ThreadHelper}).
+\begin{lstlisting}[caption={Metoda AsynchMode::doTest()},label={lst:AsynchMode_doTest}]
+int AsynchMode::doTest()
+{
+	unsigned char *data_out = new unsigned char[_bufforSize]; //data to write
+	unsigned char *data_in = new unsigned char[_bufforSize]; //data to read
+	generateSymulatedData(data_out, _bufforSize);
+	int howManyBytesIsSend; 
+	int howManyBytesReceived;
+	ThreadHelper::TransferStatus transferStatus;
+	transferStatus.allCompleted = 0;
+	
+	transferStatus.sendCount = 0;
+	transferStatus.receivedCount = 0;
+	transferStatus.senderHandler = _senderTransfer;
+	transferStatus.receiverHandler = _receiverTransfer;
+	transferStatus.needToBeSendReceived = _count;
+	transferStatus.ctx = _ctx;
+	transferStatus.waitForSender = 0;
+	transferStatus.waitForReceiver = 1;
+	transferStatus.sender_lock = &_sender_lock;
+	transferStatus.sender_cond = &_sender_cond;
+	transferStatus.receiver_lock = &_receiver_lock;
+	transferStatus.receiver_cond = &_receiver_cond;
+	
+	libusb_fill_bulk_transfer(_senderTransfer, _dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, ThreadHelper::cb_send, &transferStatus, 0);
+	libusb_fill_bulk_transfer(_receiverTransfer, _dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize, ThreadHelper::cb_read, &transferStatus, 0);
+
+	_timeResult = 0.0;
+	if(pthread_create(&_receiverThread, NULL, ThreadHelper::receiverThread, &transferStatus) != 0)
+	{
+		throw std::runtime_error("Error creating listener thread.");
+	}
+	
+	time(&transferStatus.startTest); 
+	for(int i = 0; i < _count; ++i)
+	{
+		pthread_mutex_lock(&_sender_lock);
+		while(transferStatus.waitForSender){
+			pthread_cond_wait(&_sender_cond, &_sender_lock);
+		}
+		transferStatus.waitForSender = 1;
+
+		pthread_mutex_unlock(&_sender_lock);
+		transferStatus.particularSendComplete = 0;
+		libusb_submit_transfer(_senderTransfer);
+		while(transferStatus.particularSendComplete == 0)
+			libusb_handle_events(_ctx);
+		
+	}
+	pthread_join(_receiverThread, NULL);
+	_timeResult = difftime(transferStatus.stopTest, transferStatus.startTest);
+	delete data_out;
+	delete data_in;
+	return 0;
+}
+
+\end{lstlisting}
+\section{implementacja pomocnicza}
+\begin{lstlisting}[caption={Klasa DebugPrinter},label={lst:CDebugPrinter}]
+class DebugPrinter
+{
+public:
+	DebugPrinter() : _enabled(true)
+	{
+	}
+	DebugPrinter(bool enabled) : _enabled(enabled)
+	{
+	}
+	
+	DebugPrinter& operator<<(const char ss[])
+	{
+		if(_enabled)
+			std::cout << ss;
+		return *this;
+	}
+	DebugPrinter& operator<<(const int& d)
+	{
+		if(_enabled)
+			std::cout << d;
+		return *this;
+	}
+	void set(bool enabled)
+	{
+		_enabled = enabled;
+	}
+
+private:
+	bool _enabled;
+};
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Makefile},label={lst:makefile}]
+libusb: Mode.o SynchMode.o AsynchMode.o Mode.hpp Mode.cpp SynchMode.hpp SynchMode.cpp AsynchMode.hpp
+	g++ -std=c++11 libusbtest2.cpp SynchMode.cpp AsynchMode.cpp Mode.cpp -o libusb -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
+
+AsynchMode.o: Mode.o Mode.hpp Mode.cpp AsynchMode.hpp AsynchMode.cpp
+	g++ -std=c++11 -c AsynchMode.cpp -o AsynchMode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
+
+SynchMode.o: Mode.o Mode.hpp Mode.cpp SynchMode.hpp SynchMode.cpp
+	g++ -std=c++11 -c SynchMode.cpp -o SynchMode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
+
+Mode.o: Mode.hpp Mode.cpp
+	g++ -std=c++11 -c Mode.cpp -o Mode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
+
+clean:
+	@rm -f *.o libusb
+\end{lstlisting}
+
+
 
 \end{document}
