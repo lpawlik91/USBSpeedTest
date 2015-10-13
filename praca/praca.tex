@@ -502,6 +502,7 @@ Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jes
 
 \end{itemize}
 \chapter{implementacja}
+\label{implementationChapter}
 Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu aby uzyskać możliwość łatwego dodawania nowych udoskonaleń.
 
 \section{Klasa Mode}
@@ -642,67 +643,6 @@ void Mode::printFinalInformation()
 	}
 }
 \end{lstlisting}
-\iffalse
-%% to bedzie na koncu
-%
-%
-\subsection{główny program synchronicznie przesyłający dane}
-Kod przedstawiony w Listingu \ref{lst:synchronicMain} doskonale ukazuje prostotę korzystania z libUSB. Użytkownik zobligowany jest do wprowadzenia wielkości bufora danych oraz ilości powtórzeń określających ile razy dany bufor zostanie wysłany do mikrokontrolera. Następnie zostaje wykonana inicjalizacja z użyciem wyżej wymienionych funkcji oraz test główny również opisany powyżej. Całość zostaje zakończona czyszczeniem zarezerwowanych zasobów. W kodzie widoczne są wszelkiego rodzaju komunikaty o błędach oraz przy inicjalizacji aby użytkownik miał świadomość jak wielkich rozmiarów test będzie wykonywany.
-\begin{lstlisting}[caption={Funkcja main()},label={lst:synchronicMain}]
-int main(int argc, char* argv[])
-{
-	if(argc < 3) 
-	{
-		std::cout << "use: libusbtest <bufforSize> <count>" << std::endl;
-		std::cout << "Note that max buffer of LandTiger is " << BUFFOR_MAX << "Bytes" << std::endl;
-		return 0; 
-	}
-	
-	int bufforSize = atoi(argv[1]);
-	if(bufforSize > BUFFOR_MAX) 
-	{
-		std::cout << "bufforSize is grather than 64B, setting 64 as default" << std::endl;
-		bufforSize = BUFFOR_MAX;
-	}
-
-	int count = atoi(argv[2]);
-
-	std::cout << "Total size to send/receive: " << bufforSize << " x " << count << " = " << bufforSize * count << " Bytes" << std::endl;
-	
-	libusb_context *ctx = getContext(); 
-	libusb_device_handle* dev_handle = getDeviceHandle(ctx);
-	if(ctx == NULL || dev_handle == NULL)
-	{
-		return 1;
-	}
-	int initStatus = proceedWithInitLibUsb(dev_handle, ctx);
-	if(initStatus != 0) 
-	{
-		std::cout << "proceedWithInitLibUsb exited with errors!" << std::endl;
-		return 1;
-	}
-	double testResult = 0.;
-	int testStatus = doTest(dev_handle, bufforSize, count, &testResult);
-	if(testStatus != 0) 
-	{
-		std::cout << "There was an error during tests!!" << std::endl;
-	}
-	else
-	{
-		std::cout << "Sending of: " << bufforSize * count << "Bytes using bufferSize=" << bufforSize << " takes " << testResult << "s." << std::endl;
-
-	}
-
-
-	if(closeLibUsb(dev_handle, ctx) != 0)
-	{
-		return 1;
-	}
-
-	return 0;
-}
-\end{lstlisting}
-\fi
 \section{Klasa SynchMode}
 Klasa SynchMode odpowiada odpowiednią konfigurację USB dla przesyłu synchronicznego. 
 
@@ -971,6 +911,78 @@ int AsynchMode::doTest()
 }
 
 \end{lstlisting}
+
+\section{Korzystanie z poszczególnych interfejsów}
+Kod przedstawiony w Listingu \ref{lst:main} doskonale ukazuje prostotę korzystania z libUSB. Użytkownik zobligowany jest do wprowadzenia wielkości bufora danych oraz ilości powtórzeń określających ile razy dany bufor zostanie wysłany do mikrokontrolera. Następnie zostaje wykonana inicjalizacja z użyciem wyżej wymienionych interfejsów (synchronicznego lub asynchronicznego na podstawie parametru).
+\begin{lstlisting}[caption={Przykład użycia interfejsu synchronicznego lub asynchronicznego w zależności od parametryzacji},label={lst:main}]
+int main(int argc, char* argv[])
+{
+	
+	if(argc < 4) 
+	{
+		std::cout << "use: " << argv[0] << " [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>" << std::endl;
+		std::cout << "First parameter tells if application should be run in Synchronous mode or Asynchronous" << std::endl;
+		std::cout << "Note that max buffer of LandTiger is " << BUFFOR_MAX << "Bytes" << std::endl;
+		return 0; 
+	}
+	bool printOnlyResult = false;
+	if(argc == 5)
+		printOnlyResult = argv[4][0] == '0' ? false : true;
+	
+	DebugPrinter debugPrinter(! printOnlyResult);
+	char selectedMode = std::toupper(argv[1][0]);
+	if(selectedMode != 'A' && selectedMode != 'S')
+	{
+		debugPrinter << "mode set is different than A or S, setting synchronous as default.\n";
+		selectedMode = 'S';
+	}
+		
+	unsigned bufforSize = atoi(argv[2]);
+	if(bufforSize > BUFFOR_MAX) 
+	{
+		debugPrinter << "bufforSize is grather than 64B, setting 64 as default\n";
+		bufforSize = BUFFOR_MAX;
+	}
+	unsigned fullDataSize = atoi(argv[3]);
+	unsigned count = fullDataSize/bufforSize;
+	if(fullDataSize % bufforSize != 0)
+	{
+		debugPrinter << "It is impossible to send " << fullDataSize << "B using " << bufforSize << "B, to simplify application work sending " << (++count) * bufforSize << "B\n";
+	}
+	
+
+	debugPrinter << "Total size to send/receive: " << bufforSize << " x " << count << " = " << bufforSize * count << " Bytes\n";
+	try 
+	{
+		std::unique_ptr<Mode> mode;
+
+		if(selectedMode == 'A')
+			mode.reset(new AsynchMode(bufforSize, count, LAND_TIGER_VID, LAND_TIGER_PID, printOnlyResult));
+		else 
+			mode.reset(new SynchMode(bufforSize, count, LAND_TIGER_VID, LAND_TIGER_PID, printOnlyResult));
+		mode->initProcedures();
+		mode->doTest();
+		mode->printFinalInformation();
+		mode->closeLibUsb();
+	} catch (std::runtime_error& e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+
+	return 0;
+}
+
+\end{lstlisting}
+\subsection{Parametryzacja}
+\begin{lstlisting}[caption={uruchomienie testu},label={lst:main}]
+use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
+\end{lstlisting}
+\begin{itemize}
+\item S/A - należy wybrać czy chcemy wykonać test w trybie Synchronicznym czy Asynchronicznym
+\item bufforSize - rozmiar bufforu danych jaki chcemy przeznaczyć dla jednej paczki danych [B]
+\item fullDataSize - całkowity rozmiar danych do wysłania [B]
+\item printOnlyResult - opcjonalny parametr w wypadku ustawienia na wartość '1' pozwala na łatwe zebranie wyników bez zbędnych informacyjnych wiadomości (same dane). 
+\end{itemize}
 \section{implementacja pomocnicza}
 \begin{lstlisting}[caption={Klasa DebugPrinter},label={lst:CDebugPrinter}]
 class DebugPrinter
@@ -1021,6 +1033,89 @@ Mode.o: Mode.hpp Mode.cpp
 clean:
 	@rm -f *.o libusb
 \end{lstlisting}
+
+\chapter{Wyniki symulacji}
+\label{resultsChapter}
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_107374200Send}
+\caption{TODO S\_107374200Send.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_107374200Receive}
+\caption{TODO S\_107374200Receive.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_107374200SendReceive}
+\caption{TODO S\_107374200SendReceive.jpg}
+\end{figure}
+
+%%%%%%
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_10737420Send}
+\caption{TODO S\_10737420Send.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_10737420Receive}
+\caption{TODO S\_10737420Receive.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/S_10737420SendReceive}
+\caption{TODO S\_10737420SendReceive.jpg}
+\end{figure}
+
+%%%%% Asynch
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_107374200Send}
+\caption{TODO A\_107374200Send.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_107374200Receive}
+\caption{TODO A\_107374200Receive.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_107374200SendReceive}
+\caption{TODO A\_107374200SendReceive.jpg}
+\end{figure}
+
+%%%%%%
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_10737420Send}
+\caption{TODO A\_10737420Send.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_10737420Receive}
+\caption{TODO A\_10737420Receive.jpg}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics{./img/A_10737420SendReceive}
+\caption{TODO A\_10737420SendReceive.jpg}
+\end{figure}
+
+%%%%%
+
 
 
 
