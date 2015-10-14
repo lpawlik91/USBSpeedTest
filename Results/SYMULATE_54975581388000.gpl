@@ -1,0 +1,16 @@
+fileBase="SYMULATE_54975581388000"
+send = "Send"
+receive="Receive"
+sendReceive="SendReceive"
+dataExt=".data"
+jpgExt=".jpg"
+
+fileInput=fileBase.dataExt
+fileOutput=fileBase.jpgExt
+
+set terminal jpeg 
+set output fileOutput
+set xlabel "buffor [B]"
+set ylabel "predkość [B/s]"
+plot[151583:2684354] fileInput using 1:7 notitle with lines
+
