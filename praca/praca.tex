@@ -131,23 +131,24 @@ Ocena końcowa pracy przez Recenzenta:
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 \chapter{Wstęp}
-\label{chap1}
+\label{beginChapter}
 \pagestyle{fancy}
-%Celem niniejszego dokumentu jest ogólne scharakteryzowanie zalet biblioteki libUSB na podstawie <TBD>
-Celem niniejszej pracy jest doświadczalne sprawdzenie czy możliwe jest uzyskanie prędkości większej bądź równej 140MBit/s czyli 17,5 MB/s.
+Celem niniejszej pracy jest(było) uzyskanie możliwie największej prędkości przesyłu danych pomiędzy urządzeniem zewnętrznym a komputerem osobistym w obu kierunkach z użyciem najpopularniejszego w dzisiejszych czasach interfejsu którym jest USB. Rozwój technologi zwłaszcza w zakresie elektroniki w przeciągu minionego ćwierćwiecza jest imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza nasze najśmielsze oczekiwania z przed kilku lat. Jedną bardzo progresywną dziedzina na przestrzeni lat jest rozwój standardu i technologii USB. Więcej informacji historycznych na ten temat znajduje się w rozdziale \ref{USBStandardChapter}, natomiast projekt doskonale obrazuje zachowania interfejsu w trybie Synchronicznym i Asynchronicznym.
 \newline
-W dokumencie zawarty jest prosty i zrozumiały opis, obrazujący różnice pomiędzy standardami USB. Znajduje się wprowadzenie do bibliotek umożliwiających korzystanie z API przygotowanego dla deweloperów chcących w łatwy i przystępny sposób korzystać z udogodnień portów USB.
+\indent Dokument został podzielony na rozdziały, w każdym z nich następuje krótka charakterystyka danego zagadnienia. W rozdziale \ref{USBStandardChapter} został opisany standard USB w kontekście sprzętowym jak i oprogramowania.
 \newline
-W rozdziale "\nameref{USBStandardChapter}" znajduje się dokładny opis standardów USB jakie do dnia dzisiejszego zostały opracowane. 
-Rozdział doskonale obrazuje różnice jakie z biegiem lat uwydatniły się, jak i chęć udoskonalenia standardu wpłynęła na jego dalszy rozwój.
+\indent Opis bibliotek znajduje się w rozdziale \ref{librariesChapter}. Zawiera on opis dwóch bibliotek związanych z USB: libUSB oraz winUSB. Dla pierwszej z nich istnieje możliwość użycia zarówno pod systemem Windows jak i pod systemem Unix, natomiast użycie drugiej z nich możliwe jest tylko pod systemami Unixowymi.
 \newline
-W rozdziale "\nameref{librariesChapter}" przedstawiony został opis palety bibliotek które umożliwiają łatwy i szybki dostęp do portu USB. Najważniejsze z bibliotek zostały opisane w późniejszych rozdziałach.
+\indent W kolejnym rozdziale znajduje się charakterystyka poszczególnych funkcji biblioteki libUSB użytej w projekcie. Rozdział \ref{libUsbChapter} opisuje szczegółowo warunki użycia danej funkcji, wraz z zwracanym wartościami. 
 \newline
-W rozdziale "\nameref{libUsbChapter}" przedstawiony został dokładny opis wybranych funkcji biblioteki libUSB. 
+\indent Rozdział \ref{microcontrollerChapter} zawiera krótki opis mikrokontrolera użytego w projekcie. Zawiera on również rysunek poglądowy opisujący poszczególne elementy mikrokontrolera w tym ważne z punktu widzenia projektu.
 \newline
-W rozdziale "\nameref{microcontrollerChapter}" został przedstawiony dokładnie opis mikrokontrolera LandTiger LPC1768 na którym wykonane zostały testy i zostały zebrane dane potrzebne do tej pracy.
+\indent Charakterystyka synchronicznego przesyłu danych znajduje się w \ref{synchronicChapter}. Zawiera on zarówno zalety jak i wady tego sposobu przesyłu danych.
 \newline
-<TBD>
+\indent Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Rozdział opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
+\newline
+\indent Opis wyników został zawarty w rozdziale \ref{resultsChapter}. Jest to rozdział który prowadzi do trwałych wniosków.
+
 
 \chapter{USB}
 \label{USBStandardChapter}
@@ -176,7 +177,8 @@ Pierwszy układ scalony wspierający USB został wyprodukowany przez Intel 1995r
 \newline
 
 \subsection{USB1.x}
-Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych.
+Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. %todo: to zdanie nie ma sensu 
+Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych.
 \subsection{USB2.0}
 USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
 
@@ -489,6 +491,7 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \end{enumerate}
 
 \chapter{Synchroniczne przesyłanie danych}
+\label{synchronicChapter}
 Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jest wykorzystanie synchronicznych możliwości przesyłu danych z wykorzystaniem libUSB.
 
 \section{zalety}
@@ -1033,13 +1036,20 @@ Mode.o: Mode.hpp Mode.cpp
 clean:
 	@rm -f *.o libusb
 \end{lstlisting}
-
 \chapter{Wyniki symulacji}
 \label{resultsChapter}
+Testy zostały przeprowadzone z użyciem prostej aplikacji w dwóch trybach: synchronicznym i asynchronicznym. Przedstawione poniżej wyniki wraz z krótką interpretacją przekazują zarys doświadczenia. Celem pracy było uzyskanie prędkości nie mniejszej niż 140 MBit/s co jest równe 17,5 MB/s.
+\newline
+\indent Niestety okazało się iż mikrokontroler LandTiger pomimo wlutowanego gniazda USB2.0 nie jest w stanie obsłużyć tego standardu. Powodem tego jest to iż chip na płytce jest w stanie obsłużyć tylko standard USB1.1.
+\newline
+\indent Powodem dla którego mikrokontroler działa pomimo obsługi USB1.1 jest to że wlutowane gniazdo ustandaryzowane jako USB2.0 jest wstecznie kompatybilne (więcej informacji w rozdziale \ref{USBStandardChapter}).
+\newline
+\indent Zebrane wyniki możemy skategoryzować według: ilości przesłanych danych, szybkości przesyłu danych z komputera osobistego do kontrolera, szybkości przesyłu danych z kontrolera do komputera osobistego, szybkości przesyłu w obie strony. Kluczowym elementem jest tutaj wielkość buffora, czyli ilości danych możliwych do wysłania/odebrania w jednym tiku zegara. Niestety w wypadku USB1.1 jest to 64B (z powodu ograniczeń na chipie płytki). Większość wyników została wygenerowana za pomocą programu który nie pozwalał na przekroczenie dopuszczalnego przez LandTiger'a bufforu (tak jak w przypadku Rys. \ref{fig:S_107374200Send})
 \begin{figure}[h]
 \centering
 \includegraphics{./img/S_107374200Send}
 \caption{TODO S\_107374200Send.jpg}
+\label{fig:S_107374200Send}
 \end{figure}
 
 \begin{figure}[h]
