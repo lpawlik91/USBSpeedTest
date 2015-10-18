@@ -1052,7 +1052,7 @@ Testy zostały przeprowadzone z użyciem prostej aplikacji w dwóch trybach: syn
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/S_107374200Send}
-\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB (tryb synchroniczny)}
 \label{fig:S_107374200Send}
 %\end{figure}
 }
@@ -1062,12 +1062,13 @@ Na Rys. \ref{fig:S_107374200Send} widoczny jest wyraźny wzrost szybkości wysy�
 \begin{figure}[h]
 {
 \centering
-\includegraphics[width=0.75\textwidth]{./img/S_107374200Receive}
-\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~102 MB}
+\includegraphics[width=0.7\textwidth]{./img/S_107374200Receive}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~102 MB (tryb synchroniczny)}
 \label{fig:S_107374200Receive}
 %\end{figure}
 }
 \end{figure}
+\newline
 Analogiczny wykres widoczny jest dla prędkości odbierania danych (Rys. \ref{fig:S_107374200Receive}), różnice są niezauważalne przy tak małej ilości danych.
 %44\begin{figure}[htpb]
 
@@ -1084,25 +1085,26 @@ Analogiczny wykres widoczny jest dla prędkości odbierania danych (Rys. \ref{fi
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.75\textwidth]{./img/S_10737420Send}
-\caption{TODO S\_10737420Send.jpg}
+\includegraphics[width=0.7\textwidth]{./img/S_10737420Send}
+\caption{Wykres ilustrujący prędkość wysłania danych w zależności od buffora dla ~10 MB (tryb synchroniczny)}
 %\end{figure}
 \label{fig:S_10737420Send}
 }
 \end{figure}
 
-W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}. Wykres nie jest już liniowy a prędkość zdaje się być na bardziej nieterministyczną.
+W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}. Wykres nie jest już liniowy a prędkość zdaje się być na bardziej niedeterministyczna.
 
 \begin{figure}[H]
 {
 \centering
 \includegraphics{./img/S_10737420Receive}
-\caption{TODO S\_10737420Receive.jpg}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~10 MB (tryb synchroniczny)}
 \label{fig:S_10737420Receive}
 %\end{figure}
 }
 \end{figure}
 Podobnie jak w poprzednim przypadku (dla większej ilości danych), wykres prędkości odbierania danych pokrywa się z wykresem prędkości wysyłania danych (Rys. \ref{fig:S_10737420Receive}).
+
 %\begin{figure}[H]
 %{
 %\centering
@@ -1113,32 +1115,32 @@ Podobnie jak w poprzednim przypadku (dla większej ilości danych), wykres pręd
 Podsumowując synchroniczne wysyłanie danych nie należy do najbardziej efektywnych metod. Każda operacja zwraca status i ten status musi być weryfikowany aby zlokalizować ewentualny błąd.
 %%%%% Asynch
 \newline
+
 Zupełnie innym podejściem charakteryzuje się metoda Asynchroniczna w której korzysta się z nie blokujących metod. Tutaj inną przeszkodą jest to aby to programista zadbał o synchronizacje (ponieważ po łączu w jednym czasie mogą przebiegać dane tylko w jedną stronę). Dzięki tej metodzie istnieje możliwość uzyskania lepszych (szybszych) wyników.
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.75\textwidth]{./img/A_107374200Send}
-\caption{TODO A\_107374200Send.jpg}
-%\end{figure}
+\includegraphics[width=0.72\textwidth]{./img/A_107374200Send}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB (tryb Asynchroniczny)}
+\label{fig:A_107374200Send}
 }
-%\begin{figure}[h]
+
 \end{figure}
+
+Jak widac na Rys. \ref{fig:A_107374200Send} zależność liniowa również występuje dla tej ilości danych orzy przesyle asynchronicznym, podobnie jak w przypadku przesyłu synchronicznego (Rys. \ref{fig:S_107374200Send}).
+
+
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.75\textwidth]{./img/A_107374200Receive}
-\caption{TODO A\_107374200Receive.jpg}
-%\end{figure}
+\includegraphics[width=0.72\textwidth]{./img/A_107374200Receive}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~102 MB (tryb Asynchroniczny}
+\label{fig:A_107374200Receive}
 }
 \end{figure}
+Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 MB) metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a wyniki są bardzo zbliżone do siebie.
 
-%\begin{figure}[H]
-%{
-%\centering
-%\includegraphics[width=0.75\textwidth]{./img/A_107374200SendReceive}
-%\caption{TODO A\_107374200SendReceive.jpg}
-%\end{figure}
-%}
+
 
 %%%%%%
 
@@ -1147,27 +1149,21 @@ Zupełnie innym podejściem charakteryzuje się metoda Asynchroniczna w której 
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Send}
 \caption{TODO A\_10737420Send.jpg}
-%\end{figure}
+\label{fig:A_10737420Send}
 }
 \end{figure}
+
+Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest brak liniowości takiego wykresu (zarówno dla Rys. \ref{fig:A_10737420Send} jak i Rys. \ref{fig:A_10737420Receive}).
 \begin{figure}[H]
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Receive}
 \caption{TODO A\_10737420Receive.jpg}
-%\end{figure}
+\label{fig:A_10737420Receive}
 }
 \end{figure}
-%\begin{figure}[h]
-%{
-%\centering
-%\includegraphics[width=0.75\textwidth]{./img/A_10737420SendReceive}
-%\caption{TODO A\_10737420SendReceive.jpg}
-%\end{figure}
-%}
-%\end{figure}
-%%%%%
 
+Podsumowując użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie jest nawet zbliżona do prędkości porządanej (140 MB/s) bez względu czy korzystaliśmy z synchronicznej metody czy asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B  pozostałem testy oparte są na zasymulowanych danych. 
 
 
 

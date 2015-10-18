@@ -12,5 +12,5 @@ set terminal jpeg
 set output fileOutput
 set xlabel "buffor [B]"
 set ylabel "predkość [B/s]"
-plot[151583:2684354] fileInput using 1:7 notitle with lines
+plot[151583:2684354] fileInput using 1:8 notitle with lines
 
