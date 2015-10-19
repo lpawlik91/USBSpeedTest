@@ -253,14 +253,10 @@ Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jes
 MTP jest częścią frameworku "Windows Media" blisko związanym z odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
 
 Twórcy standardu USB ustandaryzowali MTP jako pełnoprawną klasę dla urządzeń USB w maju 2008r.
-Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. %//[odnosnik] odnosnik.
+Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. 
+\newline
 
-
-
-\section{porównanie libUSB oraz winUSB}
-
-\newpage
-
+W projekcie została użyta biblioteka libUSB. Głównym powodem była możliwość kompilacji programów zarówno pod systemami Unix jak i z rodziny Microsoft Windows bez jakichkolwiek (lub znikomych) zmian w kodzie.
 \chapter{libUSB API}
 \label{libUsbChapter}
 
@@ -492,6 +488,8 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \item brak wsparcia dla 4 diód typu LED (istnieje możliwość użycia inncyh).
 \end{enumerate}
 
+\iffalse
+%% not inluded into pdf right now
 \chapter{Synchroniczne przesyłanie danych}
 \label{synchronicChapter}
 Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jest wykorzystanie synchronicznych możliwości przesyłu danych z wykorzystaniem libUSB.
@@ -506,6 +504,10 @@ Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jes
 \item możliwości prędkości są mocno ograniczone poprzez funkcje blokujące
 
 \end{itemize}
+
+\fi
+
+
 \chapter{implementacja}
 \label{implementationChapter}
 Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu aby uzyskać możliwość łatwego dodawania nowych udoskonaleń.
@@ -1148,7 +1150,7 @@ Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 M
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Send}
-\caption{TODO A\_10737420Send.jpg}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~10 MB (tryb asynchroniczny)}
 \label{fig:A_10737420Send}
 }
 \end{figure}
@@ -1158,13 +1160,57 @@ Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest bra
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Receive}
-\caption{TODO A\_10737420Receive.jpg}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~10 MB (tryb asynchroniczny)}
 \label{fig:A_10737420Receive}
 }
 \end{figure}
 
 Podsumowując użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie jest nawet zbliżona do prędkości porządanej (140 MB/s) bez względu czy korzystaliśmy z synchronicznej metody czy asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B  pozostałem testy oparte są na zasymulowanych danych. 
+\newline
 
+Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora danych ale została wykonana bez poprawnego odbioru danych po stronie kontrolera. Oznacza to że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
+
+\begin{figure}[H]
+{
+\centering
+\includegraphics[width=1\textwidth]{./img/S_bbuf1}
+\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z użyciem bufora z przedziału 16 B - 4 kB}
+\label{fig:S_bbuf1}
+}
+\end{figure}
+
+Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu poprawnego odbioru danych po stronie kontrolera. Zależność liniowa całkowicie zaniknęła. Wartości rozmiaru bufora danych jest podwajana z każdym zgięciem krzywej (początkowa wartość 16 B, końcowa 4096 B = 4 kB), a więc rozbieżność przesyłu danych jest duża. Warto zauważyć iż pomimo dość dużego bufora danych prędkość nie przekroczyła 1 MB/s (max wartość 905,702 kB/s).
+\begin{figure}[H]
+{
+\centering
+\includegraphics[width=1\textwidth]{./img/S_bbuf2}
+\caption{todo:S\_bbuf2}
+\label{fig:S_bbuf2}
+}
+\end{figure}
+
+Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Dla tego przypadku został użyty bufor o wartości minimalnej równe 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku jest podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
+\newline
+
+Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera).
+
+
+\chapter{Podsumowanie}
+\label{ConclusionChapter}
+Celem projektu było uzyskanie jak największej prędkości przesyłu danych po interfejsie USB. Na wstępie zamieszczone zostało krótkie wprowadzenie odnośnie dostępnych standardów USB oraz ich zarysowi historycznemu. Kolejnym krokiem był dwóch najbardziej popularnych bibliotek do obsługi interfejsu USB (libUSB oraz winUSB). W rozdziale został zawarty krótki opis najważniejszych aspektów bibliotek wraz z uzasadnieniem wyboru libUSB jako tej używanej w projekcie.
+
+Dosyć ważną część odgrywa opis API biblioteki libUsb. Znajduje się w nim dość obszerny opis poszczególnych funkcji użytych w projekcie. Jest to kluczowe aby zrozumieć późniejszą implementację.
+
+W kolejnym rozdziale został przedstawiony mikrokontroler użyty w projekcie, wraz z dokładnym opisem dostępnych funkcjonalności (nie tylko tych użytych w projekcie). Jak okazuję się w kolejnych rozdziałach brakuje mu kluczowej funkcjonalności z punktu widzenia projektu a mianowicie obsługi standardu USB2.0.
+
+Jednym z najważniejszych rozdziałów jest rozdział opisujący sposób implementacji projektu wraz z załączonym kodem źródłowym. Przedstawiony został tam sposób łatwego wywoływania testu oraz opis krok po kroku co zostaje wykonane przed uzyskaniem rezultatu. Zostaje też przedstawiony łatwy sposób rozszerzalności o kolejne klasy implementujące nowy rodzaj testu.
+\newline
+
+Rozdział obrazujący rezultaty testów jest najważniejszym w projekcie. Wnioski z wyników nie należą do pozytywnych. Z powodu ograniczeń na mikrokontrolerze w tym ograniczenie obsługi na chipie do standardu USB1.1 (pomimo wlutowanego złącza USB2.0) nie udało się uzyskać minimalnej wymaganej w projekcie prędkości przesyłania danych (17,5 MB/s). Nawet pomimo zasymulowania większego bufora danych (bez poprawnej obsługi odbioru danych po stronie mikrokontrolera w którym zaniechano weryfikacji odebranych danych z powodu niemożności obsługi tak dużego buforu danych).
+
+Warto zaznaczyć, że nie oznacza to iż uzyskanie docelowej prędkości z wykorzystaniem standardu USB2.0 jest nie możliwe (oczywiście z wykorzystaniem innego mikrokontrolera). Standard USB2.0 dopuszcza wielkość bufora 1024 B a co za tym idzie porównując to do obecnej wielkości uzyskamy 16 razy większą.
+
+Na podstawie otrzymanych wyników uzyskanych z wykorzystaniem standardu USB1.1 możemy założyć iż prędkość przesyłu danych z wykorzystaniem USB2.0 oscylowała by w granicach 16 MB/s. Wartość ta jest zależna od odpowiedniej konfiguracji więc możemy dodatkowo przyjąć prędkość 17,5 MB/s jest jak najbardziej osiągalna.
 
 
 \end{document}
