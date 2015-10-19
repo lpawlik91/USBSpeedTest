@@ -1,0 +1,16 @@
+fileBase="S_bbuf2"
+#send = "Send"
+#receive="Receive"
+#sendReceive="SendReceive"
+dataExt=".data"
+jpgExt=".jpg"
+
+fileInput=fileBase.dataExt
+fileOutput=fileBase.jpgExt
+
+set terminal jpeg 
+set output fileOutput
+set xlabel "buffor [B]"
+set ylabel "predkość [kB/s]"
+plot[128:131072] fileInput using 1:4 notitle with lines
+
