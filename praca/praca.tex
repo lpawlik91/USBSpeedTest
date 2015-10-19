@@ -134,33 +134,28 @@ Ocena końcowa pracy przez Recenzenta:
 \label{beginChapter}
 \pagestyle{fancy}
 Rozwój technologi, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. 
-Celem niniejszej pracy było uzyskanie możliwie największej prędkości przesyłu danych
-pomiędzy urządzeniem zewnętrznym a komputerem osobistym w obu kierunkach, z wykorzystaniem wspomnianego interfejsu. W pracy przedstawiono najważniejsze fakty historyczne dotyczące standardu USB (zawarte w \ref{USBStandardChapter}, a także scharakteryzowano zachowania interfejsu w dwóch istotnych trybach: synchronicznym oraz asynchronicznym. Kolejne rozdziały zawierają opis standardu USB, rozpatrywanego w kontekście sprzętowym i oprogramowania.
-\newline
-\indent Rozdział 3 posłużył do opisu zastosowanych bibliotek USB, do których między innymi należą: libUSB oraz winUSB. Obie z nich służą do komunikacji z urządzeniami z portami USB. Pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix natomiast użycie drugiej z niemożliwe jest tylko pod systemami Windows.
-\newline
-\indent Rozdział \ref{librariesChapter}. Zawiera on opis dwóch bibliotek związanych z USB: libUSB oraz winUSB. Dla pierwszej z nich istnieje możliwość użycia zarówno pod systemem Windows jak i pod systemem Unix, natomiast użycie drugiej z nich możliwe jest tylko pod systemami Unixowymi.
-\newline
-\indent W kolejnym rozdziale znajduje się charakterystyka poszczególnych funkcji biblioteki libUSB użytej w projekcie. Rozdział \ref{libUsbChapter} opisuje szczegółowo warunki użycia danej funkcji, wraz z zwracanym wartościami. 
-\newline
-\indent Rozdział \ref{microcontrollerChapter} zawiera krótki opis mikrokontrolera użytego w projekcie. Zawiera on również rysunek poglądowy opisujący poszczególne elementy mikrokontrolera w tym ważne z punktu widzenia projektu.
-\newline
-\indent Charakterystyka synchronicznego przesyłu danych znajduje się w \ref{synchronicChapter}. Zawiera on zarówno zalety jak i wady tego sposobu przesyłu danych.
-\newline
-\indent Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Rozdział opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
-\newline
-\indent Opis wyników został zawarty w rozdziale \ref{resultsChapter}. Jest to rozdział który prowadzi do trwałych wniosków.
 
+Celem niniejszej pracy było uzyskanie możliwie największej prędkości przesyłu danych pomiędzy urządzeniem zewnętrznym a komputerem osobistym w obu kierunkach, z wykorzystaniem wspomnianego interfejsu. 
+
+W pracy przedstawiono najważniejsze fakty historyczne dotyczące standardu USB (zawarte w rozdziale \ref{USBStandardChapter}, a także scharakteryzowano zachowania interfejsu w dwóch istotnych trybach: synchronicznym oraz asynchronicznym. Kolejne rozdziały zawierają opis standardu USB, rozpatrywanego w kontekście sprzętowym i oprogramowania.
+
+Rozdział \ref{librariesChapter} posłużył do opisu zastosowanych bibliotek USB, do których między innymi należą: libUSB oraz winUSB. Obie z nich służą do komunikacji z urządzeniami z portami USB. Pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix natomiast użycie drugiej z nich możliwe jest tylko pod systemami Windows.
+
+W kolejnym rozdziale znajduje się charakterystyka poszczególnych funkcji biblioteki libUSB użytej w projekcie. Rozdział \ref{libUsbChapter} opisuje szczegółowo warunki użycia danej funkcji, wraz z zwracanym wartościami. 
+
+Rozdział \ref{microcontrollerChapter} stanowi krótki opis mikrokontrolera użytego w projekcie. Zawiera on również rysunek poglądowy opisujący poszczególne elementy mikrokontrolera w tym ważne z punktu widzenia projektu.
+
+Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
+
+Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{resultsChapter}. Zawiera on zestawienie i interpretację otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
 
 \chapter{USB}
 \label{USBStandardChapter}
-Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym.
-\newline
-USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.
+Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym. USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.
 \newline
 USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia zasilające elektroniczne urządzenia.
 \section{Złącza}
-Istnieją trzy podstawowe wielkości złączy USB. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych).
+Istnieją trzy podstawowe rodzaje złączy USB dla których kryterium podziału stanowi wielkość. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych).
 \newline
 W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). 
 
