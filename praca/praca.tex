@@ -151,13 +151,13 @@ Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{result
 
 \chapter{USB}
 \label{USBStandardChapter}
-Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym. USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.
+Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym. USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.\cite{USBSystemArch, USB20Doc, USB30Doc}
 \newline
 USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia zasilające elektroniczne urządzenia.
 \section{Złącza}
-Istnieją trzy podstawowe rodzaje złączy USB dla których kryterium podziału stanowi wielkość. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych).
+Istnieją trzy podstawowe rodzaje złączy USB dla których kryterium podziału stanowi wielkość. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych). 
 \newline
-W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). 
+W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc}
 
 \begin{figure}[h]
 \centering
@@ -175,7 +175,8 @@ Pierwszy układ scalony wspierający USB został wyprodukowany przez Intel 1995r
 
 \subsection{USB1.x}
 Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. %todo: to zdanie nie ma sensu 
-Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych.
+Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych. \cite{USBSystemArch}
+
 \subsection{USB2.0}
 USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
 
@@ -186,6 +187,7 @@ Przykłady ECNow:
 \newline
 Złącze Mini-A oraz Mini-B: wydane w październiku 2000r.
 \newline
+\cite{USB20Doc}
 
 
 \subsection{USB3.0}
@@ -199,14 +201,14 @@ Nowa magistrala "SuperSpeed" dostarcza czwarty typ transferu z możliwością pr
 Podobnie jak w poprzednich wersjach standardu, porty USB3.0 działają dwóch wariantach zasilania: niskiego poboru mocy (low-power: 150mA) oraz wysokiego poboru mocy (high-power: 900mA). Zapewniając odpowiedni jednocześnie pozwalają na przesył danych z prędkością SuperSpeed.
 \newline
 Została dodatkowo zdefiniowana specyfikacja zasilania (w wersji 1.2 wydana w w grudniu 2010r.) która zwiększała dopuszczalny pobór mocy do 1,5A, ale nie pozwala na współbieżne przesyłanie danych. Specyfikacja wymaga aby fizyczne porty same w sobie były wstanie obsłużyć 5A, ale ogranicza pobór do 1,5 A.
-
+\cite{USB30Doc}
 \subsection{USB3.1}
 W styczniu 2013r. w prasie pojawiły się informacje o planach udoskonalenia standardu USB3.0 do 10Gbit/s. Zakończyło się to stworzeniem nowej wersji standardu - USB3.1. Wersja ta została wydana 31 lipca 2013r. wprowadzając szybszy typ przesyłania danych zwany "SuperSpeed USB 10 Gbit/s". Zaprezentowano również nowe logo stylizowane na zasadzie "Superspeed+". Standard USB3.1 zwiększył szybkość przesyłu sygnału do 10Gbit/s. Udało się też zredukować obciążenie łącza do 3\% dzięki zmianie kodowania na 128b/132b.
 \newline
 Przy pierwszych testach prędkośi USB3.1 udało się uzyskać prędkość 7,2Gbit/s.
 \newline
 Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
-
+\cite{USB30Doc}
 
 \chapter{Biblioteki}
 \label{librariesChapter}
@@ -229,13 +231,13 @@ Funkcjonalność biblioteki:
 \item 2 interfejsy
 \begin{enumerate}
 \item synchroniczny (prosty)
-\item asynchroniczny (bardziej złożony ale bardziej efektywny)
+\item asynchroniczny (bardziej złożony)
 \end{enumerate}
 \item stosowanie wątków jest bezpieczne
 \item lekka biblioteka z prostym API
 \item kompatybilna wstecznie (do wersji libUSB-0.1)
 \end{enumerate}
-
+(informacje uzyskane dzięki \cite{libusbDesc})
 \section{winUSB}
 
 Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów które potrzebują szybkiego i bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z portami USB z poziomu user-mode. W Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
@@ -248,13 +250,15 @@ Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jes
 MTP jest częścią frameworku "Windows Media" blisko związanym z odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
 
 Twórcy standardu USB ustandaryzowali MTP jako pełnoprawną klasę dla urządzeń USB w maju 2008r.
-Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. 
+Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. \cite{winusbDesc, micrDevAppUSBDev, micrAccUsbDev, micCommWithUsb}
 \newline
 
+\section{Wybór}
 W projekcie została użyta biblioteka libUSB. Głównym powodem była możliwość kompilacji programów zarówno pod systemami Unix jak i z rodziny Microsoft Windows bez jakichkolwiek (lub znikomych) zmian w kodzie.
+
 \chapter{libUSB API}
 \label{libUsbChapter}
-
+Rozdział dokumentujący API używane w projekcie. \cite{libusbDoc}
 \section{najważniejsze struktury}
 \subsection{libusb\_context}
 libusb\_context jest strukturą reprezentującą sesję libusb.
@@ -436,7 +440,7 @@ Parametrem funkcji jest wskaźnik do transferu do zwolnienia.
 \caption{Mikrokontroler LandTiger wraz z wyświetlaczem}
 \end{figure}
 
-Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę PowerMCU i można ją zakupić od wielu dostawców na eBay lub innych serwisach świadczących usługi zakupów przez internet. Średni koszt waha się w granicach \$70 za płytkę wraz z wyświetlaczem LCD 3,2 cala o rozdzielczości 320x240 pikseli, z zasilaczem oraz zestawem kabli.
+Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę PowerMCU i można ją zakupić od wielu dostawców na eBay lub innych serwisach świadczących usługi zakupów przez internet. Średni koszt waha się w granicach \$70 za płytkę wraz z wyświetlaczem LCD 3,2 cala o rozdzielczości 320x240 pikseli, z zasilaczem oraz zestawem kabli. \cite{landtigerDesc}
 \newline
 Funkcjonalności:
 \begin{enumerate} [label=(\alph*)]
@@ -976,7 +980,7 @@ int main(int argc, char* argv[])
 
 \end{lstlisting}
 \subsection{Parametryzacja}
-\begin{lstlisting}[caption={uruchomienie testu},label={lst:main}]
+\begin{lstlisting}[caption={uruchomienie testu}]
 use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \end{lstlisting}
 \begin{itemize}
@@ -985,7 +989,35 @@ use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \item fullDataSize - całkowity rozmiar danych do wysłania [B]
 \item printOnlyResult - opcjonalny parametr w wypadku ustawienia na wartość '1' pozwala na łatwe zebranie wyników bez zbędnych informacyjnych wiadomości (same dane). 
 \end{itemize}
+\section{embedded code}
+Po stronie mikrokontrolera LandTiger konieczne było zaimplementowanie prostego stuba mającego za zadanie krótkie potwierdzenie odebrania wiadomości (jako reakcja na zdarzenie) lub wykonanie akcji na kontrolerze. Poniższy listing zawiera przykładowy kod wysyłający jako potwierdzenie otrzymane dane (niestety aby nie wystąpił w wypadku większej ilości przysłanych danych, wysyłana jest zawartość ograniczona do 64 B). \cite{embeddedC, embeddedSystems, bootstrapLinUSB}
+\begin{lstlisting}[caption={Funkcja USB\_Receiver\_Sender},label={lst:FUSBSenderReceiver}]
+void USB_Receiver_Sender()
+{
+	static char serBuf [USB_CDC_BUFSIZE];
+	int  numBytesToRead, numBytesRead, numAvailByte;
+
+	USB_Init();
+	USB_Connect(TRUE);                        // USB Connect
+	while (!USB_Configuration) ;              // wait until USB is configured
+	while(1)
+	{
+		CDC_OutBufAvailChar (&numAvailByte);
+		if (numAvailByte > 0)
+		{
+		  	numBytesToRead = numAvailByte > MAX_TEMP_BUFFOR ? MAX_TEMP_BUFFOR : numAvailByte;
+		    numBytesRead = CDC_RdOutBuf (&serBuf[0], &numBytesToRead);
+		    USB_WriteEP (CDC_DEP_IN, (unsigned char *)&serBuf[0], numBytesRead);
+		}
+	}
+
+}
+\end{lstlisting}
+
 \section{implementacja pomocnicza}
+
+Do implementacji pomocniczej należy klasa ułatwiająca wywoływanie aplikacji celem zebrania wyników. Prosta klasa posiadająca przeładowany operator dodawania do strumienia danych. W wypadku naszego projektu, dla normalnego działania aplikacji operator pozwala na wypisanie dowolnych danych, ale w wypadku włączenia zbierania danych w postaci kolumnowej ta klasa nie pozwoli na to.
+
 \begin{lstlisting}[caption={Klasa DebugPrinter},label={lst:CDebugPrinter}]
 class DebugPrinter
 {
@@ -1018,7 +1050,19 @@ private:
 	bool _enabled;
 };
 \end{lstlisting}
-
+W wypadku wywołania aplikacji:
+\begin{lstlisting}[caption={Uruchomienie testu}]
+use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
+\end{lstlisting}
+bez ostatniego argumentu, w wypadku wykonania tego fragmentu kodu: 
+\begin{lstlisting}[caption={Wypisywanie w zależności od argumentu wywołania aplikacji}]
+debugPrinter << "It is impossible to send " << fullDataSize << "B using " << bufforSize << "B, to simplify application work sending " << (++count) * bufforSize << "B\n";
+\end{lstlisting}
+aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter} zablokuje wypisywanie tekstu. \\
+Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
+\newline
+\newline
+Poniżej (listing \ref{lst:makefile} został przedstawiony prosty makefile używany przy kompilacji pod system Unix.
 \begin{lstlisting}[caption={Makefile},label={lst:makefile}]
 libusb: Mode.o SynchMode.o AsynchMode.o Mode.hpp Mode.cpp SynchMode.hpp SynchMode.cpp AsynchMode.hpp
 	g++ -std=c++11 libusbtest2.cpp SynchMode.cpp AsynchMode.cpp Mode.cpp -o libusb -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
@@ -1196,7 +1240,7 @@ Celem projektu było uzyskanie jak największej prędkości przesyłu danych po 
 
 Dosyć ważną część odgrywa opis API biblioteki libUsb. Znajduje się w nim dość obszerny opis poszczególnych funkcji użytych w projekcie. Jest to kluczowe aby zrozumieć późniejszą implementację.
 
-W kolejnym rozdziale został przedstawiony mikrokontroler użyty w projekcie, wraz z dokładnym opisem dostępnych funkcjonalności (nie tylko tych użytych w projekcie). Jak okazuję się w kolejnych rozdziałach brakuje mu kluczowej funkcjonalności z punktu widzenia projektu a mianowicie obsługi standardu USB2.0.
+W kolejnym rozdziale został przedstawiony mikrokontroler użyty w projekcie, wraz z dokładnym opisem dostępnych funkcjonalności (nie tylko tych użytych w projekcie). Jak okazuję się w kolejnych rozdziałach brakuje mu kluczowej funkcjonalności z punktu widzenia projektu a mianowicie obsługi standardu USB2.0. \cite{landtigerDesc}
 
 Jednym z najważniejszych rozdziałów jest rozdział opisujący sposób implementacji projektu wraz z załączonym kodem źródłowym. Przedstawiony został tam sposób łatwego wywoływania testu oraz opis krok po kroku co zostaje wykonane przed uzyskaniem rezultatu. Zostaje też przedstawiony łatwy sposób rozszerzalności o kolejne klasy implementujące nowy rodzaj testu.
 \newline
@@ -1207,5 +1251,57 @@ Warto zaznaczyć, że nie oznacza to iż uzyskanie docelowej prędkości z wykor
 
 Na podstawie otrzymanych wyników uzyskanych z wykorzystaniem standardu USB1.1 możemy założyć iż prędkość przesyłu danych z wykorzystaniem USB2.0 oscylowała by w granicach 16 MB/s. Wartość ta jest zależna od odpowiedniej konfiguracji więc możemy dodatkowo przyjąć prędkość 17,5 MB/s jest jak najbardziej osiągalna.
 
+
+\begin{thebibliography}{1}
+
+\bibitem{embeddedC} Michael J. Pont {\em Embedded C       },  UK: Pearson Education Limited, 2002.
+
+\bibitem{embeddedSystems} Steven F. Barret and Daniel J. Pack {\em Embedded Systems} USA: Pearson Education, Inc., 2005.
+
+\bibitem{USBSystemArch} Don Anderson {\em Universal Serial Bus System Architecture } USA: MindShare, Inc., 1997.
+
+\bibitem{bootstrapLinUSB} Rajaram Regupathy {\em Bootstrap Yourself with Linux-USB Stack: Design, Develop, Debug, and Validate Embedded USB } Course Technology, 2012.
+
+\bibitem{DevUSBPher} Wooi Ming Tan {\em Developing USB PC Peripherals } Annabooks, 1999.
+
+\bibitem{USB20Doc} USB Implementers Forum, Inc., USB2.0 specification reference [online] 
+\newline 
+\url{http://www.usb.org/developers/docs/usb20_docs/}
+
+\bibitem{USB30Doc} USB Implementers Forum, Inc., USB3.0 and USB2.0 specyfication reference [online] 
+\newline 
+\url{http://www.usb.org/developers/docs/}
+
+\bibitem{libusbDoc} libusb 2012-2015, libusb documentation reference [online]
+\newline 
+\url{http://libusb.sourceforge.net/api-1.0/}
+
+\bibitem{libusbDesc} libusb 2012-2015, libusb description reference [online]
+\newline 
+\url{http://libusb.info/}
+
+
+\bibitem{winusbDesc} Microsoft 2015, winusb description reference [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540196(v=vs.85).aspx}
+
+\bibitem{micrDevAppUSBDev} Microsoft 2015, {\em Developing Windows applications for USB devices} [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/dn303342(v=vs.85).aspx}
+
+\bibitem{micrAccUsbDev} Microsoft 2015, {\em How to Access a USB Device by Using WinUSB Functions} [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx}
+
+\bibitem{micCommWithUsb} Microsoft 2010, {\em How to Use WinUSB to Communicate with a USB Device} [doc from Microsoft web]
+\newline 
+\url{http://download.microsoft.com/download/9/C/5/9C5B2167-8017-4BAE-9FDE D599BAC8184A/WinUsb_HowTo.docx}
+
+\bibitem{landtigerDesc} mbed, LandTiger description reference [online]
+\newline 
+\url{https://developer.mbed.org/users/wim/notebook/landtiger-baseboard/}
+
+
+\end{thebibliography}
 
 \end{document}

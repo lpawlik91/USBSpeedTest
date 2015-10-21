@@ -26,7 +26,7 @@ void USB_Receiver_Sender()
 		CDC_OutBufAvailChar (&numAvailByte);
 		if (numAvailByte > 0)
 		{
-		  	numBytesToRead = numAvailByte > MAX_TEMP_BUFFOR ? MAX_TEMP_BUFFOR : numAvailByte;		//get max 32 bytes
+		  	numBytesToRead = numAvailByte > MAX_TEMP_BUFFOR ? MAX_TEMP_BUFFOR : numAvailByte;
 		    numBytesRead = CDC_RdOutBuf (&serBuf[0], &numBytesToRead);
 		    USB_WriteEP (CDC_DEP_IN, (unsigned char *)&serBuf[0], numBytesRead);
 		}
