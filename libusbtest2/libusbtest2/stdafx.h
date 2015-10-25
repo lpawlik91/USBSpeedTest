@@ -6,6 +6,9 @@
 #pragma once
 
 #include "targetver.h"
+#include "Mode.hpp"
+#include "SynchMode.hpp"
+#include "AsynchMode.hpp"
 
 #include <stdio.h>
 #include <tchar.h>

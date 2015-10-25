@@ -1,5 +1,4 @@
-#include "AsynchMode.hpp"
-
+#include "stdafx.h"
 namespace ThreadHelper
 {
 	struct TransferStatus
@@ -81,6 +80,7 @@ namespace ThreadHelper
 			while(transferStatus->particularReceiveComplete == 0)
 				libusb_handle_events(transferStatus->ctx);
 		}
+		return nullptr;
 	}
 
 }
@@ -131,8 +131,8 @@ int AsynchMode::doTest()
 	unsigned char *data_out = new unsigned char[_bufforSize]; //data to write
 	unsigned char *data_in = new unsigned char[_bufforSize]; //data to read
 	generateSymulatedData(data_out, _bufforSize);
-	int howManyBytesIsSend; 
-	int howManyBytesReceived;
+//	int howManyBytesIsSend; 
+//	int howManyBytesReceived;
 	ThreadHelper::TransferStatus transferStatus;
 	transferStatus.allCompleted = 0;
 	
@@ -159,7 +159,7 @@ int AsynchMode::doTest()
 	}
 	
 	time(&transferStatus.startTest); 
-	for(int i = 0; i < _count; ++i)
+	for(unsigned i = 0; i < _count; ++i)
 	{
 		pthread_mutex_lock(&_sender_lock);
 		while(transferStatus.waitForSender){

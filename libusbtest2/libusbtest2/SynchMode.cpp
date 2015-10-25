@@ -1,4 +1,4 @@
-#include "SynchMode.hpp"
+#include "stdafx.h"
 
 SynchMode::SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult) : Mode(bufforSize, count, vid, pid, printOnlyResult)
 {
@@ -22,7 +22,7 @@ int SynchMode::doTest()
 
 	
 	time(&start_t);
-	for(int i = 0; i < _count; ++i)
+	for(unsigned i = 0; i < _count; ++i)
 	{
 		int sendStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, &howManyBytesIsSend, 0); 
 		if(sendStatus == 0 ) // && howManyBytesIsSend == _bufforSize)
