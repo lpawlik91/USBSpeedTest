@@ -25,7 +25,7 @@ int SynchMode::doTest()
 	for(int i = 0; i < _count; ++i)
 	{
 		int sendStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, &howManyBytesIsSend, 0); 
-		/*if(sendStatus == 0 ) // && howManyBytesIsSend == _bufforSize)
+		if(sendStatus == 0 ) // && howManyBytesIsSend == _bufforSize)
 		{
 			std::cout << "test" << std::endl;
 			//here was printing data for debugging only
@@ -37,9 +37,9 @@ int SynchMode::doTest()
 			throw std::runtime_error("Write Error!");
 			//return 1;
 		}
-		*/
 		
-/*		int readStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
+		
+		int readStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
 		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
 		{
 			//here was printing data for debugging only
@@ -51,7 +51,7 @@ int SynchMode::doTest()
 			throw std::runtime_error("Read Error! ");
 			//return 1;
 		}
-*/		
+		
 	}
 	time(&end_t);
 	_timeResult = difftime(end_t, start_t);

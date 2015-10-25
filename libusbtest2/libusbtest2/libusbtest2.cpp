@@ -41,11 +41,11 @@ int main(int argc, char* argv[])
 	}
 		
 	unsigned bufforSize = atoi(argv[2]);
-/*	if(bufforSize > BUFFOR_MAX) 
+	if(bufforSize > BUFFOR_MAX) 
 	{
 		debugPrinter << "bufforSize is grather than 64B, setting 64 as default\n";
 		bufforSize = BUFFOR_MAX;
-	}*/
+	}
 	unsigned fullDataSize = atoi(argv[3]);
 	unsigned count = fullDataSize/bufforSize;
 	if(fullDataSize % bufforSize != 0)
