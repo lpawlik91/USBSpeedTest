@@ -32,6 +32,7 @@
 \usepackage{setspace}
 \usepackage{graphicx}
 \usepackage{polski}
+\usepackage{subfig}
 \usepackage[utf8]{inputenc}
 %\usepackage[OT4]{fontenc}
 \usepackage{verbatim}
@@ -178,6 +179,53 @@ Rozdział \ref{microcontrollerChapter} stanowi krótki opis mikrokontrolera uży
 Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
 
 Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{resultsChapter}. Zawiera on zestawienie i interpretację otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
+
+\chapter{Czym są interfejsy szeregowe i do czego służą}
+\label{ch:serialInterface}
+\indent Porty szeregowe w kontekście informatycznym są to fizyczne interfejsy umożliwiające na przesłanie danych z lub do urządzenia w jednostce czasu jeden za drugim. Cechy interfejsów szeregowych można opisać za pomocą trzech prostych punktów.
+\begin{itemize}
+\item prostota
+\item wydajność
+\item trudność implementacji
+\end{itemize}
+Do najprostszych interfejsów szeregowych zaliczamy z pewnością interfejsy takie jak OneWire oraz RS232C (kabel przedstawiony na rysunku \ref{fig:RS232C}).
+
+\begin{figure}[H]
+\centering
+\parbox{5cm}{
+\includegraphics[width=0.35\textwidth]{./img/rs232C}
+\caption{RS232C}
+%source:http://image.rakuten.co.jp/menet/cabinet/k_02/krs10107k_ma.jpg?_ex=60x60
+\label{fig:RS232C}}
+\qquad
+\begin{minipage}{5cm}
+\centering
+\includegraphics[width=0.7\textwidth]{./img/rs232family}
+\caption{RS232family}
+%source:https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/VGA-RS-232C-Parallelbus.jpg/369px-VGA-RS-232C-Parallelbus.jpg
+\label{fig:RS232Family}
+\end{minipage}
+\end{figure}
+\noindent Złącza typu RS232C można jeszcze spotkać jako interfejs komunikacyjny z drukarkami starego typu, niemniej zostało on wyparty przez nowsze interfejsy (takie jak n.p. USB). \\
+\indent Interfejsami najbardziej wydajnymi są USB oraz Ethernet. Są to stosunkowo nowo opracowane (w porównaniu do RS232) i nadal rozwijane interfejsy. Dokładny opis standardu USB znajduje się w rozdziale \ref{USBStandardChapter}. Ethernet jest to ustandaryzowany sposób komunikacji umożliwiający tworzenie komputerowych sieci lokalnych. Początki sięgają roku 1976. Opracowany został w firmie Xerox.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{./img/ethernet-cable}
+\caption{EthernetCable}
+%source: http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg
+\label{fig:EthernetCable}
+\end{figure}
+Jeśli chodzi o trudność implementacji to najtrudniejszym do zaimplementowania protokołem/interfejsem przesyłania danych jest Bluetooth. Służy on do bezprzewodowej komunikacji na bardzo krótkim dystansie.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{./img/bluetooth-logo}
+\caption{bluetoothLogo}
+%source: http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967
+\label{fig:blueTooth}
+\end{figure}
+Dość spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośno mówiące w samochodach oraz różnego rodzaju urządzenia takie jak słuchawki, głośniki oraz adaptory (np. w zestawie do bezprzewodowej myszki komputerowej dołączany jest adapter bluetooth podpinany pod wejście USB w komputerze).
+\newline
+\indent Podsumowując, interfejsy szeregowe umożliwiają komunikację miedzy urządzeniami z których jeden najczęściej jest komputerem osobistym. Implementacja każdego interfejsu jest na swój sposób złożona. Kategoryzacja jest możliwa na podstawie różnych wartości. W tym rozdziale zostały podzielone według prostoty interfejsu (w sensie architektury), wydajności oraz trudności implementacji.
 
 \chapter{USB}
 \label{USBStandardChapter}
