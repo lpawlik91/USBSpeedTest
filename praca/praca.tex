@@ -24,10 +24,6 @@
 %%%
 %%%
 %%%
-
-
-
-
 \documentclass{BscUS}
 \usepackage{setspace}
 \usepackage{graphicx}
@@ -48,6 +44,7 @@
 \usepackage{siunitx}
 \usepackage{nameref}
 \usepackage{listings}
+\usepackage{indentfirst}
 
 \usepackage{color}
 
@@ -227,70 +224,63 @@ Dość spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośno
 \newline
 \indent Podsumowując, interfejsy szeregowe umożliwiają komunikację miedzy urządzeniami z których jeden najczęściej jest komputerem osobistym. Implementacja każdego interfejsu jest na swój sposób złożona. Kategoryzacja jest możliwa na podstawie różnych wartości. W tym rozdziale zostały podzielone według prostoty interfejsu (w sensie architektury), wydajności oraz trudności implementacji.
 
-\chapter{USB}
+\chapter{Czym jest USB}
 \label{USBStandardChapter}
 Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym. USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.\cite{USBSystemArch, USB20Doc, USB30Doc}
 \newline
-USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia zasilające elektroniczne urządzenia.
-\section{Złącza}
-Istnieją trzy podstawowe rodzaje złączy USB dla których kryterium podziału stanowi wielkość. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych). 
+\indent USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia zasilające elektroniczne urządzenia.
+%%\section{Złącza USB}
+\indent Istnieją trzy podstawowe rodzaje złączy USB dla których kryterium podziału stanowi wielkość. Najstarszy rozmiar (używany np. w pendrive'ach) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych). 
 \newline
-W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc}
+\indent W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A dostarcza zasilanie. Zostało to zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń a co za tym idzie uszkodzeniu urządzeniu. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej oraz wejście w komputerze lub urządzeniu elektronicznym. w przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych wielkości), natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width=15cm]{./img/micro-usb-type}
 \caption{Połączenie przewodów w micro-USB}
 \end{figure}
-
 %
 % USB ON THE GO ??
 %
-\section{Historia}
-USB zapoczątkowało w 1994 siedem firm: Compaq, DEC, IBM, Intel, Microsoft, NEC, Nortel. Celem było uproszczenie podłączenia zewnętrznych urządzeń do komputera zastępując stare złącza w płytach głównych wprowadzając rozwiązania na problemy znalezione w starych oraz upraszczając software.
+%%\section{Historia}
+\indent USB zapoczątkowało w 1994 siedem firm: Compaq, DEC, IBM, Intel, Microsoft, NEC, Nortel. Celem było uproszczenie podłączenia zewnętrznych urządzeń do komputera zastępując stare złącza w płytach głównych wprowadzając rozwiązania na problemy znalezione w starych oraz upraszczając software.
 Pierwszy układ scalony wspierający USB został wyprodukowany przez Intel 1995r.
 \newline
-
-\subsection{USB1.x}
-Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. %todo: to zdanie nie ma sensu 
+%%\subsection{USB1.x}
+\indent Pierwsza oficjalna wersja standardu USB została wydana w styczniu 1996r. USB1.0 charakteryzowała prędkość 1,5 Mbit/s (Low Speed) oraz 12 Mbit/s (Full Speed). Nie pozwalał jednak na używanie przedłużaczy kabli, wynikało to z limitów zasilania. %todo: to zdanie nie ma sensu 
 Powstało kilka wypuszczono na rynek na chwile przed wydaniem standardu USB1.1 w sierpniu 1998r. W USB1.1 poprawiono kilka błędów znalezionych w USB1.0 i był to pierwszy standard, który został oficjalnie zaimplementowany w standardowych komputerach osobistych. \cite{USBSystemArch}
-
-\subsection{USB2.0}
-USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
-
-
+%%\subsection{USB2.0}
+\newline
+\indent USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
 Przyszłe modyfikacje do specyfikacji USB zostały zaimplementowane przez "Engineering Change Notitices" (ECN). Najważniejsze z ECNów zostały dołączone do specyfikacji USB2.0 dostępnej na stronie internetowej USB.org.
 \newline
 Przykłady ECNow:
+Złącze Mini-A oraz Mini-B: wydane w październiku 2000r.\cite{USB20Doc}
 \newline
-Złącze Mini-A oraz Mini-B: wydane w październiku 2000r.
-\newline
-\cite{USB20Doc}
-
-
-\subsection{USB3.0}
-
-Standard USB3.0 został wydany w listopadzie 2008r. definiujący zupełnie nowy tryb "SuperSpeed". Port USB zwyczajowo jest w kolorze niebieskim i kompatybilny z urządzeniami USB2.0 oraz kablami.
-\newline
+%%\subsection{USB3.0}
+\indent Standard USB3.0 został wydany w listopadzie 2008r. definiujący zupełnie nowy tryb "SuperSpeed". Port USB zwyczajowo jest w kolorze niebieskim i kompatybilny z urządzeniami USB2.0 oraz kablami.
 Dokładnie 17 listopada 2008r. ogłoszono iż specyfikacja dla wersji 3.0 została całkowicie ukończona i została zaakceptowana przez "USB Implementers Forum" (USB-IF), czyli głównej instytucji zajmującej się specyfikacjami standardu USB. To pozwoliło na szybkie udostępnienie standardu deweloperom.
-\newline
 Nowa magistrala "SuperSpeed" dostarcza czwarty typ transferu z możliwością przesyłania sygnału z prędkością 5GBit/s, ale poprzez użycie kodowania 8b/10b przepustowość wynosi 4Gbit/s. Specyfikacja uznaje za zasadne osiągniecie prędkości w okolicach 3,2 Gbit/s (400 MB/s) co w założeniach powinno się zwiększać wraz z rozwijaniem hardwaru. Komunikacja odbywa się w obu kierunkach dla SuperSpeed (kierunek nie jest naprzemienny i nie jest kontrolowany przez hosta, jak to ma miejsce do wersji USB2.0).
-\newline
 Podobnie jak w poprzednich wersjach standardu, porty USB3.0 działają dwóch wariantach zasilania: niskiego poboru mocy (low-power: 150mA) oraz wysokiego poboru mocy (high-power: 900mA). Zapewniając odpowiedni jednocześnie pozwalają na przesył danych z prędkością SuperSpeed.
-\newline
 Została dodatkowo zdefiniowana specyfikacja zasilania (w wersji 1.2 wydana w w grudniu 2010r.) która zwiększała dopuszczalny pobór mocy do 1,5A, ale nie pozwala na współbieżne przesyłanie danych. Specyfikacja wymaga aby fizyczne porty same w sobie były wstanie obsłużyć 5A, ale ogranicza pobór do 1,5 A.
 \cite{USB30Doc}
-\subsection{USB3.1}
-W styczniu 2013r. w prasie pojawiły się informacje o planach udoskonalenia standardu USB3.0 do 10Gbit/s. Zakończyło się to stworzeniem nowej wersji standardu - USB3.1. Wersja ta została wydana 31 lipca 2013r. wprowadzając szybszy typ przesyłania danych zwany "SuperSpeed USB 10 Gbit/s". Zaprezentowano również nowe logo stylizowane na zasadzie "Superspeed+". Standard USB3.1 zwiększył szybkość przesyłu sygnału do 10Gbit/s. Udało się też zredukować obciążenie łącza do 3\% dzięki zmianie kodowania na 128b/132b.
+\newline
+%\subsection{USB3.1}
+\indent W styczniu 2013r. w prasie pojawiły się informacje o planach udoskonalenia standardu USB3.0 do 10Gbit/s. Zakończyło się to stworzeniem nowej wersji standardu - USB3.1. Wersja ta została wydana 31 lipca 2013r. wprowadzając szybszy typ przesyłania danych zwany "SuperSpeed USB 10 Gbit/s". Zaprezentowano również nowe logo stylizowane na zasadzie "Superspeed+". Standard USB3.1 zwiększył szybkość przesyłu sygnału do 10Gbit/s. Udało się też zredukować obciążenie łącza do 3\% dzięki zmianie kodowania na 128b/132b.
 \newline
 Przy pierwszych testach prędkośi USB3.1 udało się uzyskać prędkość 7,2Gbit/s.
 \newline
 Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
 \cite{USB30Doc}
+\newline
+\indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1
+%todo later today
 
-\chapter{Biblioteki}
+
+\chapter{Biblioteki udostępniające API do komunikacji z USB}
 \label{librariesChapter}
-\section{libUSB}
+Głównym celem projektu jest osiągniecie jak najszybszej prędkości przesyłu danych. Do realizacji celu konieczne jest użycie odpowiedniej biblioteki do komunikacji z interfejsem USB. W rozdziale przedstawiony został krótki opis najbardziej popularnych bibliotek posiadających interfejs komunikacyjny ze złączami USB.
+\section{Biblioteka libUSB}
 LibUSB jest biblioteką stworzoną w 2007 roku. Napisana w języku C  pozwala na prosty i łatwy dostęp do urządzenia USB. Jest w 100\% przeznaczona dla użytku developera. Biblioteka ma za zadanie ułatwić pisanie aplikacji opartych na komunikacji USB z mikrokontrolerem.
 Biblioteka libUSB jest przenośna a co za tym idzie dostępna na wiele platform (Linux, OS X, Windows, Android, OpenBSD, etc.) wraz z niezmiennym API.
 Nie są wymagane dodatkowe uprawnienia aby komunikacja z urządzeniem przebiegała poprawnie.
@@ -301,12 +291,10 @@ Wspiera standardy USB:
 \item USB2.0 
 \item USB3.0
 \end{itemize}
-
 Funkcjonalność biblioteki:
 \begin{enumerate}
-
 \item wszystkie typy transferu są wspierane (control, bulk, interrupt, isochronous)
-\item 2 interfejsy
+\item dwa interfejsy
 \begin{enumerate}
 \item synchroniczny (prosty)
 \item asynchroniczny (bardziej złożony)
@@ -316,14 +304,10 @@ Funkcjonalność biblioteki:
 \item kompatybilna wstecznie (do wersji libUSB-0.1)
 \end{enumerate}
 (informacje uzyskane dzięki \cite{libusbDesc})
-\section{winUSB}
-
+\section{Biblioteka winUSB}
 Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów które potrzebują szybkiego i bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z portami USB z poziomu user-mode. W Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
 
 Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z aparatów cyfrowych, Media Transfer Protocol pozwala na przesyłanie plików muzycznych z cyfrowych urządzeń odtwarzających muzykę oraz pliki video z urządzeń pozwalających na ich odtworzenie.
-
- 
-%MTP is a key part of WMDRM10-PD,[1] a digital rights management (DRM) service for the Windows Media platform.
 
 MTP jest częścią frameworku "Windows Media" blisko związanym z odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
 
@@ -331,12 +315,12 @@ Twórcy standardu USB ustandaryzowali MTP jako pełnoprawną klasę dla urządze
 Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod klasy. \cite{winusbDesc, micrDevAppUSBDev, micrAccUsbDev, micCommWithUsb}
 \newline
 
-\section{Wybór}
-W projekcie została użyta biblioteka libUSB. Głównym powodem była możliwość kompilacji programów zarówno pod systemami Unix jak i z rodziny Microsoft Windows bez jakichkolwiek (lub znikomych) zmian w kodzie.
+%%%\section{Wybór}
+\indent Podsumowując w projekcie została użyta biblioteka libUSB. Głównym powodem była możliwość kompilacji programów zarówno pod systemami Unix jak i z rodziny Microsoft Windows bez jakichkolwiek (lub znikomych) zmian w kodzie.
 
-\chapter{libUSB API}
+\chapter{Opis zawartości biblioteki libUSB}
 \label{libUsbChapter}
-Rozdział dokumentujący API używane w projekcie. \cite{libusbDoc}
+\indent Rozdział dokumentujący API używane w projekcie. W rozdziale \ref{librariesChapter} został uzasadniony wybór tej właśnie biblioteki. \cite{libusbDoc}
 \section{najważniejsze struktury}
 \subsection{libusb\_context}
 libusb\_context jest strukturą reprezentującą sesję libusb.
@@ -510,8 +494,10 @@ Nie dozwolone jest zwalnianie pamięci po nie zakończonym (aktywnym) jeszcze tr
 Parametrem funkcji jest wskaźnik do transferu do zwolnienia.
 
 %---------
-\chapter{Mikrokontroler}
+\chapter{Urządzenie testowe}
 \label{microcontrollerChapter}
+Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego zadaniem było odbieranie danych po przeciwnej stronie jak i przesył w drugą stronę. Inwestygacja rozpoczęła się od bardzo prostych urządzeń takich jak raspberry pi B+, a zakończyła się na mikrokontrolerze LandTiger.
+
 \begin{figure}[h]
 \centering
 \includegraphics{./img/landTiger}
@@ -554,7 +540,7 @@ Alternatywą jest to, że kod może zostać załadowany za pomocą emulatora JLI
 \newline
 Port COM1 (UART0) wspiera komunikacje z PC w obie strony. Wszelkie funkcje portu USB są wspierane z minimalnymi zmianami w oprogramowaniu. Podobnie jest z Ethernetem, z niewielkimi  zmianami w oficjalnym kodzie dla LPC1768 kod jest w stanie się uruchomić na LandTigerze.
 \newline
-Wyświetlacz LCD jest oparty na kontrolerze SSD1289. Wyświetlacz może zostać odłączony od płyty. Używa 8-bitowej magistrali \(P2_0..P2_7\). Kontroler ekranu dotykowego jest dostarczony razem z modułem wyświetlacza. Interfejs pomiędzy ekranem dotykowym a LPC1768 jest możliwy dzięki SPI.
+\indent Wyświetlacz LCD jest oparty na kontrolerze SSD1289. Wyświetlacz może zostać odłączony od płyty. Używa 8-bitowej magistrali \(P2_0..P2_7\). Kontroler ekranu dotykowego jest dostarczony razem z modułem wyświetlacza. Interfejs pomiędzy ekranem dotykowym a LPC1768 jest możliwy dzięki SPI.
 \newline
 Główne różnice pomiędzy LandTigerem a LPC1768:
 \begin{enumerate} [label=(\alph*)]
@@ -564,6 +550,9 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \item brak wsparcia dla logicznego systemu plików
 \item brak wsparcia dla 4 diód typu LED (istnieje możliwość użycia inncyh).
 \end{enumerate}
+
+Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety jak się podczas egzekucji testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza USB wspierającego USB2.0 chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
+
 
 \iffalse
 %% not inluded into pdf right now
@@ -579,13 +568,12 @@ Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jes
 \section{wady}
 \begin{itemize}
 \item możliwości prędkości są mocno ograniczone poprzez funkcje blokujące
-
 \end{itemize}
-
 \fi
 
 
-\chapter{implementacja}
+
+\chapter{Implementacja}
 \label{implementationChapter}
 Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu aby uzyskać możliwość łatwego dodawania nowych udoskonaleń.
 
