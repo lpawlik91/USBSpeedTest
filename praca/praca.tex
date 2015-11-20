@@ -161,6 +161,23 @@ Ocena końcowa pracy przez Recenzenta:
 \chapter{Wstęp}
 \label{beginChapter}
 \pagestyle{fancy}
+W dobie dzisiejszych możliwości rosną również wymagania i oczekiwania. Dotyczy to prawie każdego aspektu dzisiejszej egzystencji począwszy od spraw osobistych poprzez finansowe aż po możliwości uzyskiwania danych. Rozwój technologi, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. Dla współczesnego człowieka problemem okazuje się czas, zawsze jest go za mało w praktycznie każdej sferze życia. Jest on również istotny w rozwoju technologi oraz uzyskiwaniu konkretnych danych pomiarowych.
+\newline
+\indent Dzisiejsze urządzenia pomiarowe laboratoryjne jak i medyczne (oraz inne) mają za zadanie zbieranie i przesyłanie danych celem późniejszej wizualizacji lub analizy za pomocą dedykowanego oprogramowania. Dane te z reguły są wysyłane w określonym formacie dla danego urządzenia a co za tym idzie rozmiar wysyłanych danych musi być większy niż w wypadku danych wysyłanych bajt po bajcie.
+\newline
+\indent Człowiek odkąd powstał pierwszy komputer rozpoczął walkę z problemem komunikacji między urządzeniami. Zostało opracowanych wiele standardów komunikacji, niektóre projekty zostały skazane na zapomnienie, inne odniosły sukces i zdominowały urządzenia. Takim standardem jest z pewnością USB, czyli Uniwersalna Magistrala Szeregowa (dokładny opis wraz z rysem historycznym w rozdziale \ref{USBStandardChapter}). Na dzień dzisiejszy większość urządzenia dla których konieczna jest komunikacja z komputerem osobistym (wyłączając sieci Ethernetowe \footnote{Ethernet - standard sieci lokalnych} oraz WiFi\footnote{WiFi - technologia sieci bezprzewodowych}) posiada interfejs USB.
+\newline
+\indent Celem niniejszej pracy było opracowanie szybkiego przesyłania danych używając standardu USB. Przez szybkie rozumiana jest tutaj prędkość nie mniejsza niż 140Mbit/s (17,5 MB/s) \footnote{1 B = 8 bit}.
+\newline
+\indent Pierwszym zadaniem, które musiało zostać wykonane przed rozpoczęciem realizacji implementacji oprogramowanie było wybranie hardwaru, które miało pełnić role urządzenia testowego (nie jest możliwe wykonanie testów przesyłu danych po interfejsie USB bez urządzenia odbierającego dane). Dokładny opis wybranego urządzenie został umieszczony w rozdziale \ref{microcontrollerChapter}. Kolejnym zadaniem był odpowiedni wybór biblioteki spełniającej założenia projektu. Istnieje wiele implementacji bibliotek udostępniających API \footnote{API (ang. Application Programming Interface) - zestaw funkcji oraz innych narzędzi umożliwiających wykorzystanie możliwości danej biblioteki} dla interfejsu USB. W rozdziale \ref{librariesChapter} szczegółowo zostały opisane dwie najczęściej używane z których pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix natomiast użycie drugiej z nich możliwe jest tylko pod systemami Windows. Dodatkowo zostało przedstawione krótkie uzasadnienie wyboru.
+\newline
+\indent Kolejnym etapem podczas projektowania oprogramowania było dokładne zaplanowanie jak przebiegać będą testy. Istotnym elementem było to iż wykonanie ich bez urządzenia zewnętrznego było niemożliwe. Wtedy też należało opracować wejściowy jak i zwracany format danych dla każdego testu. Po opracowaniu podstawowych wymagań i testowych restrykcji dla aplikacji możliwe było przystąpienie do pisania aplikacji. Opis aplikacji wraz z implementacją znajduje się w rozdziale \ref{implementationChapter}.
+\newline
+\indent Ostatnim i zarazem najważniejszym elementem pracy jest zestawienie otrzymanych wyników wraz z oczekiwaniami. Całość została opisana w rozdziale \ref{resultsChapter} i zawiera konkretne wnioski na temat realizacji projektu oraz ogólnych możliwości interfejsu USB. W rozdziale zawarte jest dodatkowo zestawienie i interpretacja otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
+
+
+\iffalse
+%%old introduction
 Rozwój technologi, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. 
 
 Celem niniejszej pracy było uzyskanie możliwie największej prędkości przesyłu danych pomiędzy urządzeniem zewnętrznym a komputerem osobistym w obu kierunkach, z wykorzystaniem wspomnianego interfejsu. 
@@ -176,7 +193,8 @@ Rozdział \ref{microcontrollerChapter} stanowi krótki opis mikrokontrolera uży
 Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
 
 Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{resultsChapter}. Zawiera on zestawienie i interpretację otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
-
+%% end backuped introduction
+\fi
 \chapter{Czym są interfejsy szeregowe i do czego służą}
 \label{ch:serialInterface}
 \indent Porty szeregowe w kontekście informatycznym są to fizyczne interfejsy umożliwiające na przesłanie danych z lub do urządzenia w jednostce czasu jeden za drugim. Cechy interfejsów szeregowych można opisać za pomocą trzech prostych punktów.
