@@ -1,12 +1,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% TODO:
-%%% Po pierwsze opisac interfejsy szeregowe ogolnie, czym sa etc..
-%%% Kodowanie w USB3.0  dokladniej opisac, zastosowania, rysunki, przebiegi, czas, power
-%%% Jakos te tytuly napisac czytelniej, konsekwencja w mala/duza litera (pamietalem o tym kiedys)
+%%% Po pierwsze opisac interfejsy szeregowe ogolnie, czym sa etc.. +
+%%% Kodowanie w USB3.0  dokladniej opisac, zastosowania, rysunki, przebiegi, czas, power +
+%%% Jakos te tytuly napisac czytelniej, konsekwencja w mala/duza litera (pamietalem o tym kiedys) +/-
 %%% Wstep do kazdego rozdzialu + podsumowanie
-%%% Dluzszy wstep, rozwinac poczatkowa wfaze (1.5 str), motywacja pracy
-%%% opisy rozdzialow zbic w jeden akapit
-%%% Proces weryfikacji biblioteki
+%%% Dluzszy wstep, rozwinac poczatkowa wfaze (1.5 str), motywacja pracy +
+%%% opisy rozdzialow zbic w jeden akapit +
+%%% Proces weryfikacji biblioteki +/-
 %%% Podsumowane do poprawy
 %%% Platforma testowa
 %%% Odstepy do poprawy
@@ -302,22 +302,58 @@ Przy pierwszych testach prędkośi USB3.1 udało się uzyskać prędkość 7,2Gb
 Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
 \cite{USB30Doc}
 \newline
-\indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1 to kodowanie 8bitów na 10 bitów oraz 128 bitów na 132 bity. Zostały one zastosowane aby uzyskać odpowiedni balans napięcia i zapewnić stabilny Clock Recovery\footnote{Clock Recovery (ang. odzyskiwanie zegara) - chodzi tak na prawdę o poprawną synchronizacje zegara}, ponieważ wysyłając sprzężone (ciągłe) dane wymagane są skoki napięcia. Jeżeli nie zastosujemy kodowania to w wypadku dużej ilości '1' to średnia wartość przesłanego sygnału będzie rosła, natomiast w wypadku dużej ilości '0' wartość ta będzie malała.
+\indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1 to kodowanie 8bitów na 10 bitów oraz 128 bitów na 132 bity. 
+Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential signaling (polega na wysłaniu dwóch przeciwnych sobie sygnałów TX+ oraz TX- do zewnętrznego odbiornika, który aby zniwelować zaszumienie odejmuje wartość RX- od obydwu kanałów) przesyłanie danych na długie odległości lub wysyłanie danych z większą prędkością było awykonalne. Przykład wraz z kolejnymi etapami widoczny na rys \ref{fig:cleanSignal}, \ref{fig:receivedNoiseSignal}, \ref{fig:receivedCleanedSignal}.
+\newline
+\indent W czasach kiedy elektronika miała swoje początki zarówno nadawca jak i odbiorca współdzielili to samo uziemienie (były częścią jednego środowiska), więc nie było problemów aby zmierzyć napięcie sygnału wejściowego. Więc jeżeli założenie było iż 0V reprezentuje wartość bitu równą '0' a wartość +5V reprezentuje wartość bitu równą '1' oraz zegar był również wspólny dla nadajnika oraz odbiorcy, odbiorca świetnie potrafił odczytać nadawany sygnał (np. rys. \ref{fig:cleanSignal}).
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./img/cleanSignal}
+\caption{cleanSignal.}
+%source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_1.jpg
+\label{fig:cleanSignal}
+\end{figure}
+\noindent Problem pojawia się w momencie kiedy odbiornik znajduje się poza środowiskiem nadawcy (nadawca i odbiorca nie współdzielą uziemienia, zegara, etc.). Rys. \ref{fig:receivedNoiseSignal} przedstawia sygnał odebrany po stronie odbiornika (jest to ten sam sygnał co na rys. \ref{fig:cleanSignal}). Przez brak współdzielenia uziemienia oraz zegara przez nadajnik oraz odbiornik sygnał stał się nieczytelny po stronie odbiornika.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{./img/receivedNoiseSignal}
+\caption{receivedNoiseSignal.}
+%source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_2.jpg
+\label{fig:receivedNoiseSignal}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{./img/receivedCleanedSignal}
+\caption{receivedCleanedSignal.}
+%source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_3.jpg
+\label{fig:receivedCleanedSignal}
+\end{figure}
+\noindent Rozwiązaniem problemu przesyłu danych między dwoma zewnętrznymi okazało się zaprojektowanie differential receiver'a, czyli odbiornika odbierającego dwa sygnały RX+ oraz RX-. Poziom sygnału jest mierzony na podstawie tych dwóch sygnałów. Skrętka\footnote{Skrętka - w kontekście pary skręconych przewodów} gwarantuje, że przesunięcie napięcia (rys. \ref{fig:receivedNoiseSignal}) dla obu kanałów jest takie samo a więc różnica pomiędzy jest stała i jest możliwa do odczytu przez odbiornik (rys. \ref{fig:receivedCleanedSignal}). Dodatkowo odbiornik jest w stanie odczytać sygnał zegara na podstawie szybkości zmian sygnału (rys. \ref{fig:receivedCleanedSignal}).
+\newline
+\indent W przypadku wysyłania większej ilości danych ukazuje się kolejny problem. Jeżeli ilość tych samych wartości bitu (zer lub jedynek) występujących po sobie jest zbyt duża odbiornik może nie być wstanie odczytać sygnału zegara, lub zrobić to błędnie. Rys. \ref{fig:withoutEncoding} zawiera przykładowy zestaw wysyłania większej ilości zer, jak widzimy w przykładzie, w drugim i trzecim pakiecie danych wysyłane są same zera a ilość przeskoków sygnału (zmian 0->1 lub 1->0) jest znikoma i obliczenie sygnału zegara może być problematyczne dla odbiornika.
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./img/withoutEncoding}
+\includegraphics[width=0.95\textwidth]{./img/withoutEncoding}
 \caption{withoutEncoding}
 %source: http://m.eet.com/media/1158450/tek8b-10bfig1.jpg
 \label{fig:withoutEncoding}
 \end{figure}
-Jak przedstawiono na rys. \ref{fig:withoutEncoding} w wypadku dużej ilości przesyłanych '0' średnia wartość sygnału znacząco spadła. Rozwiązaniem tego problemu jest kodowanie 8b/10b, dzięki któremu wartość ta oscyluje w okolicach 50\% (widoczne na rys \ref{fig:withEncoding}).
+\noindent Rozwiązaniem tego problemu jest kodowanie 8b/10b, dzięki któremu ilość zmian sygnału z zera na jeden oscyluje w okolicach 50\% w stosunku do zmian z jeden na zero dzięki czemu obliczenie zegara na odbiorniku nie jest problematyczne. Przykład sygnału po zastosowaniu kodowania 8b/10b jest widoczny na rys. \ref{fig:withEncoding}.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{./img/withEncoding}
 \caption{withEncoding}
 %http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
 \label{fig:withEncoding}
+\end{figure}
+Rys. \ref{fig:sendingDataThroughPHYLayer} przedstawia działanie USB3.0 wraz z kodowaniem oraz komunikacją przez warstwę fizyczną. Najpierw dane do wysłania przekonwertowywane są na z postaci 8-bitowej na postać 10-bitową, następnie wysyłane do odbiornika, gdzie następuje konwersja odwrotna do postaci 8-bitowej.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{./img/SendingData}
+\caption{sendingDataThroughPHYLayer}
+%source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_4.jpg
+\label{fig:sendingDataThroughPHYLayer}
 \end{figure}
 Kodowanie 8b/10b zbudowane jest na podstawie kodowania 5b/6b oraz 3b/4b i jest ich połączeniem w odpowiedni sposób. Cały algorytm tworzenia przedstawia się następująco.
 \begin{enumerate}
@@ -329,7 +365,7 @@ Kodowanie 8b/10b zbudowane jest na podstawie kodowania 5b/6b oraz 3b/4b i jest i
 Rysunek \ref{fig:810mapping} doskonale przedstawia ten proces.
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{./img/mapping810}
+\includegraphics[width=0.75\textwidth]{./img/mapping810}
 \caption{810encoding mapping}
 %http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
 \label{fig:810mapping}
@@ -339,15 +375,15 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 \newline
 \indent Realizacja kodowania 5b\/6b jest nieco bardziej skomplikowana, polega to na takim dopasowaniu '0' i '1' aby różnica pomiędzy ilością '0' oraz '1' była równa +-1 (jest to tak na prawdę RD lub odległość Hamminga\footnote{odległość Hamminga - w kontekście projektu XOR dwóch zbiorów}). Wartość wyjściowa musi być unikalna. Jest to możliwe ponieważ dodawany jest dodatkowy bit (unikalność mogła by zostać zachowana bez niego, natomiast nie zostałby spełniony warunek RD = +-1).
 \newline 
+%Todo: monitorowac pozycje tej tabelki
 %\begin{tabular}{ | a | l | l | l | a | l | l | l | }
 \begin{table}[H]
 \begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|>{\columncolor[gray]{0.85}}c|c|c|c|c|}
-%\begin{tabular}{|>{\columncolor[gray]{0.85}}l|l|l|l|>{\columncolor[gray]{0.85}}l|l|l|l|l|}
 \cline{1-9}
 	\rowcolor[gray]{0.7}
-	Wejście &  & RD = -1 & RD = +1 & Wejście &  & \mc{1}{RD = -1} & RD = +1 \\ \cline{1-9}
+	 & \mc{1}{} & \mc{1}{RD = -1} & RD = +1 &  & \mc{1}{} & \mc{1}{RD = -1} & RD = +1 \\ \cline{1-9}
 	\rowcolor[gray]{0.75}
-	 & EDCBA & \mc{1}{abcdei} & abcdei &  &  \mc{1}{EDCBA} & \mc{1}{abcdei} & abcdei \\ \hline
+	 & \mc{1}{EDCBA} & \mc{1}{abcdei} & abcdei &  &  \mc{1}{EDCBA} & \mc{1}{abcdei} & abcdei \\ \hline
 	D.00 & 00000 & 100111 & 011000 &  D.16 & 10000 & 011011 & 100100 \\ \hline
 	D.01 & 00001 & 011101 & 100010 &  D.17 & 10001 & \mc{1}{100011} &  \\ \hline
 	D.02 & 00010 & 101101 & 010010 &   D.18 & 10010 & \mc{1}{010011} &  \\ \hline
@@ -366,39 +402,80 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 	D.15 & 01111 & 010111 & 101000 &   D.31 & 11111 & 101011 & 010100 \\ \hline
 	 &  &  &  &   K.28 & 11100 & 001111 & 110000 \\ \hline
 \end{tabular}
-
-\caption{Todo:My caption 5 na 6}
+\captionof{table}{Todo:My caption 5 na 6}
 %source: 
 \label{tbl:5bTo6b}
 \end{table}
-\noindent Sporą część kodów da się wyliczyć na podstawie zamiany EDCBA -> abcfe (odwrócenie bitów) oraz dodanie wartości '0' lub '1' w zależności od aktualnej wartości RD. Niestety nie dotyczy to wszystkich elementów, tabela \ref{tbl:5bTo6b} ukazuje wszystkie możliwe konfiguracje dla tej konwersji. Tabela przedstawia 32 wartości wraz z przekonwertowanymi odpowiednikami (oznaczane D.xx) oraz jedną konwersje dla instrukcji kontrolnej (oznaczona jako K.28).
-%todo later today
+
 
 \begin{table}[H]
+
 %\begin{tabular}{ | l | l | l | l | l | l | l | l | }
 \begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|>{\columncolor[gray]{0.85}}c|c|c|c|c|}
 \hline
 \cline{1-9}
 	\rowcolor[gray]{0.7}
-	Wejście &  & \mc{1}{RD = -1} & RD = +1 & \mc{1}{Wejście} & \mc{1}{} & \mc{1}{RD = -1} & RD = +1 \\ 
+	 &  & \mc{1}{RD = -1} & \mc{1}{RD = +1} & \mc{1}{} & \mc{1}{} & \mc{1}{RD = -1} & RD = +1 \\ 
 	\cline{1-9}
 	\rowcolor[gray]{0.75}
-	 & \mc{1}{HGF} & \mc{1}{fghj} & fghj &  & \mc{1}{HGF} & \mc{1}{fghj} & fghj \\ \hline
+	 & \mc{1}{HGF} & \mc{1}{fghj} & \mc{1}{fghj} &  & \mc{1}{HGF} & \mc{1}{fghj} & fghj \\ \hline
 	D.x.0 & 000 & 1011 & 0100 & K.x.0 & 000 & 1011 & 0100 \\ \hline
-	D.x.1 & 001 & \mc{1}{1001} &  & K.x.1 ‡ & 001 & 0110 & 1001 \\ \hline
-	D.x.2 & 010 & \mc{1}{0101} &  & K.x.2 ‡ & 010 & 1010 & 0101 \\ \hline
-	D.x.3 & 011 & 1100 & 0011 & K.x.3 ‡ & 011 & 1100 & 0011 \\ \hline
+	D.x.1 & 001 & \mc{1}{1001} &  & K.x.1 & 001 & 0110 & 1001 \\ \hline
+	D.x.2 & 010 & \mc{1}{0101} &  & K.x.2 & 010 & 1010 & 0101 \\ \hline
+	D.x.3 & 011 & 1100 & 0011 & K.x.3 & 011 & 1100 & 0011 \\ \hline
 	D.x.4 & 100 & 1101 & 0010 & K.x.4 & 100 & 1101 & 0010 \\ \hline
-	D.x.5 & 101 & \mc{1}{1010} &  & K.x.5 ‡ & 101 & 0101 & 1010 \\ \hline
-	D.x.6 & 110 & \mc{1}{0110} &  & K.x.6 ‡ & 110 & 1001 & 0110 \\ \hline
-	D.x.P7 † & 111 & 1110 & 0001 &  &  &  &  \\ \hline
-	D.x.A7 † & 111 & 0111 & 1000 & K.x.7 † & 111 & 0111 & 1000 \\ \hline
+	D.x.5 & 101 & \mc{1}{1010} &  & K.x.5 & 101 & 0101 & 1010 \\ \hline
+	D.x.6 & 110 & \mc{1}{0110} &  & K.x.6 & 110 & 1001 & 0110 \\ \hline
+	D.x.P7 & 111 & 1110 & 0001 &  &  &  &  \\ \hline
+	D.x.A7 & 111 & 0111 & 1000 & K.x.7 & 111 & 0111 & 1000 \\ \hline
 \end{tabular}
-\caption{Todo:My caption 5 na 6}
+\captionof{table}{Todo:My caption 5 na 6}
 %source: 
 \label{tbl:3bTo4b}
 \end{table}
+%\newline
+\noindent Sporą część kodów da się wyliczyć na podstawie zamiany EDCBA -> abcfe (odwrócenie bitów) oraz dodanie wartości '0' lub '1' w zależności od aktualnej wartości RD. Niestety nie dotyczy to wszystkich elementów, tabela \ref{tbl:5bTo6b} ukazuje wszystkie możliwe konfiguracje dla tej konwersji (5b/6b). Tabela przedstawia 32 wartości wraz z przekonwertowanymi odpowiednikami (oznaczane D.xx) oraz jedną konwersje dla instrukcji kontrolnej (oznaczona jako K.28).
+%todo later today
+\newline
+\noindent Tabela \ref{tbl:3bTo4b} przedstawia konwersje 3b/4b. Zawiera dwie specyficzne konwersje: Podstawową (ang. primary) D.x.P7 oraz Alternatywną (ang. alternative) D.x.A7. Dodatkowa alternatywna konfiguracja dla tego zestawu danych została stworzona w celu uniknięcia 5-elementowego ciągu złożonego z samych zer lub jedynek podczas łączenia z kodowaniem 5b/6b czyli tworzeniem kodu 8b/10b (a w wypadku samego podstawowego zestawu byłoby to o wiele trudniejsze).
+\newline
+\noindent Table \ref{tbl:controllchars} przedstawia instrukcje kontrolne w postaci zakodowanej w zależności od Running Disparity (RD). 
+\begin{table}[H]
+%\begin{tabular}{ | l | l | l | l | l | l | }
+\begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|c|c|}
+\hline
 
+	\rowcolor[gray]{0.7}
+	\mc{1}{} & \mc{1}{} &  &  & RD = -1 & RD = +1 \\ \hline
+	\rowcolor[gray]{0.75}
+	 & \mc{1}{DEC} & HEX & HGF EDCBA & abcdei fghj & abcdei fghj \\ \hline
+	K.28.0 & 28 & 1C & 000 11100 & "001111 0100 & "110000 1011 \\ \hline
+	K.28.1 & 60 & 3C & "001 11100" & "001111 1001 & "110000 0110 \\ \hline
+	K.28.2  & 92 & 5C & "010 11100 & "001111 0101 & "110000 1010 \\ \hline
+	K.28.3  & 124 & 7C & "011 11100 & "001111 0011 & "110000 1100 \\ \hline
+	K.28.4  & 156 & 9C & "100 11100 & "001111 0010 & "110000 1101 \\ \hline
+	K.28.5  & 188 & BC & "101 11100 & "001111 1010 & "110000 0101 \\ \hline
+	K.28.6  & 220 & DC & "110 11100 & "001111 0110 & "110000 1001 \\ \hline
+	K.28.7  & 252 & FC & "111 11100 & "001111 1000 & "110000 0111 \\ \hline
+	K.23.7  & 247 & F7 & "111 10111 & "111010 1000 & "000101 0111 \\ \hline
+	K.27.7  & 251 & FB & "111 11011 & "110110 1000 & "001001 0111 \\ \hline
+	K.29.7  & 253 & FD & "111 11101 & "101110 1000 & "010001 0111 \\ \hline
+	K.30.7  & 254 & FE & "111 11110 & "011110 1000 & "100001 0111 \\ \hline
+\end{tabular}
+\captionof{table}{Todo:My caption Controll}
+%source: 
+\label{tbl:controllchars}
+\end{table}
+\indent Kodowane zaimplementowane w standardzie USB3.1 (128b/132b) różni się nieco od swojego poprzednika. W kodowaniu 128b/132b pierwsze cztery bity zostały przeznaczone na header a pozostałe 128 bitów na dane. W porównaniu do kodowania 8b/10b, gdzie mieliśmy tak na prawdę utratę 20\% możliwości łącza przez reprezentację każdej porcji 8 bitów - 10 bitami to tutaj mamy utratę rzędu 3\%. Dzięki pierwszym czterem bitom możliwe jest określenie czy przesyłane są dane do przetworzenia czy wysyłane jest polecenie kontrolne. Dane są obudowywane w pakiety o znanym rozmiarze (zawartym w headerze) o maksymalnej wartości równej 128 bity.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{./img/128to132coding}
+\caption{todo:128to132coding}
+%source: http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg
+\label{fig:128to132coding}
+\end{figure}
+\indent Podsumowując USB należy do rozbudowanych interfejsów poprzez wieloletnie udoskonalanie produktu oraz dążenie do poprawy szybkości przesyłu danych. Dzięki pracy wielu inżynierów oraz udoskonalaniu kodowania znaków aby rozwiązywać coraz to nowo napotykane problemy jest to najbardziej powszechny interfejs udostępniony do użytku publicznego.
+\section{Proces testowy}
 
 \chapter{Biblioteki udostępniające API do komunikacji z USB}
 \label{librariesChapter}
