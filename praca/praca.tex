@@ -30,9 +30,7 @@
 \usepackage{polski}
 \usepackage{subfig}
 \usepackage[utf8]{inputenc}
-%\usepackage[OT4]{fontenc}
 \usepackage{verbatim}
-%\usepackage{libertine}
 \usepackage{fourier}
 \usepackage[T1]{fontenc}
 \usepackage{enumitem}
@@ -43,6 +41,7 @@
 \usepackage{physics}
 \usepackage{siunitx}
 \usepackage{nameref}
+\usepackage{listing}
 \usepackage{listings}
 \usepackage{indentfirst}
 
@@ -109,6 +108,12 @@
   title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
 }
 
+\usepackage{xcolor,colortbl}
+
+\newcommand{\mc}[2]{\multicolumn{#1}{c}{#2}}
+\definecolor{Gray}{gray}{0.85}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+\newcolumntype{a}{>{\columncolor{Gray}}c}
 
 
 \begin{document}
@@ -147,14 +152,15 @@ Ocena końcowa pracy przez Recenzenta:
 \newpage
 \thispagestyle{plain}
 \vspace*{\stretch{18}}
-
+\renewcommand*{\lstlistlistingname }{Spis elementów implementacji}
 
 % ************* contents list ************
 \clearpage
 %\pagenumbering{arabic}
 \tableofcontents
-
-\newpage
+\clearpage
+\lstlistoflistings
+\clearpage
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
@@ -195,9 +201,14 @@ Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Opisu
 Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{resultsChapter}. Zawiera on zestawienie i interpretację otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
 %% end backuped introduction
 \fi
-\chapter{Czym są interfejsy szeregowe i do czego służą}
-\label{ch:serialInterface}
-\indent Porty szeregowe w kontekście informatycznym są to fizyczne interfejsy umożliwiające na przesłanie danych z lub do urządzenia w jednostce czasu jeden za drugim. Cechy interfejsów szeregowych można opisać za pomocą trzech prostych punktów.
+
+%%///
+\chapter{Motywacje projektu oraz podstawowe założenia}
+\label{ch:motivationAndBasics}
+Podstawową motywacją rozpoczęcia pracy nad projektem była chęć zdobycia wiedzy w zakresie komunikacji opartej na interfejsach szeregowych. Jest to wiedza która może zostać wykorzystana w przyszłości a tego typu projekty z pewnością prowadzą do samodoskonalenia. Ważnym elementem było zaczerpniecie jak największej wiedzy na temat interfesów szeregowych oraz samego USB które jest przedmiotem niniejszej pracy.
+\section{Czym są interfejsy szeregowe i do czego służą}
+\label{s:serialInterface}
+\indent Porty szeregowe w kontekście informatycznym są to fizyczne interfejsy umożliwiające przesłanie danych z lub do urządzenia w jednostce czasu jeden za drugim. Cechy interfejsów szeregowych można opisać za pomocą trzech prostych punktów.
 \begin{itemize}
 \item prostota
 \item wydajność
@@ -242,7 +253,7 @@ Dość spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośno
 \newline
 \indent Podsumowując, interfejsy szeregowe umożliwiają komunikację miedzy urządzeniami z których jeden najczęściej jest komputerem osobistym. Implementacja każdego interfejsu jest na swój sposób złożona. Kategoryzacja jest możliwa na podstawie różnych wartości. W tym rozdziale zostały podzielone według prostoty interfejsu (w sensie architektury), wydajności oraz trudności implementacji.
 
-\chapter{Czym jest USB}
+\section{Czym jest USB}
 \label{USBStandardChapter}
 Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. definiujący jakie kable, złącza oraz protokoły mają być używane podczas połączenia, komunikacji oraz definiuje sposób zasilania pomiędzy komputerem i urządzeniem elektronicznym. USB zostało zaprojektowane aby ułatwić połączenia standardowych elektronicznych urządzeń takich jak klawiatury, myszki, drukarki, aparaty cyfrowe, dyski przenośne do komputerów osobistych. Wszystkie te urządzenia są dodatkowo zasilane również za pomocą tego portu. Z czasem stało się to wspólne również dla innych urządzeń takich jak smartphony, palmtopy oraz konsole wideo.\cite{USBSystemArch, USB20Doc, USB30Doc}
 \newline
@@ -291,8 +302,102 @@ Przy pierwszych testach prędkośi USB3.1 udało się uzyskać prędkość 7,2Gb
 Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
 \cite{USB30Doc}
 \newline
-\indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1
+\indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1 to kodowanie 8bitów na 10 bitów oraz 128 bitów na 132 bity. Zostały one zastosowane aby uzyskać odpowiedni balans napięcia i zapewnić stabilny Clock Recovery\footnote{Clock Recovery (ang. odzyskiwanie zegara) - chodzi tak na prawdę o poprawną synchronizacje zegara}, ponieważ wysyłając sprzężone (ciągłe) dane wymagane są skoki napięcia. Jeżeli nie zastosujemy kodowania to w wypadku dużej ilości '1' to średnia wartość przesłanego sygnału będzie rosła, natomiast w wypadku dużej ilości '0' wartość ta będzie malała.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./img/withoutEncoding}
+\caption{withoutEncoding}
+%source: http://m.eet.com/media/1158450/tek8b-10bfig1.jpg
+\label{fig:withoutEncoding}
+\end{figure}
+Jak przedstawiono na rys. \ref{fig:withoutEncoding} w wypadku dużej ilości przesyłanych '0' średnia wartość sygnału znacząco spadła. Rozwiązaniem tego problemu jest kodowanie 8b/10b, dzięki któremu wartość ta oscyluje w okolicach 50\% (widoczne na rys \ref{fig:withEncoding}).
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./img/withEncoding}
+\caption{withEncoding}
+%http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
+\label{fig:withEncoding}
+\end{figure}
+Kodowanie 8b/10b zbudowane jest na podstawie kodowania 5b/6b oraz 3b/4b i jest ich połączeniem w odpowiedni sposób. Cały algorytm tworzenia przedstawia się następująco.
+\begin{enumerate}
+\item 8 bitów jako dane wejściowe: HGFEDCBA\footnote{HGFEDCBA - liczba zapisana binarnie w postaci 8 bitów, gdzie H jest najbardziej znaczącym bitem a A jest najmniej znaczącym bitem}
+\item na ostatnich 5 bitach (EDCBA) wykonujemy kodowanie 5b/6b (dochodzi dodatkowy bit)
+\item na pierwszych trzech bitach (HGF) wykonujemy kodowanie 3b/4b (dochodzi kolejny bit)
+\item całość łączona do postaci abcdeifghj\footnote{abcdifhgj - 10 bitowy rezultat kodowania 8b/10b, należy zwrócić uwagę iż kolejność najbardziej znaczącego i najmniej znaczącego bitu jest odwrócona w stosunku do danych wejściowych, oraz i, j, są dodatkowymi dwoma bitami} tworząc rezultat
+\end{enumerate}
+Rysunek \ref{fig:810mapping} doskonale przedstawia ten proces.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{./img/mapping810}
+\caption{810encoding mapping}
+%http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
+\label{fig:810mapping}
+\end{figure}
+
+Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się je na podstawie współczynnika RD\footnote{RD (ang. Running Disparity) - różnica pomiędzy ilością jedynek i zer w ciągu)}, czyli różnicy pomiędzy ilością jedynek i zer w ciągu. Jak zostało wspomniane wyżej założenie całego kodowania jest takie aby ilość zer całości przesyłanych danych oscylowała w okolicach 50\%, więc różnica (RD) dla jednego zestawu 10 bitów danych wynosi +-2.
+\newline
+\indent Realizacja kodowania 5b\/6b jest nieco bardziej skomplikowana, polega to na takim dopasowaniu '0' i '1' aby różnica pomiędzy ilością '0' oraz '1' była równa +-1 (jest to tak na prawdę RD lub odległość Hamminga\footnote{odległość Hamminga - w kontekście projektu XOR dwóch zbiorów}). Wartość wyjściowa musi być unikalna. Jest to możliwe ponieważ dodawany jest dodatkowy bit (unikalność mogła by zostać zachowana bez niego, natomiast nie zostałby spełniony warunek RD = +-1).
+\newline 
+%\begin{tabular}{ | a | l | l | l | a | l | l | l | }
+\begin{table}[H]
+\begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|>{\columncolor[gray]{0.85}}c|c|c|c|c|}
+%\begin{tabular}{|>{\columncolor[gray]{0.85}}l|l|l|l|>{\columncolor[gray]{0.85}}l|l|l|l|l|}
+\cline{1-9}
+	\rowcolor[gray]{0.7}
+	Wejście &  & RD = -1 & RD = +1 & Wejście &  & \mc{1}{RD = -1} & RD = +1 \\ \cline{1-9}
+	\rowcolor[gray]{0.75}
+	 & EDCBA & \mc{1}{abcdei} & abcdei &  &  \mc{1}{EDCBA} & \mc{1}{abcdei} & abcdei \\ \hline
+	D.00 & 00000 & 100111 & 011000 &  D.16 & 10000 & 011011 & 100100 \\ \hline
+	D.01 & 00001 & 011101 & 100010 &  D.17 & 10001 & \mc{1}{100011} &  \\ \hline
+	D.02 & 00010 & 101101 & 010010 &   D.18 & 10010 & \mc{1}{010011} &  \\ \hline
+	D.03 & 00011 & \mc{1}{110001} &  &  D.19 & 10011 & \mc{1}{110010} &  \\ \hline
+	D.04 & 00100 & 110101 & 001010 &   D.20 & 10100 & \mc{1}{001011} &  \\ \hline
+	D.05 & 00101 & \mc{1}{101001} &   & D.21 & 10101 & \mc{1}{101010} &  \\ \hline
+	D.06 & 00110 & \mc{1}{011001} &    & D.22 & 10110 & \mc{1}{011010} &  \\ \hline
+	D.07 & 00111 & 111000 & 000111 &   D.23& 10111 & 111010 & 000101 \\ \hline
+	D.08 & 01000 & 111001 & 000110 &   D.24 & 11000 & 110011 & 001100 \\ \hline
+	D.09 & 01001 & \mc{1}{100101} &    & D.25 & 11001 & \mc{1}{100110} &  \\ \hline
+	D.10 & 01010 & \mc{1}{010101} &  & D.26 & 11010 & \mc{1}{010110} &  \\ \hline
+	D.11 & 01011 & \mc{1}{110100} &    & D.27 & 11011 & 110110 & 001001 \\ \hline
+	D.12 & 01100 & \mc{1}{001101} &    & D.28 & 11100 & \mc{1}{001110} &  \\ \hline
+	D.13 & 01101 & \mc{1}{101100} &    & D.29 & 11101 & 101110 & 010001 \\ \hline
+	D.14 & 01110 & \mc{1}{011100} &   & D.30 & 11110 & 011110 & 100001 \\ \hline
+	D.15 & 01111 & 010111 & 101000 &   D.31 & 11111 & 101011 & 010100 \\ \hline
+	 &  &  &  &   K.28 & 11100 & 001111 & 110000 \\ \hline
+\end{tabular}
+
+\caption{Todo:My caption 5 na 6}
+%source: 
+\label{tbl:5bTo6b}
+\end{table}
+\noindent Sporą część kodów da się wyliczyć na podstawie zamiany EDCBA -> abcfe (odwrócenie bitów) oraz dodanie wartości '0' lub '1' w zależności od aktualnej wartości RD. Niestety nie dotyczy to wszystkich elementów, tabela \ref{tbl:5bTo6b} ukazuje wszystkie możliwe konfiguracje dla tej konwersji. Tabela przedstawia 32 wartości wraz z przekonwertowanymi odpowiednikami (oznaczane D.xx) oraz jedną konwersje dla instrukcji kontrolnej (oznaczona jako K.28).
 %todo later today
+
+\begin{table}[H]
+%\begin{tabular}{ | l | l | l | l | l | l | l | l | }
+\begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|>{\columncolor[gray]{0.85}}c|c|c|c|c|}
+\hline
+\cline{1-9}
+	\rowcolor[gray]{0.7}
+	Wejście &  & \mc{1}{RD = -1} & RD = +1 & \mc{1}{Wejście} & \mc{1}{} & \mc{1}{RD = -1} & RD = +1 \\ 
+	\cline{1-9}
+	\rowcolor[gray]{0.75}
+	 & \mc{1}{HGF} & \mc{1}{fghj} & fghj &  & \mc{1}{HGF} & \mc{1}{fghj} & fghj \\ \hline
+	D.x.0 & 000 & 1011 & 0100 & K.x.0 & 000 & 1011 & 0100 \\ \hline
+	D.x.1 & 001 & \mc{1}{1001} &  & K.x.1 ‡ & 001 & 0110 & 1001 \\ \hline
+	D.x.2 & 010 & \mc{1}{0101} &  & K.x.2 ‡ & 010 & 1010 & 0101 \\ \hline
+	D.x.3 & 011 & 1100 & 0011 & K.x.3 ‡ & 011 & 1100 & 0011 \\ \hline
+	D.x.4 & 100 & 1101 & 0010 & K.x.4 & 100 & 1101 & 0010 \\ \hline
+	D.x.5 & 101 & \mc{1}{1010} &  & K.x.5 ‡ & 101 & 0101 & 1010 \\ \hline
+	D.x.6 & 110 & \mc{1}{0110} &  & K.x.6 ‡ & 110 & 1001 & 0110 \\ \hline
+	D.x.P7 † & 111 & 1110 & 0001 &  &  &  &  \\ \hline
+	D.x.A7 † & 111 & 0111 & 1000 & K.x.7 † & 111 & 0111 & 1000 \\ \hline
+\end{tabular}
+\caption{Todo:My caption 5 na 6}
+%source: 
+\label{tbl:3bTo4b}
+\end{table}
 
 
 \chapter{Biblioteki udostępniające API do komunikacji z USB}
@@ -1073,7 +1178,7 @@ use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \item fullDataSize - całkowity rozmiar danych do wysłania [B]
 \item printOnlyResult - opcjonalny parametr w wypadku ustawienia na wartość '1' pozwala na łatwe zebranie wyników bez zbędnych informacyjnych wiadomości (same dane). 
 \end{itemize}
-\section{embedded code}
+\section{Embedded code}
 Po stronie mikrokontrolera LandTiger konieczne było zaimplementowanie prostego stuba mającego za zadanie krótkie potwierdzenie odebrania wiadomości (jako reakcja na zdarzenie) lub wykonanie akcji na kontrolerze. Poniższy listing zawiera przykładowy kod wysyłający jako potwierdzenie otrzymane dane (niestety aby nie wystąpił w wypadku większej ilości przysłanych danych, wysyłana jest zawartość ograniczona do 64 B). \cite{embeddedC, embeddedSystems, bootstrapLinUSB}
 \begin{lstlisting}[caption={Funkcja USB\_Receiver\_Sender},label={lst:FUSBSenderReceiver}]
 void USB_Receiver_Sender()
@@ -1098,7 +1203,7 @@ void USB_Receiver_Sender()
 }
 \end{lstlisting}
 
-\section{implementacja pomocnicza}
+\section{Implementacja pomocnicza}
 
 Do implementacji pomocniczej należy klasa ułatwiająca wywoływanie aplikacji celem zebrania wyników. Prosta klasa posiadająca przeładowany operator dodawania do strumienia danych. W wypadku naszego projektu, dla normalnego działania aplikacji operator pozwala na wypisanie dowolnych danych, ale w wypadku włączenia zbierania danych w postaci kolumnowej ta klasa nie pozwoli na to.
 
