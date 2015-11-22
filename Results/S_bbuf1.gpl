@@ -3,12 +3,12 @@ fileBase="S_bbuf1"
 #receive="Receive"
 #sendReceive="SendReceive"
 dataExt=".data"
-jpgExt=".jpg"
+jpgExt=".eps"
 
 fileInput=fileBase.dataExt
 fileOutput=fileBase.jpgExt
 
-set terminal jpeg 
+set term post eps 
 set output fileOutput
 set xlabel "buffor [B]"
 set ylabel "predkość [kB/s]"
