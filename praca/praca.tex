@@ -11,7 +11,7 @@
 %%% Platforma testowa
 %%% Odstepy do poprawy
 %%% Testy -  - przyklad w mgr Łukasz Jachymczyk ~2012
-%%% rysunki wektorowe
+%%% rysunki wektorowe +
 %%% range fix
 %%% Sierotki + wdowy do poprawy
 %%% 
@@ -117,7 +117,8 @@
 \definecolor{Gray}{gray}{0.85}
 \definecolor{LightCyan}{rgb}{0.88,1,1}
 \newcolumntype{a}{>{\columncolor{Gray}}c}
-
+%\captionsetup[table]{labelformat=simple, labelsep=period}
+\renewcommand{\tablename}{Tab.}
 
 \begin{document}
 
@@ -487,7 +488,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 \newline
 \indent Istnieje również automatyzacja testów. Stosuje się ją w wypadku większych zmian aby mieć pewność iż wprowadzanie nowych funkcjonalności nie naruszyło poprzednich. Automatyzuje się przede wszystkim testy weryfikacyjne (SyVe\footnote{SyVe - System Verification}), które w standardowym (albo w większości procesów) polegają na manualnym testowaniu danych funkcjonalności i weryfikowaniu czy otrzymany został pożądany rezultat. Istotną rolę pełnią również testy integracyjne aplikowalne tylko do większych projektów, w których istotną role odgrywa współdziałanie wielu komponentów, z reguły implementowane przez różne zespoły.
 \newline
-\indent Z punktu widzenia pracy najbardziej istotna jest weryfikacja oprogramowania z początkowymi założeniami (wymaganiami). Należy zadbać o powtarzalność testu i o przejrzystość formatu danych wyjściowych. Testy należy wykonać w środowisku docelowym (z zewnętrznym urządzeniem) aby uniknąć późniejszych wątpliwości. Należy również przygotować środowisko dla automatyzacji.
+\indent Z punktu widzenia pracy najbardziej istotna jest weryfikacja oprogramowania z początkowymi założeniami (wymaganiami). Należy zadbać o powtarzalność testu i o przejrzystość formatu danych wyjściowych. Testy należy wykonać w środowisku docelowym (z zewnętrznym urządzeniem) aby uniknąć późniejszych wątpliwości. Należy również przygotować środowisko dla automatyzacji. Testy wykonywane są na specyficznym hardwarze, dokładny opis znajduje się w rozdziale \ref{microcontrollerChapter}.
 
 \chapter{Biblioteki udostępniające API do komunikacji z USB}
 \label{librariesChapter}
@@ -1293,7 +1294,7 @@ void USB_Receiver_Sender()
 \end{lstlisting}
 
 \section{Implementacja pomocnicza}
-
+\label{sch:additionalImplementation}
 Do implementacji pomocniczej należy klasa ułatwiająca wywoływanie aplikacji celem zebrania wyników. Prosta klasa posiadająca przeładowany operator dodawania do strumienia danych. W wypadku naszego projektu, dla normalnego działania aplikacji operator pozwala na wypisanie dowolnych danych, ale w wypadku włączenia zbierania danych w postaci kolumnowej ta klasa nie pozwoli na to.
 
 \begin{lstlisting}[caption={Klasa DebugPrinter},label={lst:CDebugPrinter}]
@@ -1357,28 +1358,81 @@ Mode.o: Mode.hpp Mode.cpp
 clean:
 	@rm -f *.o libusb
 \end{lstlisting}
-\chapter{Wyniki symulacji}
+\chapter{Testy oraz ich rezultaty}
 \label{resultsChapter}
-Testy zostały przeprowadzone z użyciem prostej aplikacji w dwóch trybach: synchronicznym i asynchronicznym. Przedstawione poniżej wyniki wraz z krótką interpretacją przekazują zarys doświadczenia. Celem pracy było uzyskanie prędkości nie mniejszej niż 140 MBit/s co jest równe 17,5 MB/s.
+\indent Oprogramowanie zostało poddane dogłębnym testom systemowym mającym na celu zweryfikowanie poprawności działania aplikacji oraz jej zgodności z wymaganiami. Wykonywano je na każdym etapie programowania aby uniknąć jakichkolwiek nieumyślnych interakcji w rezultaty działających uprzednio funkcjonalności. Ważne było aby środowisko testowe było znane. W przypadku tego projektu jest to mikrokontroler LandTiger opisany dokładniej w rozdziale \ref{microcontrollerChapter} oraz komputer osobisty o parametrach przedstawionych w tabeli \ref{tbl:pcParameters}.
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+	\rowcolor[gray]{0.8}
+	Typ procesora & DualCore Intel Core i3 350M, 2266 MHz (17 x 133) \\ \hline
+	
+	Pamięć & 6GB \\ \hline
+	 \rowcolor[gray]{0.8}
+	 Dysk fizyczny & WDC WD3200BPVT-80ZEST0  (298 GB) \\ \hline
+	USB & 2.0 \\ \hline
+\end{tabular}
+\captionof{table}{Todo:add something}
+%source: 
+\label{tbl:pcParameters}
+\end{table}
+\noindent Istotnym elementem wymagań było to aby aplikacja była wieloplatformowa włączając przede wszystkim system Windows oraz systemy z rodziny Linux. Tabela \ref{tbl:operationalSystems} przedstawia systemy operacyjne na których wykonywane były testy.
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+	\rowcolor[gray]{0.8}
+	System operacyjny nr 1 & Windows 8.1 Pro Professional \\ \hline
+	System operacyjny nr 2  & Linux Ubuntu 14.04 \\ \hline
+\end{tabular}
+\captionof{table}{Todo:add something}
+%source: 
+\label{tbl:operationalSystems}
+\end{table}
+\noindent Analizując poniższe wyniki testów należy mięć na uwadze poniższe fakty i założenia:
+\begin{enumerate}
+\item Początkowym celem było uzyskanie prędkości nie mniejszej niż 140 Mbit/s co daje 17,5 MB/s w obu kierunkach.
+\item Zarówno komputer osobisty jak i płytka LandTiger posiada wbudowane złącze żeńskie standardu USB2.0 (komputer złącze typu A, natomiast płytka złącze typu B).
+\item jak się okazało podczas tworzenia projektu płytka LandTiger pomimo wlutowanego złącza USB2.0 nie jest w stanie obsłużyć tego standardu. Spowodowane jest to tym iż chip na płycie wspiera jedynie standard USB1.1.
+\item warunkiem koniecznym udanego testu jest niestety wsparcie minimum USB2.0.
+\end{enumerate}
+\section{Testy jednostkowe}
+\indent Testy jednostkowe miały na celu sprawdzenie poprawności działania poszczególnych metod oraz klas projektu. Dodatkowo chroniły proces tworzenia nowych funkcjonalności aby nie ingerowały w działanie uprzednio napisanych. Testy jednostkowe tworzone były równolegle z programowaniem poszczególnych funkcjonalności dzięki czemu udało się zadbać o całkowitą spójność projektu.
+\section{Testy akceptacyjne i regresyjne}
+\indent Testy akceptacyjne mają za zadanie sprawdzenie czy dana aplikacja spełnia wymagania i warunki oraz potwierdzić czy w testowym środowisku aplikacja działa poprawnie. Testy były wykonywane równolegle z procesem tworzenia oprogramowania dzięki czemu udało się zidentyfikować problemy w locie. Testy zostały wykonywane na zasadzie black box testing. Metodologia ta polega na tym, iż tester testuje konkretną zaimplementowaną funkcjonalność bez wglądu w kod produkcyjny, opierając się tylko na wymaganiach danej funkcjonalności. Jest to o tyle słuszne w wypadkach kiedy testy te wykonywane są przez inną osobę niż osobę która implementowała funkcjonalność, ponieważ programista może podświadomie może wymusić tylko te zachowania aplikacji, które zostały zaimplementowane przez niego, natomiast osoba opierająca się tylko na wymaganiach sprawdzi całość.
+%\indent Testy zostały przeprowadzone z użyciem prostej aplikacji w dwóch trybach: synchronicznym i asynchronicznym. Przedstawione poniżej wyniki wraz z krótką interpretacją przekazują zarys doświadczenia. Celem pracy było uzyskanie prędkości nie mniejszej niż 140 MBit/s co jest równe 17,5 MB/s.
+%\newline
+%\indent Niestety okazało się iż mikrokontroler LandTiger pomimo wlutowanego gniazda USB2.0 nie jest w stanie obsłużyć tego standardu. Powodem tego jest to iż chip na płytce jest w stanie obsłużyć tylko standard USB1.1.
+%\newline
+%\indent Powodem dla którego mikrokontroler działa pomimo obsługi USB1.1 (a nie jak wspomniano USB2.0) jest to że wlutowane gniazdo ustandaryzowane jako USB2.0 jest wstecznie kompatybilne (więcej informacji w rozdziale \ref{USBStandardChapter}).
+%\newline
+\section{wyniki}
+\indent Zebrane wyniki możemy skategoryzować według: ilości przesłanych danych, szybkości przesyłu danych z komputera osobistego do kontrolera, szybkości przesyłu danych z kontrolera do komputera osobistego, szybkości przesyłu w obie strony. Kluczowym elementem jest tutaj wielkość buffora, czyli ilości danych możliwych do wysłania/odebrania w jednym tiku zegara.
 \newline
-\indent Niestety okazało się iż mikrokontroler LandTiger pomimo wlutowanego gniazda USB2.0 nie jest w stanie obsłużyć tego standardu. Powodem tego jest to iż chip na płytce jest w stanie obsłużyć tylko standard USB1.1.
+\indent Według założeń USB 2.0 jest w stanie obsłużyć oczekiwane 140Mbit/s (17,5 MB/s). Wykres przedstawiony na Rys. \ref{fig:speedTest} doskonale to obrazuje.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{./img/speedTest}
+\caption{Todo: wykres opracowany na podstawie...}
+\label{fig:speedTest}
+\end{figure}
+Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje). Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
 \newline
-\indent Powodem dla którego mikrokontroler działa pomimo obsługi USB1.1 (a nie jak wspomniano USB2.0) jest to że wlutowane gniazdo ustandaryzowane jako USB2.0 jest wstecznie kompatybilne (więcej informacji w rozdziale \ref{USBStandardChapter}).
-\newline
-\indent Zebrane wyniki możemy skategoryzować według: ilości przesłanych danych, szybkości przesyłu danych z komputera osobistego do kontrolera, szybkości przesyłu danych z kontrolera do komputera osobistego, szybkości przesyłu w obie strony. Kluczowym elementem jest tutaj wielkość buffora, czyli ilości danych możliwych do wysłania/odebrania w jednym tiku zegara. Niestety w wypadku USB1.1 jest to 64B (z powodu ograniczeń na chipie płytki). Większość wyników została wygenerowana za pomocą programu który nie pozwalał na przekroczenie dopuszczalnego przez LandTiger'a bufforu (tak jak w przypadku Rys. \ref{fig:S_107374200Send} oraz innych)
+\indent Podczas testów akceptacyjnych równolegle z developmentem okazało się iż płytka użyta w projekcie a dokładniej opisana w rozdziale \ref{microcontrollerChapter} wspiera na swoim chipie jedynie standard USB1.1 pomimo wlutowanego złącza USB2.0. Niestety w wypadku USB1.1 jest to 64B. Większość wyników została wygenerowana za pomocą programu który nie pozwalał na przekroczenie dopuszczalnego przez LandTiger'a bufforu (tak jak w przypadku Rys. \ref{fig:S_107374200Send} oraz innych)
 \newline
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.75\textwidth]{./img/S_107374200Send}
-\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB (tryb synchroniczny)}
+\includegraphics[width=0.9\textwidth]{./img/S_107374200Send}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ok. 102 MB (tryb synchroniczny)}
 \label{fig:S_107374200Send}
 %\end{figure}
 }
 \end{figure}
 %%todo
-Na Rys. \ref{fig:S_107374200Send} widoczny jest wyraźny wzrost szybkości wysyłania danych wraz ze zwiększeniem bufora. Jest to doświadczenie wykonane na stosunkowo małym buforze spowodowane ograniczeniami płytki LandTiger. Wykres jest liniowy 
-\begin{figure}[h]
+\noindent Na Rys. \ref{fig:S_107374200Send} widoczny jest wyraźny wzrost szybkości wysyłania danych wraz ze zwiększeniem bufora. Jest to doświadczenie wykonane na stosunkowo małym buforze spowodowane ograniczeniami płytki LandTiger. Wykres jest liniowy 
+\begin{figure}[H]
 {
 \centering
 \includegraphics[width=0.7\textwidth]{./img/S_107374200Receive}
@@ -1387,8 +1441,8 @@ Na Rys. \ref{fig:S_107374200Send} widoczny jest wyraźny wzrost szybkości wysy�
 %\end{figure}
 }
 \end{figure}
-\newline
-Analogiczny wykres widoczny jest dla prędkości odbierania danych (Rys. \ref{fig:S_107374200Receive}), różnice są niezauważalne przy tak małej ilości danych.
+%\newline
+\noindent Analogiczny wykres widoczny jest dla prędkości odbierania danych (Rys. \ref{fig:S_107374200Receive}), różnice są niezauważalne przy tak małej ilości danych.
 %44\begin{figure}[htpb]
 
 %\begin{figure}[H]
@@ -1410,43 +1464,35 @@ Analogiczny wykres widoczny jest dla prędkości odbierania danych (Rys. \ref{fi
 \label{fig:S_10737420Send}
 }
 \end{figure}
+\noindent W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}. Wykres nie jest już liniowy a prędkość zdaje się być na bardziej niedeterministyczna.
 
-W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}. Wykres nie jest już liniowy a prędkość zdaje się być na bardziej niedeterministyczna.
-
-\begin{figure}[H]
+\begin{figure}[h]
 {
 \centering
-\includegraphics{./img/S_10737420Receive}
+\includegraphics[width=1\textwidth]{./img/S_10737420Receive}
 \caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~10 MB (tryb synchroniczny)}
 \label{fig:S_10737420Receive}
 %\end{figure}
 }
 \end{figure}
-Podobnie jak w poprzednim przypadku (dla większej ilości danych), wykres prędkości odbierania danych pokrywa się z wykresem prędkości wysyłania danych (Rys. \ref{fig:S_10737420Receive}).
-
-%\begin{figure}[H]
-%{
-%\centering
-%\includegraphics[width=0.75\textwidth]{./img/S_10737420SendReceive}
-%\caption{TODO S\_10737420SendReceive.jpg}
-%}
-%\end{figure}
-Podsumowując synchroniczne wysyłanie danych nie należy do najbardziej efektywnych metod. Każda operacja zwraca status i ten status musi być weryfikowany aby zlokalizować ewentualny błąd.
+\noindent Podobnie jak w poprzednim przypadku (dla większej ilości danych), wykres prędkości odbierania danych pokrywa się z wykresem prędkości wysyłania danych (Rys. \ref{fig:S_10737420Receive}).
+\newline
+\indent Wszystkie powyższe wykresy zostały wygenerowane z użyciem mechanizmu synchronicznego. Oznacza to, że została użyta wbudowana biblioteka do obsługi wysyłania oraz odbierania danych, która z punktu widzenia kodu aplikacji wygląda na zasadzie takiej iż na każdą wysłaną paczkę danych oczekuję na odbiór dokładnie takiej samej ilości danych. Podsumowując synchroniczne wysyłanie danych nie należy do najbardziej efektywnych metod, ale pozwala na oszacowanie wyników oraz na zestawienie ich z oczekiwaniami.
+%Każda operacja zwraca status i ten status musi być weryfikowany aby zlokalizować ewentualny błąd.
 %%%%% Asynch
 \newline
-
-Zupełnie innym podejściem charakteryzuje się metoda Asynchroniczna w której korzysta się z nie blokujących metod. Tutaj inną przeszkodą jest to aby to programista zadbał o synchronizacje (ponieważ po łączu w jednym czasie mogą przebiegać dane tylko w jedną stronę). Dzięki tej metodzie istnieje możliwość uzyskania lepszych (szybszych) wyników.
+\indent Zupełnie innym podejściem charakteryzuje się metoda Asynchroniczna w której korzysta się z nie blokujących metod. Tutaj inną przeszkodą jest to aby to programista zadbał o synchronizacje (ponieważ po łączu w jednym czasie mogą przebiegać dane tylko w jedną stronę). Implementacja była dużo bardziej kosztowna i wymagała przeznaczenia więcej czasu aby zadbać o poprawna synchronizacje danych, niemniej doprowadziła do większej kontroli nad zarządzaniem przełączania wysyłania oraz odbierania danych. W wypadku przesyłanych danych z wykorzystaniem LandTiger'a a co za tym idzie wykorzystanie jedynie dostępnego rozmiaru buforu danych wielkości jedynie 64B zmiany są praktycznie niezauważalne.
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.72\textwidth]{./img/A_107374200Send}
+\includegraphics[width=0.7\textwidth]{./img/A_107374200Send}
 \caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB (tryb Asynchroniczny)}
 \label{fig:A_107374200Send}
 }
 
 \end{figure}
 
-Jak widac na Rys. \ref{fig:A_107374200Send} zależność liniowa również występuje dla tej ilości danych orzy przesyle asynchronicznym, podobnie jak w przypadku przesyłu synchronicznego (Rys. \ref{fig:S_107374200Send}).
+\noindent Jak widac na Rys. \ref{fig:A_107374200Send} zależność liniowa również występuje dla tej ilości danych orzy przesyle asynchronicznym, podobnie jak w przypadku przesyłu synchronicznego (Rys. \ref{fig:S_107374200Send}).
 
 
 \begin{figure}[H]
@@ -1457,7 +1503,7 @@ Jak widac na Rys. \ref{fig:A_107374200Send} zależność liniowa również wyst�
 \label{fig:A_107374200Receive}
 }
 \end{figure}
-Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 MB) metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a wyniki są bardzo zbliżone do siebie.
+\noindent Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 MB) metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a wyniki są bardzo zbliżone do siebie.
 
 
 
@@ -1472,7 +1518,7 @@ Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 M
 }
 \end{figure}
 
-Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest brak liniowości takiego wykresu (zarówno dla Rys. \ref{fig:A_10737420Send} jak i Rys. \ref{fig:A_10737420Receive}).
+\noindent Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest brak liniowości takiego wykresu (zarówno dla Rys. \ref{fig:A_10737420Send} jak i Rys. \ref{fig:A_10737420Receive}).
 \begin{figure}[H]
 {
 \centering
@@ -1482,10 +1528,10 @@ Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest bra
 }
 \end{figure}
 
-Podsumowując użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie jest nawet zbliżona do prędkości porządanej (140 MB/s) bez względu czy korzystaliśmy z synchronicznej metody czy asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B  pozostałem testy oparte są na zasymulowanych danych. 
+\indent Podsumowując użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie jest nawet zbliżona do prędkości porządanej (140 MB/s) bez względu czy korzystaliśmy z synchronicznej metody czy asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B  pozostałem testy oparte są na zasymulowanych danych. 
 \newline
 
-Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora danych ale została wykonana bez poprawnego odbioru danych po stronie kontrolera. Oznacza to że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
+\noindent Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora danych ale została wykonana bez poprawnego odbioru danych po stronie kontrolera. Oznacza to że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
 
 \begin{figure}[H]
 {
@@ -1495,8 +1541,7 @@ Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora 
 \label{fig:S_bbuf1}
 }
 \end{figure}
-
-Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu poprawnego odbioru danych po stronie kontrolera. Zależność liniowa całkowicie zaniknęła. Wartości rozmiaru bufora danych jest podwajana z każdym zgięciem krzywej (początkowa wartość 16 B, końcowa 4096 B = 4 kB), a więc rozbieżność przesyłu danych jest duża. Warto zauważyć iż pomimo dość dużego bufora danych prędkość nie przekroczyła 1 MB/s (max wartość 905,702 kB/s).
+\noindent Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu poprawnego odbioru danych po stronie kontrolera. Zależność liniowa całkowicie zaniknęła. Wartości rozmiaru bufora danych jest podwajana z każdym zgięciem krzywej (początkowa wartość 16 B, końcowa 4096 B = 4 kB), a więc rozbieżność przesyłu danych jest duża. Warto zauważyć iż pomimo dość dużego bufora danych prędkość nie przekroczyła 1 MB/s (max wartość 905,702 kB/s).
 \begin{figure}[H]
 {
 \centering
@@ -1505,13 +1550,9 @@ Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu popraw
 \label{fig:S_bbuf2}
 }
 \end{figure}
-
-Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Dla tego przypadku został użyty bufor o wartości minimalnej równe 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku jest podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
+\noindent Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Dla tego przypadku został użyty bufor o wartości minimalnej równe 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku jest podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
 \newline
-
-Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera).
-
-
+\indent Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując to wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
 \chapter{Podsumowanie}
 \label{ConclusionChapter}
 Celem projektu było uzyskanie jak największej prędkości przesyłu danych po interfejsie USB. Na wstępie zamieszczone zostało krótkie wprowadzenie odnośnie dostępnych standardów USB oraz ich zarysowi historycznemu. Kolejnym krokiem był dwóch najbardziej popularnych bibliotek do obsługi interfejsu USB (libUSB oraz winUSB). W rozdziale został zawarty krótki opis najważniejszych aspektów bibliotek wraz z uzasadnieniem wyboru libUSB jako tej używanej w projekcie.
