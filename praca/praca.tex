@@ -6,16 +6,16 @@
 %%% Wstep do kazdego rozdzialu + podsumowanie
 %%% Dluzszy wstep, rozwinac poczatkowa wfaze (1.5 str), motywacja pracy +
 %%% opisy rozdzialow zbic w jeden akapit +
-%%% Proces weryfikacji biblioteki +/-
+%%% Proces weryfikacji biblioteki +
 %%% Podsumowane do poprawy
-%%% Platforma testowa
-%%% Odstepy do poprawy
-%%% Testy -  - przyklad w mgr Łukasz Jachymczyk ~2012
+%%% Platforma testowa +
+%%% Odstepy do poprawy +/-
+%%% Testy -  - przyklad w mgr Łukasz Jachymczyk ~2012 +
 %%% rysunki wektorowe +
 %%% range fix
 %%% Sierotki + wdowy do poprawy
 %%% 
-%%% podzielenie wynikow (teoretyczne, praktyczne, porownanie, podsumowanie)
+%%% podzielenie wynikow (teoretyczne, praktyczne, porownanie, podsumowanie) +
 %%% dopisac dodatki (zewnetrzne biblioteki, zawartosc CD etc..)
 %%%
 %%%
@@ -44,11 +44,10 @@
 \usepackage{listing}
 \usepackage{listings}
 \usepackage{indentfirst}
-
 \usepackage{color}
 
 \usepackage{array}
-
+\usepackage[all]{nowidow}
  \usepackage{multirow}
  \usepackage[table,xcdraw]{xcolor}
  
@@ -168,6 +167,8 @@ Ocena końcowa pracy przez Recenzenta:
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+%\hyphenation{finansowe}
+%\hyphenpenalty=100000
 \chapter{Wstęp}
 \label{beginChapter}
 \pagestyle{fancy}
@@ -224,14 +225,14 @@ Do najprostszych interfejsów szeregowych zaliczamy z pewnością interfejsy tak
 \centering
 \parbox{5cm}{
 \includegraphics[width=0.35\textwidth]{./img/rs232C}
-\caption{RS232C}
+\caption{RS232C \cite{RS232C}}
 %source:http://image.rakuten.co.jp/menet/cabinet/k_02/krs10107k_ma.jpg?_ex=60x60
 \label{fig:RS232C}}
 \qquad
 \begin{minipage}{5cm}
 \centering
 \includegraphics[width=0.7\textwidth]{./img/rs232family}
-\caption{RS232family}
+\caption{Rodzina RS232 \cite{RS232family}}
 %source:https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/VGA-RS-232C-Parallelbus.jpg/369px-VGA-RS-232C-Parallelbus.jpg
 \label{fig:RS232Family}
 \end{minipage}
@@ -241,7 +242,7 @@ Do najprostszych interfejsów szeregowych zaliczamy z pewnością interfejsy tak
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.35\textwidth]{./img/ethernet-cable}
-\caption{EthernetCable}
+\caption{Kabel Ethernetowy \cite{ethernetCable}}
 %source: http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg
 \label{fig:EthernetCable}
 \end{figure}
@@ -249,7 +250,7 @@ Jeśli chodzi o trudność implementacji to najtrudniejszym do zaimplementowania
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.35\textwidth]{./img/bluetooth-logo}
-\caption{bluetoothLogo}
+\caption{Bluetooth \cite{bluetooth}}
 %source: http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967
 \label{fig:blueTooth}
 \end{figure}
@@ -269,8 +270,8 @@ Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. 
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=15cm]{./img/micro-usb-type}
-\caption{Połączenie przewodów w micro-USB}
+\includegraphics[width=0.5\textwidth]{./img/usbLogo}
+\caption{Logo standardu USB2.0 oraz USB3.0 \cite{usbLogo}}
 \end{figure}
 %
 % USB ON THE GO ??
@@ -313,7 +314,7 @@ Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential sign
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./img/cleanSignal}
-\caption{cleanSignal.}
+\caption{Przykład czystego (bez zakłóceń) sygnału transmitowanego \cite{cleanSignal}}
 %source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_1.jpg
 \label{fig:cleanSignal}
 \end{figure}
@@ -321,14 +322,15 @@ Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential sign
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{./img/receivedNoiseSignal}
-\caption{receivedNoiseSignal.}
+\caption{Przykład odebranego sygnału (wraz z zakłóceniami) \cite{receivedNoiseSignal}}
+
 %source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_2.jpg
 \label{fig:receivedNoiseSignal}
 \end{figure}
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{./img/receivedCleanedSignal}
-\caption{receivedCleanedSignal.}
+\caption{Przykład sygnału po oczyszczeniu z szumów \cite{receivedCleanedSignal}}
 %source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_3.jpg
 \label{fig:receivedCleanedSignal}
 \end{figure}
@@ -339,7 +341,7 @@ Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential sign
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.95\textwidth]{./img/withoutEncoding}
-\caption{withoutEncoding}
+\caption{Przykład sekwencji danych bez kodowania \cite{withoutEncoding}}
 %source: http://m.eet.com/media/1158450/tek8b-10bfig1.jpg
 \label{fig:withoutEncoding}
 \end{figure}
@@ -347,7 +349,7 @@ Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential sign
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{./img/withEncoding}
-\caption{withEncoding}
+\caption{Przykład sekwencji po zakodowaniu \cite{withEncoding}}
 %http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
 \label{fig:withEncoding}
 \end{figure}
@@ -355,7 +357,7 @@ Rys. \ref{fig:sendingDataThroughPHYLayer} przedstawia działanie USB3.0 wraz z k
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{./img/SendingData}
-\caption{sendingDataThroughPHYLayer}
+\caption{Przykład wysyłania danych przez warstwę fizyczną wykorzystując kodowanie \cite{SendingData}}
 %source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_4.jpg
 \label{fig:sendingDataThroughPHYLayer}
 \end{figure}
@@ -370,7 +372,7 @@ Rysunek \ref{fig:810mapping} doskonale przedstawia ten proces.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.75\textwidth]{./img/mapping810}
-\caption{810encoding mapping}
+\caption{Przykład mapowania w kodowaniu 8b/10b \cite{mapping810}}
 %http://m.eet.com/media/1158451/tek8b-10bfig2.jpg
 \label{fig:810mapping}
 \end{figure}
@@ -406,7 +408,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 	D.15 & 01111 & 010111 & 101000 &   D.31 & 11111 & 101011 & 010100 \\ \hline
 	 &  &  &  &   K.28 & 11100 & 001111 & 110000 \\ \hline
 \end{tabular}
-\captionof{table}{Todo:My caption 5 na 6}
+\captionof{table}{Przykład mapowania 5b na 6b \cite{tablesMapping}}
 %source: 
 \label{tbl:5bTo6b}
 \end{table}
@@ -433,7 +435,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 	D.x.P7 & 111 & 1110 & 0001 &  &  &  &  \\ \hline
 	D.x.A7 & 111 & 0111 & 1000 & K.x.7 & 111 & 0111 & 1000 \\ \hline
 \end{tabular}
-\captionof{table}{Todo:My caption 5 na 6}
+\captionof{table}{Przykład mapowania 3b na 4b \cite{tablesMapping}}
 %source: 
 \label{tbl:3bTo4b}
 \end{table}
@@ -466,7 +468,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 	K.29.7  & 253 & FD & "111 11101 & "101110 1000 & "010001 0111 \\ \hline
 	K.30.7  & 254 & FE & "111 11110 & "011110 1000 & "100001 0111 \\ \hline
 \end{tabular}
-\captionof{table}{Todo:My caption Controll}
+\captionof{table}{Przykład komunikatów kontrolnych \cite{tablesMapping}}
 %source: 
 \label{tbl:controllchars}
 \end{table}
@@ -474,7 +476,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{./img/128to132coding}
-\caption{todo:128to132coding}
+\caption{Schemat ramki w kodowaniu 128b/132b \cite{128to132coding}}
 %source: http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg
 \label{fig:128to132coding}
 \end{figure}
@@ -493,7 +495,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, ustala się j
 \chapter{Biblioteki udostępniające API do komunikacji z USB}
 \label{librariesChapter}
 Głównym celem projektu jest osiągniecie jak najszybszej prędkości przesyłu danych. Do realizacji celu konieczne jest użycie odpowiedniej biblioteki do komunikacji z interfejsem USB. W rozdziale przedstawiony został krótki opis najbardziej popularnych bibliotek posiadających interfejs komunikacyjny ze złączami USB.
-\section{Biblioteka libUSB}
+\section{Biblioteka libUSB \cite{libusbDesc}}
 LibUSB jest biblioteką stworzoną w 2007 roku. Napisana w języku C  pozwala na prosty i łatwy dostęp do urządzenia USB. Jest w 100\% przeznaczona dla użytku developera. Biblioteka ma za zadanie ułatwić pisanie aplikacji opartych na komunikacji USB z mikrokontrolerem.
 Biblioteka libUSB jest przenośna a co za tym idzie dostępna na wiele platform (Linux, OS X, Windows, Android, OpenBSD, etc.) wraz z niezmiennym API.
 Nie są wymagane dodatkowe uprawnienia aby komunikacja z urządzeniem przebiegała poprawnie.
@@ -516,7 +518,6 @@ Funkcjonalność biblioteki:
 \item lekka biblioteka z prostym API
 \item kompatybilna wstecznie (do wersji libUSB-0.1)
 \end{enumerate}
-(informacje uzyskane dzięki \cite{libusbDesc})
 \section{Biblioteka winUSB}
 Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów które potrzebują szybkiego i bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z portami USB z poziomu user-mode. W Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
 
@@ -531,148 +532,146 @@ Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod
 %%%\section{Wybór}
 \indent Podsumowując w projekcie została użyta biblioteka libUSB. Głównym powodem była możliwość kompilacji programów zarówno pod systemami Unix jak i z rodziny Microsoft Windows bez jakichkolwiek (lub znikomych) zmian w kodzie.
 
-\chapter{Opis zawartości biblioteki libUSB}
+\chapter{Opis interfejsu udostępnionego przez libUSB \cite{libusbDoc}}
 \label{libUsbChapter}
-\indent Rozdział dokumentujący API używane w projekcie. W rozdziale \ref{librariesChapter} został uzasadniony wybór tej właśnie biblioteki. \cite{libusbDoc}
+\indent Zadaniem rozdziału jest opis działania poszczególnych funkcji użytych w projekcie. Jest to konieczne aby przeglądając implementacje projektu być w stanie bez problemowo zrozumieć działanie poszczególnych części projektu. Rozdział został podzielony na podstawie struktur oraz funkcji których użycie widoczne jest w implementacji właściwej.
 \section{najważniejsze struktury}
 \subsection{libusb\_context}
-libusb\_context jest strukturą reprezentującą sesję libusb.
-\newline
+\noindent libusb\_context jest strukturą reprezentującą sesję libusb.
 Koncepcja indywidualnych sesji libusb pozwala aby program mógł korzystać z dwóch bibliotek (lub dynamicznie ładować dwa moduły) z których obie nie zależnie korzystają z libusb. To zapobiega ingerencji (interferencji) pomiędzy dwoma programami używającymi libusb. Dla przykładu libusb\_set\_debug() nie zaingeruje w działanie innego programu korzystającego z libusb, natomiast libusb\_exit() nie wyczyści pamięci używanej przez inny program libusb.
-\newline
+%\newline
 Sesje tworzone są za pomocą libusb\_init() oraz czyszczone za pomocą libusb\_exit(). Jeśli zagwarantowane jest to, że dana aplikacja jest jedyną która korzysta z libusb, twórca jej nie musi przejmować się kontekstami (strukturą libusb\_context), wystarczy aby przekazywał do wszystkich funkcji, gdzie struktura jest wymagana wartość NULL. Jest to równoważne z użyciem domyślnego kontekstu.
-
 \subsection{libusb\_device\_handle}
-Struktura reprezentująca uchwyt do urządzenia USB.
-\newline
-Jest to nieprzejrzysty typ, użycie jest możliwe tylko za pomocą wskaźnika, zazwyczaj dostarczanego za pomocą funkcji libusb\_open().
-\newline
+\noindent Struktura reprezentująca uchwyt do urządzenia USB.
+%\newline
+Jest to nieprzejrzysty typ, użycie jest możliwe tylko za pomocą wskaźnika, zazwyczaj dostarczanego za pomocą libusb\_open().
+%\newline
 Uchwyt do urządzenia USB jest używany do wykonywania operacji wejścia/wyjścia. Po zakończeniu wszystkich operacji należy wywołać libusb\_close().
 
 \section{najważniejsze funkcje}
 \subsection{libusb\_init}
-Inicjalizacja biblioteki.
-\newline
+\noindent Funkcja odpowiada za inicjalizację biblioteki.
+%\newline
 Funkcja musi zostać wywołana przed wywołaniem jakiejkolwiek innej funkcji z biblioteki libUsb.
-\newline
+%\newline
 Jeśli w argumencie nie zostanie dostarczony żaden wskaźnik (wyjściowy) kontekstu, zostanie stworzony domyślny kontekst. W przypadku jeśli domyślny kontekst już istnieje zostanie on ponownie użyty (bez ponownej inicjalizacji).
-\newline
+%\newline
 Funkcja zwraca wartość 0 w wypadku powodzenia, w przeciwnym wypadku zwraca kod błędu.
 \subsection{libusb\_open\_device\_with\_vid\_pid}
-Wygodna funkcja służąca odszukaniu konkretnego urządzenia na podstawie jego vendorId oraz productId (są to parametry charakteryzujące każde urządzenie).
-\newline
+\noindent Wygodna funkcja służąca odszukaniu konkretnego urządzenia na podstawie jego vendorId oraz productId (są to parametry charakteryzujące każde urządzenie).
+%\newline
 Ta funkcja jest używana w przypadkach kiedy z góry jest znane vendorId oraz productId. Najczęściej są to przypadki pisania aplikacji aby przetestować jakąś określoną funkcjonalność. Funkcja pozwala uniknąć wywołanie libusb\_get\_device\_list() i dbania o odpowiednie czyszczenie pamięci po liście.
-\newline
+%\newline
 Pierwszym parametrem jest kontekst uzyskany za pomocą libusb\_init().
-\newline
+%\newline
 Kolejnymi parametrami są vendorId oraz productId.
-\newline
+%\newline
 Funkcja zwraca uchwyt do znalezionego urządzenia, lub NULL w wypadku kiedy nie może znaleźć pożądanego urządzenia (o podanym productId oraz vendorId) lub błędu.
 \subsection{libusb\_kernel\_driver\_active}
-Funkcja sprawdzająca czy sterownik jądra kernela jest aktywny na interfejsie.
-\newline
+\noindent Funkcja sprawdzająca czy sterownik jądra kernela jest aktywny na interfejsie.
+%\newline
 W wypadku kiedy sterownik jądra jest aktywny nie możliwe jest zgłoszenie użycia interfejsu, a co za tym idzie libUSB nie może wykonać operacji wejścia/wyjścia.
-\newline
-Funkcjonalność jest nie dostępna w systemie Windows.
-\newline
+%\newline
+Funkcjonalność nie jest dostępna w systemie Windows.
+%\newline
 Do funkcji należy przekazać uchwyt do urządzenia oraz numer interfejsu.
-\newline
+%\newline
 Funkcja zwraca wartość 0, jeśli żaden sterownik jądra nie jest aktywny, wartość 1 w wypadku jeśli istnieje aktywny sterownik jądra.
 \newline
 W wypadku błędów: LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostanie odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana oraz inny kod błędu w wypadku innego błędu.
 \subsection{libusb\_detach\_kernel\_driver}
-Dzięki funkcji możliwe jest odłączenie sterownika jądra kernela od interfejsu.
-\newline
+\noindent Dzięki funkcji możliwe jest odłączenie sterownika jądra kernela od interfejsu.
+%\newline
 Sukces operacji umożliwi zgłoszenie użycia interfejsu i wykonanie operacji wejścia/wyjścia.
-\newline
+%\newline
 Funkcjonalność nie jest dostępna dla systemu Windows.
-\newline
+%\newline
 Parametrami są uchwyt do urządzenia oraz numer interfejsu.
-\newline
-Funkcja zwraca wartość 0 w momencie powodzenia, LIBUSB\_ERROR\_NOT\_FOUND jeśli żaden sterownik nie był aktywny, LIBUSB\_ERROR\_INVALID\_PARAM jeśli interfejs nie istniej, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana lub inny kod błędu w wypadku inne błędu.
+%\newline
+Funkcja zwraca wartość 0 w momencie powodzenia, natomiast w przeciwnym wypadku LIBUSB\_ERROR\_NOT\_FOUND jeśli żaden sterownik nie był aktywny, LIBUSB\_ERROR\_INVALID\_PARAM jeśli interfejs nie istniej, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana lub inny kod błędu w wypadku inne błędu.
 \subsection{libusb\_claim\_interface}
-Dzięki funkcji libusb\_claim\_interface() możliwe jest zgłoszenie użycia danego interfejsu dla danego urządzenia.
-\newline
+\noindent Dzięki funkcji libusb\_claim\_interface() możliwe jest zgłoszenie użycia danego interfejsu dla danego urządzenia.
+%\newline
 Wywołanie funkcji jest wymagane przed wykonaniem operacji wejścia/wyjścia dla dowolnego punktu końcowego interfejsu.
-\newline
+%\newline
 Jest dozwolone wywołanie funkcji dla interfejsu już wcześniej zgłoszonego, w tym wypadku zostanie zwrócona wartość 0 bez wykonywania żadnych operacji.
-\newline
+%\newline
 W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie odłączony (jeśli to konieczne), w przypadku niepowodzenia zostanie zwrócony błąd odłączenia.
-\newline
+%\newline
 Sama procedura wewnątrz funkcji nie jest skomplikowana, nie wymaga wysyłania czegokolwiek po magistrali. Są to proste instrukcje mówiące systemowi operacyjnemu iż aplikacja chce korzystać z danego interfejsu.
-\newline
+%\newline
 Nie jest to funkcja blokująca.
-\newline
+%\newline
 Parametrami są uchwyt do urządzenia oraz numer interfejsu zgłaszanego.
-\newline
+%\newline
 Wartość 0 zostaje zwrócona w wypadku powodzenia operacji.
-\newline
+%\newline
 W wypadku niepowodzenia kody błędu t.j. LIBUSB\_ERROR\_NOT\_FOUND jeśli podany interfejs nie istnieje, LIBUSB\_ERROR\_BUSY jeśli inny program lub sterownik zarezerwował dany interfejs, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
 \subsection{libusb\_bulk\_transfer}
-Dzięki funkcji możliwy jest przesył większej grupy danych.
-\newline
+\noindent Dzięki funkcji możliwy jest przesył większej grupy danych. Jest to jedna z najważniejszych funkcji użytych w projekcie.
+%\newline
 Kierunek jest określony na podstawie bitów kierunkowych punktu końcowego interfejsu.
-\newline
+%\newline
 Dla odczytu, jeden z parametrów określa ilość danych jaka jest spodziewana przy odczycie. Jeżeli odebrana zostanie mniejsza ilość danych niż oczekiwana, funkcja po prostu zwróci te dane wraz z dodatkowym parametrem określającym ilość otrzymanych danych. Istotne przy odczycie jest to aby sprawdzić czy ilość oczekiwanych danych jest taka jak odczytana.
-\newline
+%\newline
 W wypadku zapisu również należy sprawdzić czy ilość danych wysłanych pokrywa się z ilością danych skierowaną do wysyłki.
-\newline
+%\newline
 Wskazana jest również weryfikacja ilości danych wysłanych/odebranych w wypadku wystąpienia timeoutu (funkcja zwróci kod błędu określający timeout). libUSB może podzielić wysyłane dane na mniejsze części i timeout może wystąpić po wysłaniu kilku z nich. Ważne jest to, że nie oznacza to iż nic nie zostało wysłane/odebrane, dlatego należy sprawdzić ilość elementów wysłanych/odebranych i dostosować odpowiednio kolejne kroki.
-\newline
+%\newline
 Funkcja przyjmuje następujące parametry: uchwyt urządzenia z którym aplikacja będzie się komunikować, adres punktu końcowego interfejsu po którym będzie odbywała się komunikacja, wskaźnik do pamięci danych która ma zostać przetransferowana (w wypadku zapisu) lub odebrana (w wypadku odczytu), ilość danych do wysłania (w przypadku zapisu) lub oczekiwana ilość danych do odebrania (w przypadku odczytu), ilość danych przetransferowanych (w obu przypadkach), maksymalna długość czasu na wykonanie operacji, dla nieograniczonego należy użyć wartości równej 0.
-\newline
+%\newline
 W przypadku poprawności działania funkcja zwraca wartość 0 oraz ilość przetransferowanych danych przekazanych do funkcji za pomocą wskaźnika.
-\newline
+%\newline
 W przeciwnym wypadku funkcja zwraca: LIBUSB\_ERROR\_TIMEOUT jeśli transfer przekroczył określony czas, LIBUSB\_ERROR\_PIPE jeśli wystąpił błąd związany z punktem końcowym, LIBUSB\_ERROR\_OVERFLOW jeśli urządzenie wysłało więcej danych niż przewidziane w buforze, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
 \subsection{libusb\_release\_interface}
-Funkcja zwalnia rezerwacje wcześniej zgłoszonego interfejsu za pomocą funkcji libusb\_claim\_interface().
-\newline
+\noindent Funkcja zwalnia rezerwacje wcześniej zgłoszonego interfejsu za pomocą funkcji opisanej wyżej a dokładniej libusb\_claim\_interface().
+%\newline
 Zwolnienie wszystkich interfejsów jest wymagane przed zamknięciem urządzenia.
-\newline
+%\newline
 Nie jest to blokująca funkcja.
-\newline
+%\newline
 W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie ponownie podłączony zaraz po zwolnieniu interfejsu.
-\newline
+%\newline
 Parametrami są: uchwyt urządzenia oraz numer interfejsu dla niego poprzednio zarezerwowanego.
 \newline
 Metoda zwraca 0 gdy wszystkie operacje się powiodą.
-\newline
+%\newline
 W przeciwnym wypadku zwraca: LIBUSB\_ERROR\_NOT\_FOUND jeśli interfejs nie został poprzednio zarezerwowany (zgłoszony do użycia), LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
 \subsection{libusb\_close}
-Zwalnia uchwyt do urządzenia.
-\newline
-Funkcja powinna być wołana na wszystkich używanych uprzednio uchwytach.
-\newline
+\noindent Zwalnia uchwyt do urządzenia.
+%\newline
+Funkcja powinna być wołana na wszystkich używanych poprzednio uchwytach.
+%\newline
 Funkcja pokrótce niszczy referencje stworzoną za pomocą libus\_open() dla danego urządzenia.
-\newline
+%\newline
 Jest to funkcja nie blokująca.
-\newline
+%\newline
 Parametrem jest uchwyt przeznaczony do zamknięcia.
 
 \subsection{libusb\_exit}
-Funkcja zamyka dostęp do biblioteki.
-\newline
+\noindent Funkcja zamyka dostęp do biblioteki.
+%\newline
 Powinna być wołana po zamknięciu wszystkich otwartych urządzeń ale przed zakończeniem działania programu.
-\newline
+%\newline
 Parametrem jest contekst który ma zostać zamknięty, w wypadku wartości NULL wybierany jest domyślny.
 
 %% asyn interface
 \subsection{libusb\_alloc\_transfer}
-Funkcja przygotowuje transfer z wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
-\newline
+\noindent Funkcja przygotowuje transfer z wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
+%\newline
 Funkcja zwraca uchwyt do zainicjalizowanego transferu. Kiedy wszystkie operacje zostaną na nim wykonane należy wywołać libusb\_free\_transfer().
-\newline
+%\newline
 Transfer przygotowywany dla nie izochronicznego punktu końcowego należy wywoływać z wartością zero jako ilość izochronicznych pakietów.
-\newline
+%\newline
 Dla transferów izochronicznych wymagane jest podanie prawidłowej wartości deskryptorów pakietów jakie mają zostać zalokowane w pamięci. Zwracany transfer nie jest domyślnie zainicjalizowany jako izochroniczny, wymagane dodatkowo jest ustawienie pola libusb\_iso\_packets oraz type.
-\newline
+%\newline
 Alokowanie transferu jako izochroniczny (z podana ilością deskryptorów pakietów do zalokowania) a następnie używanie transferu jako nie izochroniczny jest w 100\% bezpieczne ale pod warunkiem jeśli pole num\_iso\_packets jest ustawione na zero oraz pole type jest ustawione prawidłowo.
-\newline
+%\newline
 Funkcja jako prametr przyjmuje ilość izochronicznych deskryptorów pakietów.
-\newline
+%\newline
 Zwracaną jest zalokowany transfer lub NULL w wypadku błędu.
 \subsection{libusb\_fill\_bulk\_transfer}
-Funkcja pozwala na łatwe przygotowanie struktury libusb\_transfer na transfer masowy.
+\noindent Funkcja pozwala na łatwe przygotowanie struktury libusb\_transfer na transfer masowy.
 \newline
 Parametrami są:
 \begin{itemize}
@@ -686,26 +685,28 @@ Parametrami są:
 \item czas oczekiwania w milisekundach na zakończenie transferu
 \end{itemize}
 \subsection{libusb\_submit\_transfer}
-Funkcja wykonuje podany (ustawiony) transfer.
-\newline
+\noindent Funkcja wykonuje podany (ustawiony) transfer.
+%\newline
 Funkcja wykonuje operacje na interfejsie po czym bezzwłocznie kończy działanie.
-\newline
+%\newline
 Jedynym parametrem jaki przyjmuje funkcja jest wskaźnik do transferu jaki ma zostać wykonany.
 \newline
 W wypadku kiedy wszystko się powiedzie funkcja zwraca wartość równą 0, w pozostałych przypadkach zwraca kod błędu tj. LIBUSB\_ERROR\_NO\_DEVICE w wypadku kiedy urządzenie nie jest podłączone, LIBUSB\_ERROR\_BUSY w przypadku jeśli akcja została już wykonana, LIBUSB\_ERROR\_NOT\_SUPPORTED jeśli flagi transferu (ustawienia) są nie wspierane przez system operacyjny oraz inne.
 \subsection{libusb\_free\_transfer}
-Funkcja odpowiada za zwolnienie pamięci zajętą przez strukturę libusb\_transfer
-\newline
+\noindent Funkcja odpowiada za zwolnienie pamięci zajętą przez strukturę libusb\_transfer
+%\newline
 Funkcja ta powinna być zawołana dla wszystkich transferów zaalokowanych przez libus\_alloc\_transfer().
-\newline
+%\newline
 Jeśli dodatkowo flaga LIBUSB\_TRANSFER\_FREE\_BUFFER jest ustawiona oraz bufor transferu jest nie zerowy, pamięć po nim zostanie również zwolniona za pomocą standardowej funkcji alokującej (np. free()).
-\newline
+%\newline
 Dozwolone jest zawołanie funkcji z parametrem równym NULL, w takim przypadku funkcja zakończy się bez błędu (ale nic nie zostanie zwolnione).
-\newline
+%\newline
 Nie dozwolone jest zwalnianie pamięci po nie zakończonym (aktywnym) jeszcze transferze, czyli takim który wystartował ale jeszcze nie wywołany został callback do niego (lub timeout).
-\newline
+%\newline
 Parametrem funkcji jest wskaźnik do transferu do zwolnienia.
+\newline
 
+\indent Podsumowując zrozumienie za co dana funkcja jest odpowiedzialna w projekcie jest konieczne aby dokonać implementacji. Rozdział ten opisuje najważniejsze z nich, które zostały użyte podczas implementacji projektu. Opis każdej z nich zawiera nazwę, parametry, zwracaną wartość w przypadku błędu oraz krótkie wyjaśnienie jej działania.
 %---------
 \chapter{Urządzenie testowe}
 \label{microcontrollerChapter}
@@ -714,7 +715,7 @@ Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego 
 \begin{figure}[h]
 \centering
 \includegraphics{./img/landTiger}
-\caption{Mikrokontroler LandTiger wraz z wyświetlaczem}
+\caption{Mikrokontroler LandTiger wraz z wyświetlaczem \cite{landtigerDesc}}
 \end{figure}
 
 Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę PowerMCU i można ją zakupić od wielu dostawców na eBay lub innych serwisach świadczących usługi zakupów przez internet. Średni koszt waha się w granicach \$70 za płytkę wraz z wyświetlaczem LCD 3,2 cala o rozdzielczości 320x240 pikseli, z zasilaczem oraz zestawem kabli. \cite{landtigerDesc}
@@ -744,7 +745,7 @@ Funkcjonalności:
 \begin{figure}[h]
 \centering
 \includegraphics{./img/landTiger3}
-\caption{Mikrokontroler LandTiger wraz z opisem poszczególnych elemetnów}
+\caption{Mikrokontroler LandTiger wraz z opisem poszczególnych elemetnów \cite{landTiger3}}
 %example\caption{Krzywa plastyczności wyrażająca zależność odkształcenia od naprężenia podczas rozciągania materiału ciągliwego \cite{bib7}} 
 \end{figure}
 LandTiger jest oparty na LPC1768. Wbudowany hardware wspiera ISP aby umożliwić załadowanie kodu (z użyciem bin2hex oraz flashmagic).
@@ -765,25 +766,6 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \end{enumerate}
 
 Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety jak się podczas egzekucji testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza USB wspierającego USB2.0 chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
-
-
-\iffalse
-%% not inluded into pdf right now
-\chapter{Synchroniczne przesyłanie danych}
-\label{synchronicChapter}
-Jedną z metod dostępnych, która została użyta w przygotowaniu tej pracy jest wykorzystanie synchronicznych możliwości przesyłu danych z wykorzystaniem libUSB.
-
-\section{zalety}
-\begin{itemize}
-\item duża kontrola nad wysyłanymi/odbieranymi danymi
-\item debugowanie jest mało skomplikowane w porównaniu do asynchronicznego przesyłania danych
-\end{itemize}
-\section{wady}
-\begin{itemize}
-\item możliwości prędkości są mocno ograniczone poprzez funkcje blokujące
-\end{itemize}
-\fi
-
 
 
 \chapter{Implementacja}
@@ -863,7 +845,7 @@ void Mode::getDeviceHandle()
 }
 \end{lstlisting}
 \subsection{Metoda proceedWithInitLibUsb}
-Metoda odpowiedzialna za dokończenie procedur inicjalizacyjnych. Ciało metody zostało przedstawione w Listingu \ref{lst:Mode_proceedWithInitLibUsb}. Metoda sprawdza dodatkowo czy sterownik jądra kernela jest aktywny, dla platformy Windows funkcja zwróci wartość LIBUSB\_ERROR\_NOT\_SUPPORTED (!= 1) i zachowa się analogicznie jak w wypadku nie aktywnego sterownika w systemie UNIX (warunek bedzie nie spełniony).
+Metoda odpowiedzialna za dokończenie procedur inicjalizacyjnych. Ciało metody zostało przedstawione w Listingu \ref{lst:Mode_proceedWithInitLibUsb}. Metoda sprawdza dodatkowo czy sterownik jądra kernela jest aktywny, dla platformy Windows funkcja zwróci wartość błędu która będzie równa wartości enumerycznej LIBUSB\_ERROR\_NOT\_SUPPORTED (!= 1) i zachowa się analogicznie jak w wypadku nie aktywnego sterownika w systemie UNIX (warunek bedzie nie spełniony).
 \newline
 Kolejnym krokiem jest rezerwacja przez program konkretnego interfejsu za pomocą funkcji libusb\_claim\_interface.
 \newline
@@ -1407,7 +1389,7 @@ clean:
 %\newline
 %\indent Powodem dla którego mikrokontroler działa pomimo obsługi USB1.1 (a nie jak wspomniano USB2.0) jest to że wlutowane gniazdo ustandaryzowane jako USB2.0 jest wstecznie kompatybilne (więcej informacji w rozdziale \ref{USBStandardChapter}).
 %\newline
-\section{wyniki}
+\section{Wyniki}
 \indent Zebrane wyniki możemy skategoryzować według: ilości przesłanych danych, szybkości przesyłu danych z komputera osobistego do kontrolera, szybkości przesyłu danych z kontrolera do komputera osobistego, szybkości przesyłu w obie strony. Kluczowym elementem jest tutaj wielkość buffora, czyli ilości danych możliwych do wysłania/odebrania w jednym tiku zegara.
 \newline
 \indent Według założeń USB 2.0 jest w stanie obsłużyć oczekiwane 140Mbit/s (17,5 MB/s). Wykres przedstawiony na Rys. \ref{fig:speedTest} doskonale to obrazuje.
@@ -1555,21 +1537,41 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \indent Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując to wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
 \chapter{Podsumowanie}
 \label{ConclusionChapter}
-Celem projektu było uzyskanie jak największej prędkości przesyłu danych po interfejsie USB. Na wstępie zamieszczone zostało krótkie wprowadzenie odnośnie dostępnych standardów USB oraz ich zarysowi historycznemu. Kolejnym krokiem był dwóch najbardziej popularnych bibliotek do obsługi interfejsu USB (libUSB oraz winUSB). W rozdziale został zawarty krótki opis najważniejszych aspektów bibliotek wraz z uzasadnieniem wyboru libUSB jako tej używanej w projekcie.
-
-Dosyć ważną część odgrywa opis API biblioteki libUsb. Znajduje się w nim dość obszerny opis poszczególnych funkcji użytych w projekcie. Jest to kluczowe aby zrozumieć późniejszą implementację.
-
-W kolejnym rozdziale został przedstawiony mikrokontroler użyty w projekcie, wraz z dokładnym opisem dostępnych funkcjonalności (nie tylko tych użytych w projekcie). Jak okazuję się w kolejnych rozdziałach brakuje mu kluczowej funkcjonalności z punktu widzenia projektu a mianowicie obsługi standardu USB2.0. \cite{landtigerDesc}
-
-Jednym z najważniejszych rozdziałów jest rozdział opisujący sposób implementacji projektu wraz z załączonym kodem źródłowym. Przedstawiony został tam sposób łatwego wywoływania testu oraz opis krok po kroku co zostaje wykonane przed uzyskaniem rezultatu. Zostaje też przedstawiony łatwy sposób rozszerzalności o kolejne klasy implementujące nowy rodzaj testu.
+\indent Celem projektu było przygotowanie oprogramowania umożliwiającego wysyłanie i odbieranie danych z wykorzystaniem złącza uniwersalnej magistrali szeregowej czyli USB. Aby zrealizować projekt należało poznać standard USB i zrozumieć jego działanie jak i innych mniej lub bardziej zaawansowanych portów szeregowych. Istotne było zrozumienie różnic pomiędzy standardami wydanymi do dnia dzisiejszego jako podstawa teoretyczna do zrealizowania projektu. Projekt posiada zintegrowany system testowania funkcjonalności, aby zapobiec negatywnej ingerencji w istniejące już funkcjonalności.
 \newline
+\indent Najważniejszym krokiem podczas tworzenia projektu był wybór urządzenia testowego, czyli urządzenia na którym wykonywane były najważniejsze testy akceptacyjne. Wybór padł na mikrokontroler LandTiger, który został dokładniej opisany w rozdziale \ref{microcontrollerChapter}. Aplikacja została zaprojektowana w prosty i rozszerzany sposób. Głównym punktem projektu jest klasa abstrakcyjna pełniąca podstawowe funkcje oraz posiadająca domyślne implementacje poszczególnych metod. Po tej klasie zostały podziedziczone dwie inne wprowadzające własne wersje implementacji testu, jak i w wypadku bardziej rozbudowanej klasy odpowiadającej za asynchroniczne przesyłanie danych również inicjalizacja biblioteki przebiega inaczej. Dodatkowo w przyszłości istnieje łatwa możliwość rozszerzenia implementacji o nowe klasy dostarczające inną implementacje korzystania z bibliotek.
+\newline
+\indent W projekcie została użyta biblioteka libUSB, głównym motywatorem użycia tej biblioteki było to iż pozwala na implementacje kodu z jej użyciem zarówno pod systemami Mircrosoft Windows jak i tymi z rodziny Unix. Dodatkowym atutem była prostota dostarczonego przez nią API. Biblioteka libUSB posiada interfejs napisany bardzo intuicyjnie co znacznie ułatwiło prace podczas projektu.
+\newline
+\indent Po dogłębnym zapoznaniu się z teorią oraz po zebraniu wszystkich wymagań przystąpiono do tworzenia oprogramowania z wykorzystaniem wyżej wymienionej biblioteki. Początkowym założeniem było osiągniecie prędkości przesyłu danych nie mniejszej niż 140 Mbit/s co daje 17,5 MB/s. Założenie to jest jak najbardziej możliwe z wykorzystaniem możliwości standardu USB2.0 jak i nowszych jego odsłon. Dokładniejszy opis tych zależności został opisany w rozdziale \ref{resultsChapter}. Projekt został zaimplementowany w dwóch wersjach: synchronicznej oraz asynchronicznej. Wersja synchroniczna korzysta z blokujących funkcji biblioteki libUSB, natomiast asynchroniczna korzysta z nieblokujących funkcji biblioteki. W wypadku klasy odpowiedzialnej za asynchroniczne przesyłanie danych to dodatkowo całość obsługi wątków została dodana do implementacji klasy. Celem napisania tej klasy oprócz wersji synchronicznej było sprawdzenie możliwości uzyskania lepszych wyników, a dokładniej zestawienie jednych i drugich wyników oraz porównanie ich wzajemnie celem potwierdzenia ich jakości. Istnieje możliwość łatwego rozwoju zaimplementowanej aplikacji o nowe sposoby wysyłania danych. Wystarczy tworząc nowy sposób przesyłania danych przeciążyć podstawową klasę, zawierającą podstawową inicjalizację libUSB, zaimplementować metodę odpowiadającą za przebieg testu. Dodatkowo w wypadku bardziej złożonej inicjalizacji należy również zadbać o przeciążenie metod inicjalizacyjnych (oraz metod zwalniających zasoby) w odpowiedni sposób.
+\newline
+\indent Projekt jest udostępniony jako open source i może być w dalszym ciągu rozwijany przez ludzi chcących testować przesył danych po USB implementując różnego rodzaju wariacje sposobów przesyłu danych lub mają pomysł na rozbudowanie aplikacji. Całość została udostępniona włączając mechanizmy umożliwiające odpowiednie rozróżnienie kompilacji na platformę Windowsową oraz Linuxową. Dla platformy Linux został stworzony specjalny skrypt uruchamiający odpowiednio napisane pliki makefile\footnote{makefile - plik ułatwiający budowanie oraz linkowanie plików źródłowych}. Zaletą projektu jest łatwość kompilacji na obie te platformy.
+\newline
+\indent Wyniki przedstawione w projekcie znacznie odbiegają od wartości oczekiwanych. Spowodowane jest to brakiem obsługi USB2.0 po stronie płytki LandTiger (zaprezentowanej w rozdziale \ref{microcontrollerChapter}), a dokładniej na jej chipie. Innymi słowy pomimo fizycznie wlutowanego złącza odpowiadającemu standardowi USB2.0 płytka obsługuje jedynie USB1.1 a dokładniej bufor danych wielkości jedynie 64B. Oznacza to, że w jednym momencie czasowym płytka może odebrać (lub wysłać) maksymalnie 64B danych. W rozdziale \ref{resultsChapter} zostały przedstawione wyniki testów, które rozwiewają wszelkie wątpliwości odnośnie uzyskanych prędkości przesyłu danych. Założenie projektowe nie zostało wykonane z powodów wyżej wymienionych, ale na podstawie uzyskanych danych można założyć iż test z wykorzystaniem płytki wspierającej standard USB2.0 będzie jak najbardziej pozytywny.
 
-Rozdział obrazujący rezultaty testów jest najważniejszym w projekcie. Wnioski z wyników nie należą do pozytywnych. Z powodu ograniczeń na mikrokontrolerze w tym ograniczenie obsługi na chipie do standardu USB1.1 (pomimo wlutowanego złącza USB2.0) nie udało się uzyskać minimalnej wymaganej w projekcie prędkości przesyłania danych (17,5 MB/s). Nawet pomimo zasymulowania większego bufora danych (bez poprawnej obsługi odbioru danych po stronie mikrokontrolera w którym zaniechano weryfikacji odebranych danych z powodu niemożności obsługi tak dużego buforu danych).
+\newpage
+\pagestyle{empty}
+\appendix
+\chapter*{Dodatek A} \label{App:AppendixA}
+\section*{Zawartość płyty CD dołączonej do pracy}
 
-Warto zaznaczyć, że nie oznacza to iż uzyskanie docelowej prędkości z wykorzystaniem standardu USB2.0 jest nie możliwe (oczywiście z wykorzystaniem innego mikrokontrolera). Standard USB2.0 dopuszcza wielkość bufora 1024 B a co za tym idzie porównując to do obecnej wielkości uzyskamy 16 razy większą.
+\begin{enumerate}
+\item Kody źródłowe wraz ze skryptami przeznaczonymi do budowania
+\begin{itemize}
+\item Źródło klasy Mode
+\item Źródło klasy SynchMode
+\item Źródło klasy AsynchMode
+\item Źródło klasy DebugPrintre
+\item Skrypt pozwalający na kompilacje pod systemami Unix.
+\item Skrypt umożliwiający uruchomienie wielokrotnych testów
+\end{itemize}
+\item Niezbędne biblioteki aby uruchomić projekt pod systemem Microsoft Windows
+\item Dokumentacja użytkownika oraz kodu
+\item Ostateczna wersja pracy dyplomowej
+\end{enumerate}
 
-Na podstawie otrzymanych wyników uzyskanych z wykorzystaniem standardu USB1.1 możemy założyć iż prędkość przesyłu danych z wykorzystaniem USB2.0 oscylowała by w granicach 16 MB/s. Wartość ta jest zależna od odpowiedniej konfiguracji więc możemy dodatkowo przyjąć prędkość 17,5 MB/s jest jak najbardziej osiągalna.
 
+\newpage
 
 \begin{thebibliography}{1}
 
@@ -1614,13 +1616,57 @@ Na podstawie otrzymanych wyników uzyskanych z wykorzystaniem standardu USB1.1 m
 
 \bibitem{micCommWithUsb} Microsoft 2010, {\em How to Use WinUSB to Communicate with a USB Device} [doc from Microsoft web]
 \newline 
-\url{http://download.microsoft.com/download/9/C/5/9C5B2167-8017-4BAE-9FDE D599BAC8184A/WinUsb_HowTo.docx}
+\url{http://download.microsoft.com/download/9/C 5/9C5B2167-8017-4BAE} 
+\newline 
+\url{-9FDED599BAC8184A/WinUsb_HowTo.docx}
 
 \bibitem{landtigerDesc} mbed, LandTiger description reference [online]
 \newline 
 \url{https://developer.mbed.org/users/wim/notebook/landtiger-baseboard/}
 
+\bibitem{RS232C} RS232C picture [online]
+\newline
+\url{http://image.rakuten.co.jp/menet/cabinet/k_02/krs10107k_ma.jpg?_ex=60x60}
 
+\bibitem{RS232family} RS232 family picture [online]
+\newline
+\url{https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/VGA-RS-232C-Parallelbus.jpg/369px-VGA-RS-232C-Parallelbus.jpg}
+
+\bibitem{ethernetCable} Ethernetowy connector picture [online] \\
+\url{http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg}
+
+\bibitem{bluetooth} Bluetooth logo picture [online] \\
+\url{http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967}
+
+\bibitem{usbLogo} USB logo picture [online] \\
+\url{http://hexus.net/media/uploaded/2013/4/e8fdbf0b-6c38-427c-931b-fa4b728856e7.png}
+
+\bibitem{cleanSignal} Clean Signal example [online] \\
+\url{http://eecatalog.com/usb/files/2012/06/120606_lecroy_1.jpg}
+
+\bibitem{receivedNoiseSignal} Recived Signal with noise [online] \\
+\url{http://eecatalog.com/usb/files/2012/06/120606_lecroy_2.jpg}
+
+\bibitem{receivedCleanedSignal} Received Signal after cleaning [online]\\
+\url{http://eecatalog.com/usb/files/2012/06/120606_lecroy_3.jpg}
+\bibitem{withoutEncoding} Set of bits without encoding [online] \\
+\url{http://m.eet.com/media/1158450/tek8b-10bfig1.jpg}
+\bibitem{withEncoding} Set of bits with encoding [online] \\
+\url{http://m.eet.com/media/1158451/tek8b-10bfig2.jpg}
+\bibitem{SendingData} Sending data via PHY layer [online] \\
+\url{http://eecatalog.com/usb/files/2012/06/120606_lecroy_4.jpg}
+\bibitem{mapping810} Mapping 8b to 10b [online] \\
+\url{http://www.latticesemi.com/~/media/LatticeSemi/Documents/ReferenceDesigns/1D/8b10bEncoderDecoder-Documentation.pdf?document_id=5653}
+\bibitem{tablesMapping} Wikimedia, 5b/6b and 3b/4b table [online] \\
+\url{https://en.wikipedia.org/wiki/8b/10b_encoding#5b.2F6b}
+\bibitem{128to132coding} Frame in 128b/132b [online] \\
+\url{http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg}
+\bibitem{landTiger3} LandTiger with description [online] \\
+\url{https://dl.dropboxusercontent.com/u/5651857/landTiger3.jpg}
 \end{thebibliography}
 
+
+
+
 \end{document}
+
