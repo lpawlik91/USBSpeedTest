@@ -13,10 +13,10 @@
 %%% Testy -  - przyklad w mgr Łukasz Jachymczyk ~2012 +
 %%% rysunki wektorowe +
 %%% range fix
-%%% Sierotki + wdowy do poprawy
+%%% Sierotki + wdowy do poprawy +
 %%% 
 %%% podzielenie wynikow (teoretyczne, praktyczne, porownanie, podsumowanie) +
-%%% dopisac dodatki (zewnetrzne biblioteki, zawartosc CD etc..)
+%%% dopisac dodatki (zewnetrzne biblioteki, zawartosc CD etc..) +
 %%%
 %%%
 %%%
@@ -54,6 +54,13 @@
  \usepackage{epstopdf} 
  \usepackage{epsfig}
 
+\usepackage{afterpage}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \newpage}
+\addtocounter{page}{-1}%
 \usepackage{fancyvrb}
 \DefineVerbatimEnvironment{packet}{Verbatim}{xleftmargin=40mm,baselinestretch=1,samepage=true}
 \DefineVerbatimEnvironment{code}{Verbatim}{xleftmargin=36pt,samepage=true,tabsize=4}
@@ -139,7 +146,7 @@ Ocena końcowa pracy przez Opiekuna:
 
 \hspace{2cm} Data: \hspace{6cm}  Podpis: ..............................
 \vspace{\stretch{1}}
-\pagebreak
+\afterpage{\blankpage}
 \newpage
 \thispagestyle{plain}
 Merytoryczna ocena pracy przez Recenzenta:
@@ -161,9 +168,9 @@ Ocena końcowa pracy przez Recenzenta:
 \clearpage
 %\pagenumbering{arabic}
 \tableofcontents
-\clearpage
+\afterpage{\blankpage}
 \lstlistoflistings
-\clearpage
+\afterpage{\blankpage}
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
@@ -766,7 +773,7 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \end{enumerate}
 
 Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety jak się podczas egzekucji testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza USB wspierającego USB2.0 chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
-
+\afterpage{\blankpage}
 
 \chapter{Implementacja}
 \label{implementationChapter}
@@ -1396,7 +1403,7 @@ clean:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{./img/speedTest}
-\caption{Todo: wykres opracowany na podstawie...}
+\caption{Wykres przedstawiający zależność prędkości przesyłu danych w zależności o wielkości bufora}
 \label{fig:speedTest}
 \end{figure}
 Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje). Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
@@ -1535,6 +1542,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \noindent Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Dla tego przypadku został użyty bufor o wartości minimalnej równe 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku jest podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
 \newline
 \indent Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując to wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
+\afterpage{\blankpage}
 \chapter{Podsumowanie}
 \label{ConclusionChapter}
 \indent Celem projektu było przygotowanie oprogramowania umożliwiającego wysyłanie i odbieranie danych z wykorzystaniem złącza uniwersalnej magistrali szeregowej czyli USB. Aby zrealizować projekt należało poznać standard USB i zrozumieć jego działanie jak i innych mniej lub bardziej zaawansowanych portów szeregowych. Istotne było zrozumienie różnic pomiędzy standardami wydanymi do dnia dzisiejszego jako podstawa teoretyczna do zrealizowania projektu. Projekt posiada zintegrowany system testowania funkcjonalności, aby zapobiec negatywnej ingerencji w istniejące już funkcjonalności.
@@ -1572,7 +1580,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 
 \newpage
-
+\afterpage{\blankpage}
 \begin{thebibliography}{1}
 
 \bibitem{embeddedC} Michael J. Pont {\em Embedded C       },  UK: Pearson Education Limited, 2002.
@@ -1659,7 +1667,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \url{http://www.latticesemi.com/~/media/LatticeSemi/Documents/ReferenceDesigns/1D/8b10bEncoderDecoder-Documentation.pdf?document_id=5653}
 \bibitem{tablesMapping} Wikimedia, 5b/6b and 3b/4b table [online] \\
 \url{https://en.wikipedia.org/wiki/8b/10b_encoding#5b.2F6b}
-\bibitem{128to132coding} Frame in 128b/132b [online] \\
+\bibitem{128to132coding} Frame in 128b/132b encoding [online] \\
 \url{http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg}
 \bibitem{landTiger3} LandTiger with description [online] \\
 \url{https://dl.dropboxusercontent.com/u/5651857/landTiger3.jpg}
