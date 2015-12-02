@@ -10,7 +10,7 @@ fileOutput=fileBase.jpgExt
 
 set term post eps 
 set output fileOutput
-set xlabel "buffor [B]"
-set ylabel "predkość [B/s]"
+set xlabel "buffer [B]"
+set ylabel "speed [B/s]"
 plot[151583:2684354] fileInput using 1:8 notitle with lines
 
