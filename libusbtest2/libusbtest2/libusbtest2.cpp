@@ -1,6 +1,8 @@
 // libusbtest2.cpp : Defines the entry point for the console application.
 //
 
+
+#include "stdafx.h"
 #include "SynchMode.hpp"
 #include "AsynchMode.hpp"
 #include "DebugPrinter.hpp"
@@ -11,6 +13,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <memory>
+#include <cctype>
 
 
 #define BUFFOR_MAX 64

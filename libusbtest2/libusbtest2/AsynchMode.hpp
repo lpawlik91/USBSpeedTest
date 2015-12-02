@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <pthread.h>
-#include <unistd.h>
+//#include <unistd.h>
 
 class AsynchMode : public Mode
 {
