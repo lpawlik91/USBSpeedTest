@@ -1,5 +1,7 @@
-#!/bin/bash
-rm *.cpp *.hpp makefile
+#/bin/bash
+DIR=$PWD
+echo "$DIR"
+rm $DIR/*.cpp $DIR/*.hpp $DIR/makefile
 cp ../libusbtest2/*.cpp ../libusbtest2/*.hpp ../libusbtest2/makefile .
 rm stdafx.cpp
 sed -i -- 's/#include "stdafx.h"//g' *.cpp
