@@ -91,7 +91,7 @@
 
 \begin{center}
 \begin{flushleft}
- O{\'s}wiadczam, {\'s}wiadoma odpowiedzialno{\'s}ci karnej za po{\'s}wiadczenie nieprawdy, {\.z}e niniejsz{\k{a}} prac{\k{e}} dyplomow{\k{a}} wykona{\l}am osobi{\'s}cie i samodzielnie i nie korzysta{\l}am ze {\'z}r{\'o}de{\l} innych ni{\.z} wymienione w pracy.
+ O{\'s}wiadczam, {\'s}wiadomy odpowiedzialno{\'s}ci karnej za po{\'s}wiadczenie nieprawdy, {\.z}e niniejsz{\k{a}} prac{\k{e}} dyplomow{\k{a}} wykona{\l}em osobi{\'s}cie i samodzielnie i nie korzysta{\l}em ze {\'z}r{\'o}de{\l} innych ni{\.z} wymienione w pracy.
 \end{flushleft}
 
 	\vskip 36pt

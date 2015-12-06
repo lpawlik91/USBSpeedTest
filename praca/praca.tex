@@ -179,46 +179,25 @@ Ocena końcowa pracy przez Recenzenta:
 \chapter{Wstęp}
 \label{beginChapter}
 \pagestyle{fancy}
-W dobie dzisiejszych możliwości rosną również wymagania i oczekiwania. Dotyczy to prawie każdego aspektu dzisiejszego życia, począwszy od spraw osobistych, poprzez finansowe, aż po możliwości uzyskiwania danych. Rozwój technologi, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. Dla współczesnego człowieka problemem okazuje się czas, zawsze jest go za mało w praktycznie każdej sferze życia. Jest on również istotny w rozwoju technologi oraz uzyskiwaniu konkretnych danych pomiarowych.
+W dobie dzisiejszych możliwości rosną również wymagania i oczekiwania. Dotyczy to prawie każdego aspektu życia, począwszy od spraw osobistych, poprzez finansowe, aż po możliwości uzyskiwania danych. Rozwój technologii, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. Dla współczesnego człowieka problemem okazuje się czas, zawsze jest go za mało w praktycznie każdej sferze życia. Jest on również istotny w rozwoju technologii oraz uzyskiwaniu konkretnych danych pomiarowych.
 \newline
-\indent Dzisiejsze urządzenia pomiarowe laboratoryjne jak i medyczne (oraz inne) mają za zadanie zbieranie i przesyłanie danych celem późniejszej wizualizacji lub analizy za pomocą dedykowanego oprogramowania. Dane te z reguły są wysyłane w określonym dla danego urządzenia formacie, a co za tym idzie rozmiar wysyłanych danych musi być większy niż w wypadku danych wysyłanych bajt po bajcie.
+\indent Dzisiejsze urządzenia pomiarowe laboratoryjne jak i medyczne (oraz inne) mają za zadanie zbieranie i przesyłanie danych celem późniejszej wizualizacji lub analizy za pomocą dedykowanego oprogramowania. Dane te z reguły są wysyłane w określonym dla danego urządzenia formacie, a co za tym idzie ich rozmiar musi być większy niż w wypadku danych wysyłanych bajt po bajcie.
 \newline
 \indent Człowiek, odkąd powstał pierwszy komputer, rozpoczął walkę z problemem komunikacji między urządzeniami. Zostało opracowanych wiele standardów komunikacji, niektóre projekty zostały skazane na zapomnienie, inne odniosły sukces i zdominowały urządzenia. Takim standardem jest z pewnością USB, czyli Uniwersalna Magistrala Szeregowa (dokładny opis wraz z rysem historycznym w rozdziale \ref{USBStandardChapter}). Na dzień dzisiejszy większość urządzeń dla których konieczna jest komunikacja z komputerem osobistym (wyłączając sieci Ethernetowe \footnote{Ethernet - standard sieci lokalnych} oraz WiFi\footnote{WiFi - technologia sieci bezprzewodowych}), posiada interfejs USB.
 \newline
 \indent Celem niniejszej pracy było opracowanie szybkiego przesyłania danych używając standardu USB. Przez szybkie rozumiana jest tutaj prędkość nie mniejsza niż 140Mbit/s (17,5 MB/s) \footnote{1 B = 8 bit}.
 \newline
-\indent Pierwszym zadaniem, które musiało zostać wykonane przed rozpoczęciem realizacji implementacji było wybranie hardwaru, które miało pełnić role urządzenia testowego (nie jest możliwe wykonanie testów przesyłu danych po interfejsie USB bez urządzenia odbierającego dane). Dokładny opis wybranego urządzenie został umieszczony w rozdziale \ref{microcontrollerChapter}. Kolejnym zadaniem był odpowiedni wybór biblioteki spełniającej założenia projektu. Istnieje wiele implementacji bibliotek udostępniających API \footnote{API (ang. Application Programming Interface) - zestaw funkcji oraz innych narzędzi umożliwiających wykorzystanie możliwości danej biblioteki} dla interfejsu USB. W rozdziale \ref{librariesChapter} szczegółowo scharakteryzowano dwie najczęściej używane, z których pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix, natomiast użycie drugiej z nich możliwe jest tylko pod systemami Windows. Dodatkowo zostało przedstawione krótkie uzasadnienie wyboru.
+\indent Pierwszym zadaniem, które wykonano przed rozpoczęciem realizacji implementacji było wybranie hardwaru, pełniącego role urządzenia testowego (nie jest możliwe wykonanie testów przesyłu danych po interfejsie USB bez urządzenia odbierającego dane). Dokładny opis wybranego urządzenie został umieszczony w rozdziale \ref{microcontrollerChapter}. Kolejnym zadaniem był odpowiedni wybór biblioteki spełniającej założenia projektu. Istnieje wiele implementacji bibliotek udostępniających API \footnote{API (ang. Application Programming Interface) - zestaw funkcji oraz innych narzędzi umożliwiających wykorzystanie możliwości danej biblioteki} dla interfejsu USB. W rozdziale \ref{librariesChapter} szczegółowo scharakteryzowano dwie najczęściej używane, z których pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix, natomiast użycie drugiej z nich możliwe jest tylko pod systemami Windows. Dodatkowo zostało przedstawione krótkie uzasadnienie wyboru.
 \newline
-\indent Kolejnym etapem podczas projektowania oprogramowania było dokładne zaplanowanie jak przebiegać będą testy. Istotnym elementem było to iż wykonanie ich bez urządzenia zewnętrznego było niemożliwe. Stało się konieczne opracowanie wejściowego jak i zwracanego formatu danych dla każdego testu. Po opracowaniu podstawowych wymagań i testowych restrykcji dla aplikacji możliwe było przystąpienie do jej pisania. Opis wraz z implementacją znajduje się w rozdziale \ref{implementationChapter}.
+\indent Kolejnym etapem podczas projektowania oprogramowania było dokładne zaplanowanie jak przebiegać będą testy. Warto zwrócić uwagę, że ich wykonanie bez urządzenia zewnętrznego było niemożliwe. Stało się konieczne opracowanie wejściowego jak i zwracanego formatu danych dla każdego testu. Po opracowaniu podstawowych wymagań i testowych restrykcji dla aplikacji możliwe było przystąpienie do jej pisania. Opis wraz z implementacją znajduje się w rozdziale \ref{implementationChapter}.
 \newline
 \indent Ostatnim i zarazem najważniejszym elementem pracy było zestawienie otrzymanych wyników wraz z oczekiwaniami. Całość została opisana w rozdziale \ref{resultsChapter} i zawiera konkretne wnioski na temat realizacji projektu oraz ogólnych możliwości interfejsu USB. W rozdziale zawarte jest dodatkowo zestawienie i interpretacja otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
 
-
-\iffalse
-%%old introduction
-Rozwój technologi, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. 
-
-Celem niniejszej pracy było uzyskanie możliwie największej prędkości przesyłu danych pomiędzy urządzeniem zewnętrznym a komputerem osobistym w obu kierunkach, z wykorzystaniem wspomnianego interfejsu. 
-
-W pracy przedstawiono najważniejsze fakty historyczne dotyczące standardu USB (zawarte w rozdziale \ref{USBStandardChapter}, a także scharakteryzowano zachowania interfejsu w dwóch istotnych trybach: synchronicznym oraz asynchronicznym. Kolejne rozdziały zawierają opis standardu USB, rozpatrywanego w kontekście sprzętowym i oprogramowania.
-
-Rozdział \ref{librariesChapter} posłużył do opisu zastosowanych bibliotek USB, do których między innymi należą: libUSB oraz winUSB. Obie z nich służą do komunikacji z urządzeniami z portami USB. Pierwsza używana jest zarówno pod systemem Windows jak i pod systemem Unix natomiast użycie drugiej z nich możliwe jest tylko pod systemami Windows.
-
-W kolejnym rozdziale znajduje się charakterystyka poszczególnych funkcji biblioteki libUSB użytej w projekcie. Rozdział \ref{libUsbChapter} opisuje szczegółowo warunki użycia danej funkcji, wraz z zwracanym wartościami. 
-
-Rozdział \ref{microcontrollerChapter} stanowi krótki opis mikrokontrolera użytego w projekcie. Zawiera on również rysunek poglądowy opisujący poszczególne elementy mikrokontrolera w tym ważne z punktu widzenia projektu.
-
-Rozdział \ref{implementationChapter} zawiera szczegóły implementacyjne. Opisuje klasę bazową wraz z podstawowymi ustawieniami oraz ustawienia i sposób wykonania testu dla poszczególnych interfejsów.
-
-Podsumowanie przeprowadzonych symulacji zawarte zostało w rozdziale \ref{resultsChapter}. Zawiera on zestawienie i interpretację otrzymanych wyników w zakresie synchronicznego oraz asynchronicznego przesyłania danych za pomocą USB. Została w nim zaprezentowana dodatkowa symulacja, aby sprawdzić zachowanie interfejsu w mniej dostępnym środowisku.
-%% end backuped introduction
-\fi
-
 %%///
-\chapter{Motywacje projektu oraz podstawowe założenia}
+\chapter{Motywacje oraz podstawowe założenia projektu}
 \label{ch:motivationAndBasics}
 Podstawową motywacją rozpoczęcia pracy nad projektem była chęć zdobycia wiedzy w zakresie komunikacji opartej na interfejsach szeregowych. Jest to wiedza, która może zostać wykorzystana w przyszłości, a tego typu projekty z pewnością prowadzą do samodoskonalenia umiejętności człowieka, który się ich podejmie. Ważnym elementem było zaczerpniecie jak największej wiedzy na temat interfejsów szeregowych oraz samego USB.
-\section{Opis interfejsów szeregowych oraz zastosowanie}
+\section{Opis interfejsów szeregowych oraz ich zastosowanie}
 \label{s:serialInterface}
 \indent Porty szeregowe w kontekście informatycznym są to fizyczne interfejsy umożliwiające przesłanie danych z lub do urządzenia w jednostce czasu jeden za drugim. Cechy interfejsów szeregowych można opisać za pomocą trzech prostych punktów:
 \begin{itemize}
@@ -261,7 +240,7 @@ Kontynuując temat warto wspomnieć, że najtrudniejszym do zaimplementowania pr
 %source: http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967
 \label{fig:blueTooth}
 \end{figure}
-\noindent Dość często spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośno mówiące w samochodach oraz różnego rodzaju urządzenia takie jak słuchawki, głośniki oraz adaptory (np. w zestawie do bezprzewodowej myszki komputerowej dołączany jest adapter bluetooth podpinany pod wejście USB w komputerze).
+\noindent Dość często spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośnomówiące w samochodach oraz różnego rodzaju urządzenia takie jak słuchawki, głośniki oraz adaptery (np. w zestawie do bezprzewodowej myszki komputerowej dołączany jest adapter bluetooth podpinany pod wejście USB w komputerze).
 \newline
 \indent Podsumowując, interfejsy szeregowe umożliwiają komunikację miedzy urządzeniami, z których jeden najczęściej jest komputerem osobistym. Implementacja każdego interfejsu jest na swój sposób złożona. Kategoryzacja jest możliwa na podstawie różnych wielkości. W tym rozdziale zostały podzielone według złożoności interfejsu (w sensie architektury), wydajności oraz trudności implementacji.
 
@@ -271,7 +250,7 @@ Uniwersalna Magistrala Szeregowa jest to standard opracowany w latach 90. XX w. 
 \newline
 \indent USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia będące źródłem zasilania dla innych układów scalonych. Istnieją trzy podstawowe rodzaje złączy USB, dla których kryterium podziału stanowi wielkość (wtyczki). Najstarszy rozmiar (używany np. w pendrive'ach - typ A) występuje w standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w nowych telefonach komórkowych). 
 \newline
-\indent W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A jest odpowiedzialne za dostarczenie zasilania do złącza typu B. Zostało ono zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń, a co za tym idzie uszkodzeniu urządzenia. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A z jednej strony oraz złącze typu B z drugiej (męskie) oraz wejście w komputerze lub urządzeniu elektronicznym (żeńskie). W przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych) wielkości, natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc}
+\indent W przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A lub typem B). Tylko złącze typu A jest odpowiedzialne za dostarczenie zasilania do złącza typu B. Zostało ono zaprojektowane w taki sposób aby uniknąć elektrycznych przeciążeń, a co za tym idzie uszkodzeniu urządzenia. Istnieją również kable ze złączami typu A na obu końcach, ale nie należą do popularnych (i należy postępować z nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A (męskie) z jednej strony oraz złącze typu B z drugiej (również męskie) oraz wejście w komputerze lub urządzeniu elektronicznym (żeńskie). W przyjętej praktyce złącze typu A jest zazwyczaj największej (z możliwych) wielkości, natomiast B w zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc, DevUSBPher}
 
 \begin{figure}[h]
 \centering
@@ -292,7 +271,6 @@ Kilka powstałych wypuszczono na rynek na chwile przed wydaniem standardu USB1.1
 \newline
 \indent USB2.0 zostało wydane w kwietniu 2000r. udostępniając maksymalny przesył sygnału rzędu 480 Mbit/s (60MB/s) nazwany High Speed (USB1.x za pomocą Full Speed umożliwiał przesył rzędu 12Mbit/s). Biorąc pod uwagę zależności dostępu do magistrali przepustowość High Speed ogranicza się do 280 Mbit/s (35 MB/s).
 Przyszłe modyfikacje do specyfikacji USB zostały zaimplementowane przez "Engineering Change Notitices" (ECN). Najważniejsze z ECNów zostały dołączone do specyfikacji USB2.0, dostępnej na stronie internetowej USB.org.
-\newline
 Przykłady ECNow to
 Złącze Mini-A oraz Mini-B: wydane w październiku 2000r.\cite{USB20Doc}
 \newline
@@ -306,8 +284,7 @@ Została dodatkowo zdefiniowana specyfikacja zasilania (w wersji 1.2 wydana w w 
 \newline
 %\subsection{USB3.1}
 \indent W styczniu 2013r. w prasie pojawiły się informacje o planach udoskonalenia standardu USB3.0 do 10Gbit/s. Zakończyło się to stworzeniem nowej wersji standardu - USB3.1. Wersja ta została wydana 31 lipca 2013r. wprowadzając szybszy typ przesyłania danych zwany "SuperSpeed USB 10 Gbit/s". Zaprezentowano również nowe logo stylizowane na zasadzie "Superspeed+". Standard USB3.1 zwiększył szybkość przesyłu sygnału do 10Gbit/s. Udało się też zredukować obciążenie łącza do 3\% dzięki zmianie kodowania na 128b/132b.
-\newline
-Przy pierwszych testach prędkośi USB3.1 udało się uzyskać wynik na poziomie 7,2Gbit/s. Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
+Przy pierwszych testach prędkości USB3.1 udało się uzyskać wynik na poziomie 7,2Gbit/s. Standard USB3.1 jest wstecznie kompatybilny ze standardem USB3.0 oraz USB2.0.
 \cite{USB30Doc}
 \newline
 \indent Poszczególne rodzaje kodowania dla standardów USB3.0 oraz USB3.1 to kodowanie 8bitów na 10 bitów oraz 128 bitów na 132 bity. 
@@ -339,7 +316,7 @@ Jeśli chodzi o przesyłanie danych to do momentu wprowadzenia Differential sign
 \end{figure}
 \noindent Rozwiązaniem problemu przesyłu danych między dwoma zewnętrznymi elektronicznymi urządzeniami okazało się zaprojektowanie differential receiver'a, czyli odbiornika odbierającego dwa sygnały RX+ oraz RX-. Poziom sygnału jest mierzony na podstawie ich złożenia. Skrętka\footnote{Skrętka - w kontekście pary skręconych przewodów} gwarantuje, że przesunięcie napięcia (rys. \ref{fig:receivedNoiseSignal}) dla obu kanałów jest takie samo, a więc różnica pomiędzy jest stała i jest możliwa do odczytu przez odbiornik (rys. \ref{fig:receivedCleanedSignal}). Dodatkowo odbiornik jest w stanie odczytać sygnał zegara na podstawie szybkości zmian sygnału (rys. \ref{fig:receivedCleanedSignal}).
 \newline
-\indent W przypadku wysyłania większej ilości danych pojawia się kolejny problem. Jeżeli ilość tych samych wartości bitu (zer lub jedynek) występujących po sobie jest zbyt duża, odbiornik może nie być wstanie odczytać sygnału zegara, lub zrobić to błędnie. Rys. \ref{fig:withoutEncoding} zawiera przykładowy zestaw wysyłania większej ilości zer, jak widzimy, w drugim i trzecim pakiecie danych wysyłane są same zera, a ilość przeskoków sygnału (zmian 0->1 lub 1->0) jest znikoma i obliczenie sygnału zegara może być problematyczne dla odbiornika.
+\indent W przypadku wysyłania większej ilości danych pojawia się kolejny problem. Jeżeli ilość tych samych wartości bitu (zer lub jedynek) występujących po sobie jest zbyt duża, odbiornik może nie być w stanie odczytać sygnału zegara lub zrobić to błędnie. Rys. \ref{fig:withoutEncoding} zawiera przykładowy zestaw wysyłania większej ilości zer, jak widzimy, w drugim i trzecim pakiecie danych wysyłane są same zera, a ilość przeskoków sygnału (zmian 0->1 lub 1->0) jest znikoma i obliczenie sygnału zegara może być problematyczne dla odbiornika.
 
 \begin{figure}[H]
 \centering
@@ -364,11 +341,11 @@ Rys. \ref{fig:sendingDataThroughPHYLayer} przedstawia działanie USB3.0 wraz z k
 %source: http://eecatalog.com/usb/files/2012/06/120606_lecroy_4.jpg
 \label{fig:sendingDataThroughPHYLayer}
 \end{figure}
-\indent Kodowanie 8b/10b w swojej budowie jest kombinacją (połączeniem) dwóch innych: 5b/6b oraz 3b/4b z zachowaniem odpowiedniej zasady ich łączenia. Cały algorytm tworzenia przedstawia się następująco:
+\indent Kodowanie 8b/10b w swojej budowie jest kombinacją dwóch innych: 5b/6b oraz 3b/4b z zachowaniem odpowiedniej zasady ich łączenia. Cały algorytm tworzenia przedstawia się następująco:
 \begin{enumerate}
-\item 8 bitów jako dane wejściowe: HGFEDCBA\footnote{HGFEDCBA - liczba zapisana binarnie w postaci 8 bitów, gdzie H jest najbardziej znaczącym bitem a A jest najmniej znaczącym bitem}
-\item na ostatnich 5 bitach (EDCBA) wykonujemy kodowanie 5b/6b (dochodzi dodatkowy bit)
-\item na pierwszych trzech bitach (HGF) wykonujemy kodowanie 3b/4b (dochodzi kolejny bit)
+\item 8 bitów jako dane wejściowe: HGFEDCBA\footnote{HGFEDCBA - liczba zapisana binarnie w postaci 8 bitów, gdzie H jest najbardziej znaczącym bitem a A jest najmniej znaczącym bitem},
+\item na ostatnich 5 bitach (EDCBA) wykonujemy kodowanie 5b/6b (dochodzi dodatkowy bit),
+\item na pierwszych trzech bitach (HGF) wykonujemy kodowanie 3b/4b (dochodzi kolejny bit),
 \item całość łączona do postaci abcdeifghj\footnote{abcdifhgj - 10 bitowy rezultat kodowania 8b/10b, należy zwrócić uwagę iż kolejność najbardziej znaczącego i najmniej znaczącego bitu jest odwrócona w stosunku do danych wejściowych, oraz i, j, są dodatkowymi dwoma bitami} tworząc rezultat (przedstawiony na rys. \ref{fig:810mapping}).
 \end{enumerate}
 %Rysunek \ref{fig:810mapping} doskonale przedstawia ten proces.
@@ -525,7 +502,7 @@ Wspiera standardy USB:
 \section{Biblioteka winUSB}
 Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację, takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów, które potrzebują szybkiego i bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z portami USB z poziomu user-mode. W Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
 
-Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z aparatów cyfrowych, Przykładową implementacją może być przypadek przesyłania danych bezpośrednio z cyfrowych urządzeń odtwarzających muzykę oraz pliki video z urządzeń pozwalających na ich odtworzenie.
+Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z aparatów cyfrowych. Przykładową implementacją może być przypadek przesyłania danych bezpośrednio z cyfrowych urządzeń odtwarzających muzykę oraz pliki video z urządzeń pozwalających na ich odtworzenie.
 
 MTP jest częścią frameworku "Windows Media" blisko związanym z odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
 
@@ -620,7 +597,7 @@ Dla odczytu, jeden z parametrów określa ilość danych jaka jest spodziewana p
 %\newline
 W wypadku zapisu również należy sprawdzić czy ilość danych wysłanych pokrywa się z ilością danych skierowaną do wysyłki.
 %\newline
-Wskazana jest również weryfikacja ilości danych wysłanych/odebranych w wypadku wystąpienia timeoutu (funkcja zwróci kod błędu określający timeout). libUSB może podzielić wysyłane dane na mniejsze części i timeout może wystąpić po wysłaniu kilku z nich. Ważne jest to, że nie oznacza to iż nic nie zostało wysłane/odebrane, dlatego należy sprawdzić ilość elementów wysłanych/odebranych i dostosować odpowiednio kolejne kroki.
+Wskazana jest również weryfikacja ilości danych wysłanych/odebranych w wypadku wystąpienia timeoutu (funkcja zwróci kod błędu określający timeout). LibUSB może podzielić wysyłane dane na mniejsze części i timeout może wystąpić po wysłaniu kilku z nich. Ważne jest to, że nie oznacza to iż nic nie zostało wysłane/odebrane, dlatego należy sprawdzić ilość elementów wysłanych/odebranych i dostosować odpowiednio kolejne kroki.
 %\newline
 Funkcja przyjmuje następujące parametry: uchwyt urządzenia z którym aplikacja będzie się komunikować, adres punktu końcowego interfejsu po którym będzie odbywała się komunikacja, wskaźnik do pamięci danych która ma zostać przetransferowana (w wypadku zapisu) lub odebrana (w wypadku odczytu), ilość danych do wysłania (w przypadku zapisu) lub oczekiwana ilość danych do odebrania (w przypadku odczytu), ilość danych przetransferowanych (w obu przypadkach), maksymalna długość czasu na wykonanie operacji, dla nieograniczonego należy użyć wartości równej 0.
 %\newline
@@ -634,7 +611,7 @@ Zwolnienie wszystkich interfejsów jest wymagane przed zamknięciem urządzenia.
 %\newline
 Nie jest to blokująca funkcja.
 %\newline
-W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie ponownie podłączony zaraz po zwolnieniu interfejsu.
+W wypadku jeśli zmienna auto\_detach\ \newline \_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie ponownie podłączony zaraz po zwolnieniu interfejsu.
 %\newline
 Parametrami są: uchwyt urządzenia oraz numer interfejsu dla niego poprzednio zarezerwowanego.
 \newline
@@ -679,14 +656,14 @@ Zwracaną wartością jest zalokowany transfer lub NULL w wypadku błędu.
 \newline
 Parametrami są:
 \begin{itemize}
-\item uchwyt do ustawianego transferu
-\item uchwyt do urządzenia, dla którego ustawiany jest transfer
-\item adres punktu końcowego gdzie dane mają zostać wysłane
-\item bufor danych do wysłania/odebrania
-\item długość (wielkość) wysyłanych/odbieranych danych
-\item wskaźnik do funkcji, która ma się wywołać po zakończeniu transferu (callback)
-\item dodatkowe dane, które programista może opcjonalnie wysłać do funkcji wywołanej po zakończeniu transferu 
-\item czas oczekiwania w milisekundach na zakończenie transferu
+\item uchwyt do ustawianego transferu,
+\item uchwyt do urządzenia, dla którego ustawiany jest transfer,
+\item adres punktu końcowego gdzie dane mają zostać wysłane,
+\item bufor danych do wysłania/odebrania,
+\item długość (wielkość) wysyłanych/odbieranych danych,
+\item wskaźnik do funkcji, która ma się wywołać po zakończeniu transferu (callback),
+\item dodatkowe dane, które programista może opcjonalnie wysłać do funkcji wywołanej po zakończeniu transferu,
+\item czas oczekiwania w milisekundach na zakończenie transferu.
 \end{itemize}
 \subsection{libusb\_submit\_transfer}
 \noindent Funkcja wykonuje podany (ustawiony) transfer.
@@ -726,24 +703,24 @@ Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę Po
 \newline
 Funkcjonalności:
 \begin{enumerate} [label=(\alph*)]
-\item 2 porty RS232, jeden z nich wspiera ISP (In-system Programming)
-\item 2 interfejsy magistrali CAN (Controller Area Network)
-\item interfejs RS485
-\item interfejs Ethernetowy RJ45-10/100M 
-\item przetwornik cyfrowo-analogowy (DAC) wraz wmontowanym głośnikiem (wyjściem interfejsu) oraz sterownikiem dźwięku (LM386)
-\item przetwornik analogowo-cyfrowy (ADC) wraz z wbudowanym potencjometrem (wejściem interfejsu)
-\item Kolorowy 3,2 cala (lub 2,8 cala) dotykowy wyświetlacz LCD o rozdzielczości 320x240 pikseli
-\item interfejs USB2.0 (USB Host oraz USB Device)
-\item interfejs kard SD/MMC
-\item interfejs I2C połączony z 2Kbit pamięcią EEPROM
-\item interfejs SPI połączony z 16Mbit pamięcią flash
-\item 2 user keys, 2 function keys
-\item 8 diód typu LED
-\item pięciokierunkowy joystick
-\item wsparcie dla pobierania ISP
-\item pobieranie z użyciem JTAG, interfejs dla debugowania
-\item zintegrowany emulator kompilacji JLINK - wspiera możliwość debugownia online (po kablu USB podłączonym do PC) dla środowisk deweloperskich tj. KEIL, IAR, CooCox i innych
-\item dodatkowe 5V port zasilający (możliwe jest też za pomocą portu USB 
+\item 2 porty RS232, jeden z nich wspiera ISP (In-system Programming),
+\item 2 interfejsy magistrali CAN (Controller Area Network),
+\item interfejs RS485,
+\item interfejs Ethernetowy RJ45-10/100M,
+\item przetwornik cyfrowo-analogowy (DAC) wraz wmontowanym głośnikiem (wyjściem interfejsu) oraz sterownikiem dźwięku (LM386),
+\item przetwornik analogowo-cyfrowy (ADC) wraz z wbudowanym potencjometrem (wejściem interfejsu),
+\item Kolorowy 3,2 cala (lub 2,8 cala) dotykowy wyświetlacz LCD o rozdzielczości 320x240 pikseli,
+\item interfejs USB2.0 (USB Host oraz USB Device),
+\item interfejs kard SD/MMC,
+\item interfejs I2C połączony z 2Kbit pamięcią EEPROM,
+\item interfejs SPI połączony z 16Mbit pamięcią flash,
+\item 2 user keys, 2 function keys,
+\item 8 diód typu LED,
+\item pięciokierunkowy joystick,
+\item wsparcie dla pobierania ISP,
+\item pobieranie z użyciem JTAG, interfejs dla debugowania,
+\item zintegrowany emulator kompilacji JLINK - wspiera możliwość debugownia online (po kablu USB podłączonym do PC) dla środowisk deweloperskich tj. KEIL, IAR, CooCox i innych,
+\item dodatkowe 5V port zasilający (możliwe jest też za pomocą portu USB.
 \end{enumerate}
 
 \begin{figure}[h]
@@ -762,10 +739,10 @@ Port COM1 (UART0) wspiera komunikację z PC w obie strony. Wszelkie funkcje port
 \newline
 Główne różnice pomiędzy LandTigerem a LPC1768:
 \begin{enumerate} [label=(\alph*)]
-\item płyta po podłączeniu do PC nie pokazuje się jako zewnętrzne urządzenie magazynujące
-\item aby ściągnąć nowe pliki binarne należy użyć ISP lub JTAG
-\item brak wsparcia dla serialowego portu po linku USB, należy używać RS232 lub portu USB
-\item brak wsparcia dla logicznego systemu plików
+\item płyta po podłączeniu do PC nie pokazuje się jako zewnętrzne urządzenie magazynujące,
+\item aby ściągnąć nowe pliki binarne należy użyć ISP lub JTAG,
+\item brak wsparcia dla serialowego portu po linku USB, należy używać RS232 lub portu USB,
+\item brak wsparcia dla logicznego systemu plików,
 \item brak wsparcia dla 4 diód typu LED (istnieje możliwość użycia inncyh).
 \end{enumerate}
 
@@ -780,10 +757,10 @@ Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z bibli
 Klasa Mode jest nadzbiorem funkcjonalności. Obudowuje ona podstawowe funkcjonalności takie jak:
 \begin{itemize}
 \item inicjalizacja
-\subitem pobieranie kontekstu
-\subitem pobieranie uchwytu urządzenia
-\subitem rejestracja interfejsu
-\item oczyszczanie pamięci
+\subitem pobieranie kontekstu,
+\subitem pobieranie uchwytu urządzenia,
+\subitem rejestracja interfejsu,
+\item oczyszczanie pamięci.
 \end{itemize}
 Definicja zawiera również czysto wirtualną metodę doTest(), której odpowiednie implementacje w obiektach dziedziczących dostarcza funkcjonalności testom.
 \begin{lstlisting}[caption={Deklaracja klasy Mode},label={lst:CMode}]
@@ -932,7 +909,6 @@ private:
 Używa ona wszystkich domyślnych ustawień (nie przeciąża żadnej metody wirtualnej), oczywiście metoda doTest() wymaga implementacji.
 \subsection{Metoda doTest}
 Metoda w całości przedstawiona w listingu \ref{lst:SynchMode_doTest} i jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony, pomiędzy PC a mikrokontrolerem.
-\newline
 Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger.
 \begin{lstlisting}[caption={Metoda SynchMode::doTest()},label={lst:SynchMode_doTest}]
 int SynchMode::doTest()
@@ -1006,7 +982,6 @@ private:
 };
 \end{lstlisting}
 Klasa zawiera wzbogaconą inicjalizację o alokację transferów (wysyłającego oraz odbierającego) oraz inicjalizację mutexów.
-\newline
 Istotnym elementem jest przedstawiony w listingu \ref{lst:ThreadHelper} dodatkowy namespace ułatwiający obsługę callbacków. Znajduje się w nim zarówno obsługa wątku nasłuchującego jak i obsługa poszczególnych zdarzeń.
 \begin{lstlisting}[caption={Definicja przestrzeni nazw oraz odpowiednich struktur do poprawnej obslugi wątków},label={lst:ThreadHelper}]
 namespace ThreadHelper
@@ -1245,13 +1220,14 @@ int main(int argc, char* argv[])
 
 \end{lstlisting}
 \subsection{Parametryzacja}
+\noindent Aby ułatwić uruchamianie poszczególnych testów wprowadzono możliwość sparametryzowania wejścia aplikacji:
 \begin{lstlisting}[caption={uruchomienie testu}]
 use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \end{lstlisting}
 \begin{itemize}
-\item S/A - należy wybrać czy chcemy wykonać test w trybie Synchronicznym czy Asynchronicznym
-\item bufforSize - rozmiar bufforu danych jaki chcemy przeznaczyć dla jednej paczki danych [B]
-\item fullDataSize - całkowity rozmiar danych do wysłania [B]
+\item S/A - należy wybrać czy chcemy wykonać test w trybie Synchronicznym czy Asynchronicznym,
+\item bufforSize - rozmiar bufforu danych jaki chcemy przeznaczyć dla jednej paczki danych [B],
+\item fullDataSize - całkowity rozmiar danych do wysłania [B],
 \item printOnlyResult - opcjonalny parametr w wypadku ustawienia na wartość '1' pozwala na łatwe zebranie wyników bez zbędnych informacyjnych wiadomości (same dane). 
 \end{itemize}
 \section{Embedded code}
@@ -1323,7 +1299,7 @@ bez ostatniego argumentu, w wypadku wykonania tego fragmentu kodu:
 \begin{lstlisting}[caption={Wypisywanie w zależności od argumentu wywołania aplikacji}]
 debugPrinter << "It is impossible to send " << fullDataSize << "B using " << bufforSize << "B, to simplify application work sending " << (++count) * bufforSize << "B\n";
 \end{lstlisting}
-aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter} zablokuje wypisywanie tekstu. \\
+aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter} zablokuje wypisywanie tekstu.
 Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 \newline
 \newline
@@ -1400,10 +1376,10 @@ clean:
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{./img/speedTest}
-\caption{Wykres przedstawiający zależność prędkości przesyłu danych w zależności o wielkości bufora}
+\caption{Zależność prędkości przesyłu danych od wielkości bufora}
 \label{fig:speedTest}
 \end{figure}
-Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje). Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora, która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
+Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje)\footnote{dane uzyskane dzięki programowi USB Flash Benchmark\cite{USBFlashBenchmark}}. Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora, która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
 \newline
 \indent Podczas testów akceptacyjnych równolegle z developmentem okazało się iż płytka użyta w projekcie a dokładniej opisana w rozdziale \ref{microcontrollerChapter} wspiera na swoim chipie jedynie standard USB1.1 pomimo wlutowanego złącza USB2.0. Niestety w wypadku USB1.1 jest to 64B. Większość wyników została wygenerowana za pomocą programu, który nie pozwalał na przekroczenie dopuszczalnego przez LandTiger'a bufforu (tak jak w przypadku Rys. \ref{fig:S_107374200Send} oraz innych)
 \newline
@@ -1514,7 +1490,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 }
 \end{figure}
 
-\indent Podsumowując użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie jest nawet zbliżona do prędkości porządanej (140 MB/s) bez względu czy korzystaliśmy z metody synchronicznej czy też asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B. Pozostałe testy oparte zostały na zasymulwanych danych. 
+\indent Podsumowując, użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie pozwala na uzyskanie wyników zbliżonych do wartości pożądanej (140 MB/s) bez względu czy korzystaliśmy z metody synchronicznej czy też asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B. Pozostałe testy oparte zostały na zasymulwanych danych. 
 \newline
 
 \noindent Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora danych, jednak w tym przypadku nie udało się uzyskać prawidłowego odbioru danych  po stronie kontrolera. Oznacza to, że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
@@ -1538,13 +1514,13 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \end{figure}
 \noindent Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Został w nim użyty bufor o wartości minimalnej równej 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku był podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
 \newline
-\indent Pomimo zasymulowania dość sporych danych wraz z użyciem dość dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując to wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
+\indent Pomimo zasymulowania sporych danych wraz z użyciem dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując wyniki do wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
 \afterpage{\blankpage}
 \chapter{Podsumowanie}
 \label{ConclusionChapter}
 \indent Celem projektu było przygotowanie oprogramowania umożliwiającego wysyłanie i odbieranie danych z wykorzystaniem złącza uniwersalnej magistrali szeregowej, czyli USB. Aby zrealizować projekt należało poznać standard USB i zrozumieć jego działanie, jak i innych, mniej lub bardziej zaawansowanych portów szeregowych. Istotne było zrozumienie różnic pomiędzy standardami wydanymi do dnia dzisiejszego jako podstawa teoretyczna do zrealizowania projektu. Projekt posiada zintegrowany system testowania funkcjonalności, aby zapobiec negatywnej ingerencji w istniejące już funkcjonalności.
 \newline
-\indent Najważniejszym krokiem podczas tworzenia projektu był wybór urządzenia testowego, czyli urządzenia na którym wykonywane były najważniejsze testy akceptacyjne. Wybór padł na mikrokontroler LandTiger, który został dokładniej opisany w rozdziale \ref{microcontrollerChapter}. Aplikacja została zaprojektowana w prosty i rozszerzany sposób. Głównym punktem projektu jest klasa abstrakcyjna pełniąca podstawowe funkcje oraz posiadająca domyślne implementacje poszczególnych metod. Po tej klasie zostały podziedziczone dwie inne wprowadzające własne wersje implementacji testu, jak i w wypadku bardziej rozbudowanej klasy odpowiadającej za asynchroniczne przesyłanie danych, również inicjalizacja biblioteki przebiega inaczej. Dodatkowo w przyszłości istnieje łatwa możliwość rozszerzenia implementacji o nowe klasy dostarczające inną implementacje korzystania z bibliotek.
+\indent Najważniejszym krokiem podczas tworzenia projektu był wybór urządzenia testowego, czyli urządzenia na którym wykonywane były najważniejsze testy akceptacyjne. Wybór padł na mikrokontroler LandTiger, który został dokładniej opisany w rozdziale \ref{microcontrollerChapter}. Aplikacja została zaprojektowana w prosty i rozszerzalny sposób. Głównym punktem projektu jest klasa abstrakcyjna pełniąca podstawowe funkcje oraz posiadająca domyślne implementacje poszczególnych metod. Po tej klasie zostały podziedziczone dwie inne wprowadzające własne wersje implementacji testu, jak i w wypadku bardziej rozbudowanej klasy odpowiadającej za asynchroniczne przesyłanie danych, również inicjalizacja biblioteki przebiega inaczej. Dodatkowo w przyszłości istnieje łatwa możliwość rozszerzenia implementacji o nowe klasy dostarczające inną implementacje korzystania z bibliotek.
 \newline
 \indent W projekcie została użyta biblioteka libUSB, głównym motywatorem użycia tej biblioteki był fakt, iż pozwala na implementacje kodu z jej użyciem zarówno pod systemami Mircrosoft Windows jak i tymi z rodziny Unix. Dodatkowym atutem była prostota dostarczonego przez nią API. Biblioteka libUSB posiada interfejs napisany bardzo intuicyjnie co znacznie ułatwiło prace podczas projektu.
 \newline
@@ -1563,11 +1539,11 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{enumerate}
 \item Kody źródłowe wraz ze skryptami przeznaczonymi do budowania
 \begin{itemize}
-\item Źródło klasy Mode
-\item Źródło klasy SynchMode
-\item Źródło klasy AsynchMode
-\item Źródło klasy DebugPrintre
-\item Skrypt pozwalający na kompilacje pod systemami Unix.
+\item Źródło klasy Mode,
+\item Źródło klasy SynchMode,
+\item Źródło klasy AsynchMode,
+\item Źródło klasy DebugPrinter,
+\item Skrypt pozwalający na kompilacje pod systemami Unix (+UT).
 \item Skrypt umożliwiający uruchomienie wielokrotnych testów
 \end{itemize}
 \item Niezbędne biblioteki aby uruchomić projekt pod systemem Microsoft Windows
@@ -1579,55 +1555,6 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \newpage
 \afterpage{\blankpage}
 \begin{thebibliography}{1}
-
-\bibitem{embeddedC} Michael J. Pont {\em Embedded C       },  UK: Pearson Education Limited, 2002.
-
-\bibitem{embeddedSystems} Steven F. Barret and Daniel J. Pack {\em Embedded Systems} USA: Pearson Education, Inc., 2005.
-
-\bibitem{USBSystemArch} Don Anderson {\em Universal Serial Bus System Architecture } USA: MindShare, Inc., 1997.
-
-\bibitem{bootstrapLinUSB} Rajaram Regupathy {\em Bootstrap Yourself with Linux-USB Stack: Design, Develop, Debug, and Validate Embedded USB } Course Technology, 2012.
-
-\bibitem{DevUSBPher} Wooi Ming Tan {\em Developing USB PC Peripherals } Annabooks, 1999.
-
-\bibitem{USB20Doc} USB Implementers Forum, Inc., USB2.0 specification reference [online] 
-\newline 
-\url{http://www.usb.org/developers/docs/usb20_docs/}
-
-\bibitem{USB30Doc} USB Implementers Forum, Inc., USB3.0 and USB2.0 specyfication reference [online] 
-\newline 
-\url{http://www.usb.org/developers/docs/}
-
-\bibitem{libusbDoc} libusb 2012-2015, libusb documentation reference [online]
-\newline 
-\url{http://libusb.sourceforge.net/api-1.0/}
-
-\bibitem{libusbDesc} libusb 2012-2015, libusb description reference [online]
-\newline 
-\url{http://libusb.info/}
-
-
-\bibitem{winusbDesc} Microsoft 2015, winusb description reference [online]
-\newline 
-\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540196(v=vs.85).aspx}
-
-\bibitem{micrDevAppUSBDev} Microsoft 2015, {\em Developing Windows applications for USB devices} [online]
-\newline 
-\url{https://msdn.microsoft.com/en-us/library/windows/hardware/dn303342(v=vs.85).aspx}
-
-\bibitem{micrAccUsbDev} Microsoft 2015, {\em How to Access a USB Device by Using WinUSB Functions} [online]
-\newline 
-\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx}
-
-\bibitem{micCommWithUsb} Microsoft 2010, {\em How to Use WinUSB to Communicate with a USB Device} [doc from Microsoft web]
-\newline 
-\url{http://download.microsoft.com/download/9/C 5/9C5B2167-8017-4BAE} 
-\newline 
-\url{-9FDED599BAC8184A/WinUsb_HowTo.docx}
-
-\bibitem{landtigerDesc} mbed, LandTiger description reference [online]
-\newline 
-\url{https://developer.mbed.org/users/wim/notebook/landtiger-baseboard/}
 
 \bibitem{RS232C} RS232C picture [online]
 \newline
@@ -1643,6 +1570,18 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \bibitem{bluetooth} Bluetooth logo picture [online] \\
 \url{http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967}
 
+\bibitem{USBSystemArch} Don Anderson {\em Universal Serial Bus System Architecture } USA: MindShare, Inc., 1997.
+
+\bibitem{USB20Doc} USB Implementers Forum, Inc., USB2.0 specification reference [online] 
+\newline 
+\url{http://www.usb.org/developers/docs/usb20_docs/}
+
+\bibitem{USB30Doc} USB Implementers Forum, Inc., USB3.0 and USB2.0 specyfication reference [online] 
+\newline 
+\url{http://www.usb.org/developers/docs/}
+
+\bibitem{DevUSBPher} Wooi Ming Tan {\em Developing USB PC Peripherals } Annabooks, 1999.
+
 \bibitem{usbLogo} USB logo picture [online] \\
 \url{http://hexus.net/media/uploaded/2013/4/e8fdbf0b-6c38-427c-931b-fa4b728856e7.png}
 
@@ -1654,6 +1593,8 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \bibitem{receivedCleanedSignal} Received Signal after cleaning [online]\\
 \url{http://eecatalog.com/usb/files/2012/06/120606_lecroy_3.jpg}
+
+
 \bibitem{withoutEncoding} Set of bits without encoding [online] \\
 \url{http://m.eet.com/media/1158450/tek8b-10bfig1.jpg}
 \bibitem{withEncoding} Set of bits with encoding [online] \\
@@ -1666,12 +1607,53 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \url{https://en.wikipedia.org/wiki/8b/10b_encoding#5b.2F6b}
 \bibitem{128to132coding} Frame in 128b/132b encoding [online] \\
 \url{http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg}
+
+\bibitem{libusbDesc} libusb 2012-2015, libusb description reference [online]
+\newline 
+\url{http://libusb.info/}
+
+\bibitem{winusbDesc} Microsoft 2015, winusb description reference [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540196(v=vs.85).aspx}
+
+
+\bibitem{micrDevAppUSBDev} Microsoft 2015, {\em Developing Windows applications for USB devices} [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/dn303342(v=vs.85).aspx}
+
+\bibitem{micrAccUsbDev} Microsoft 2015, {\em How to Access a USB Device by Using WinUSB Functions} [online]
+\newline 
+\url{https://msdn.microsoft.com/en-us/library/windows/hardware/ff540174(v=vs.85).aspx}
+
+\bibitem{micCommWithUsb} Microsoft 2010, {\em How to Use WinUSB to Communicate with a USB Device} [doc from Microsoft web]
+\newline 
+\url{http://download.microsoft.com/download/9/C 5/9C5B2167-8017-4BAE} 
+\newline 
+\url{-9FDED599BAC8184A/WinUsb_HowTo.docx}
+
+
+\bibitem{libusbDoc} libusb 2012-2015, libusb documentation reference [online]
+\newline 
+\url{http://libusb.sourceforge.net/api-1.0/}
+
+
+\bibitem{landtigerDesc} mbed, LandTiger description reference [online]
+\newline 
+\url{https://developer.mbed.org/users/wim/notebook/landtiger-baseboard/}
+
 \bibitem{landTiger3} LandTiger with description [online] \\
 \url{https://dl.dropboxusercontent.com/u/5651857/landTiger3.jpg}
+
+\bibitem{embeddedC} Michael J. Pont {\em Embedded C       },  UK: Pearson Education Limited, 2002.
+
+\bibitem{embeddedSystems} Steven F. Barret and Daniel J. Pack {\em Embedded Systems} USA: Pearson Education, Inc., 2005.
+
+\bibitem{bootstrapLinUSB} Rajaram Regupathy {\em Bootstrap Yourself with Linux-USB Stack: Design, Develop, Debug, and Validate Embedded USB } Course Technology, 2012.
+
+
+\bibitem{USBFlashBenchmark} USB Flash Benchmark [online] \\
+\url{https://www.raymond.cc/blog/download/did/1923/}
 \end{thebibliography}
-
-
-
 
 \end{document}
 
