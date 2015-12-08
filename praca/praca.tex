@@ -1,29 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% TODO:
-%%% Po pierwsze opisac interfejsy szeregowe ogolnie, czym sa etc.. +
-%%% Kodowanie w USB3.0  dokladniej opisac, zastosowania, rysunki, przebiegi, czas, power +
-%%% Jakos te tytuly napisac czytelniej, konsekwencja w mala/duza litera (pamietalem o tym kiedys) +/-
-%%% Wstep do kazdego rozdzialu + podsumowanie
-%%% Dluzszy wstep, rozwinac poczatkowa wfaze (1.5 str), motywacja pracy +
-%%% opisy rozdzialow zbic w jeden akapit +
-%%% Proces weryfikacji biblioteki +
-%%% Podsumowane do poprawy
-%%% Platforma testowa +
-%%% Odstepy do poprawy +/-
-%%% Testy -  - przyklad w mgr Łukasz Jachymczyk ~2012 +
-%%% rysunki wektorowe +
-%%% range fix
-%%% Sierotki + wdowy do poprawy +
-%%% 
-%%% podzielenie wynikow (teoretyczne, praktyczne, porownanie, podsumowanie) +
-%%% dopisac dodatki (zewnetrzne biblioteki, zawartosc CD etc..) +
-%%%
-%%%
-%%%
-%%%
-%%%
-%%%
-%%%
+
 \documentclass{BscUS}
 \usepackage{setspace}
 \usepackage{graphicx}
@@ -464,7 +439,9 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 %source: http://www.synopsys.com/Company/Publications/DWTB/PublishingImages/dwtb-q4/dwtb-q414-usb3-fig1.jpg
 \label{fig:128to132coding}
 \end{figure}
-\indent Podsumowując, USB należy do rozbudowanych interfejsów poprzez wieloletnie udoskonalanie produktu oraz dążenie do poprawy szybkości przesyłu danych. Dzięki pracy wielu inżynierów oraz udoskonalaniu kodowania znaków, aby rozwiązywać coraz to nowo napotykane problemy, jest to najbardziej powszechny interfejs udostępniony do użytku publicznego.
+\indent Sterowniki dla najczęściej używanych urządzeń USB (np. pendrive) instalują się automatycznie na dzisiejszych systemach operacyjnych (ponieważ system operacyjny posiada informacje na temat urządzeń najczęściej użytkowanych), ma to miejsce zaraz po podłączeniu urządzenia do wejścia USB w komputerze osobistym (mechanizm plug-and-play). Celem takiego rozwiązania było jak największe ułatwienie użytkownikowi dostępu do najbardziej spopularyzowanych urządzeń (najczęściej nośników danych, kamer internetowych, etc..). Założeniem projektu było napisanie aplikacji która wymienia dane z urządzeniem niestandardowym (dedykowanym do bardziej złożonych zadań), a co za tym idzie system operacyjny nie był w posiadaniu odpowiednich sterowników dla urządzenia testowego (dokładnie opisanego w rozdziale \ref{microcontrollerChapter}). Ten sam przypadek będzie miał miejsce z wykorzystaniem innego urządzenia do testów, lub też, w wypadku wykorzystania komercyjnego, należy zadbać o odpowiednią instalację sterownika. Jeśli chodzi o systemy z rodziny UNIX należy zainstalować bibliotekę (opisaną w rozdziale \ref{libUsbChapter}) używając typowego mechanizmu dla systemów UNIXowych\footnote{w wypadku Ubuntu jest to komenda "sudo apt-get install libusb-1.0-0-dev", gdzie libusb-1.0-0-dev jest nazwą pakietu, zawierającego wszystkie potrzebne elementy biblioteki opisanej w późniejszych rozdziałach}. Jest to jedyna czynność jaką należy wykonać przed rozpoczęciem pracy nad implementacją. W przypadku produktów Microsoftu, sprawa przedstawia się nieco inaczej. Wymagana jest instalacja sterownika, który pozwala systemowi na identyfikacje urządzenia. Istotna tutaj jest instalacja sterownika dla każdego nieznanego (nowo podłączonego) przez system urządzenia oddzielne, a dokładniej przy pierwszym użyciu (systemy z rodziny Windows rozpoznają urządzenia połączone interfejsem USB po ich znanej wcześniej VendorId oraz ProductId\footnote{VendorId, ProductId - id specyficzne dla każdego urządzenia, opisane w dalszych rozdziałach}, stad instalacja sterownika odwołuje się do konkretnego podłączonego urządzenia). Po spełnieniu powyższych wymagań możliwe jest pełne wykorzystanie możliwości bibliotek.
+\newline
+\indent Podsumowując, USB należy do rozbudowanych interfejsów poprzez wieloletnie udoskonalanie produktu oraz dążenie do poprawy szybkości przesyłu danych. Dzięki pracy wielu inżynierów oraz udoskonalaniu kodowania znaków, aby rozwiązywać coraz to nowo napotykane problemy, jest to najbardziej powszechny interfejs udostępniony do użytku publicznego. System operacyjny zapewnia szybką instalację sterowników dla podstawowych (najczęściej spotykanych dla użytku domowego) urządzeń. W wypadku bardziej rozbudowanych to programista ma za zadanie zadbać o odpowiednie sterowniki.
 \section{Testy jednostkowe, komponentowe, automatyczne i wydajnościowe}
 \indent Tworzenie testów jest nieodłączną częścią tworzenia oprogramowania. Istnieje wiele metodologi stosowanych w tym temacie, a do najbardziej popularnych należy TDD\footnote{TDD - ang. Test Driven Development} polegająca na stworzeniu przez programistę/testera testu na podstawie wymagań danej funkcjonalności, zanim powstanie do niego implementacja właściwa. Metodologia ta ma swoje plusy jak i minusy. Plusem z pewnością jest weryfikacja funkcjonalności w trakcie pisania kodu produktu (widoczny jest postęp, choć sam w sobie test jeszcze nie przechodzi). Po zakończeniu funkcjonalności możliwy jest pożądany refaktoring kodu, mający na celu zwiększenie przejrzystości dla osób rozwijających projekt dalej. Dzięki zaimplementowanym wcześniej testom istnieje możliwość wstecznego sprawdzania funkcjonalności, innymi słowy czy refaktoring zbytnio nie uszkodził funkcjonalności stworzonego kodu.
 \newline
