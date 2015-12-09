@@ -1,0 +1,78 @@
+@startuml
+Mode <|-- SynchMode
+Mode <|-- AsynchMode
+
+Class Mode {
+ + Mode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
+ +{abstract} virtual ~Mode();
+ +{abstract} virtual int generateSymulatedData(unsigned char*, const int)
+ +{abstract} virtual void printFinalInformation()
+ +{abstract} virtual void initProcedures()
+ +{abstract} virtual void getContext()
+ +{abstract} virtual void getDeviceHandle()
+ +{abstract} virtual void proceedWithInitUsb()
+ +{abstract} virtual void closeLibUsb()
+ +{abstract} virtual void doTest()=0
+ #int _bufforSize
+ #unsigned _count
+ #int _vid
+ #int _pid
+ #double _timeResult
+ #DebugPrinter _debugPrinter
+ #bool _printOnlyResult
+ #libusb_context* _ctx
+ #libusb_device_handle* _dev_handle
+}
+
+class SynchMode {
+ +SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
+ +{abstract} virtual ~SynchMode()
+ +{abstract} virtual int doTest() override
+}
+
+class AsynchMode {
+ +AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
+ +{abstract}virtual ~AsynchMode()
+ +{abstract}virtual int doTest() override
+ +{abstract}virtual void initProcedures() override
+ -pthread_mutex_t _sender_lock
+ -pthread_mutex_t _receiver_lock
+ -pthread_cond_t _sender_cond
+ -pthread_cond_t _receiver_cond
+ -libusb_transfer* _senderTransfer
+ -libusb_transfer* _receiverTransfer
+ -pthread_t _receiverThread
+}
+
+@enduml
+
+
+public:
+	AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	virtual ~AsynchMode();
+	virtual int doTest() override;
+	virtual void initProcedures() override;
+
+	void closeLibUsb() override;
+private:
+	pthread_mutex_t _sender_lock;
+	pthread_mutex_t _receiver_lock;
+	pthread_cond_t _sender_cond;
+	pthread_cond_t _receiver_cond;
+
+	libusb_transfer* _senderTransfer;
+	libusb_transfer* _receiverTransfer;
+	pthread_t _receiverThread;
+
+	SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	virtual ~SynchMode();
+	virtual int doTest() override;
+
+
+	virtual int generateSymulatedData(unsigned char*, const int);
+	virtual void printFinalInformation();
+	virtual void initProcedures();
+	virtual void getContext();
+	virtual void getDeviceHandle();
+	virtual void proceedWithInitUsb();
+	virtual void closeLibUsb();
