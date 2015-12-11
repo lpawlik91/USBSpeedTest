@@ -699,7 +699,7 @@ Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego 
 Mikrokontroler LandTiger oparty na LPC1768 został wyprodukowany przez firmę PowerMCU i można go zakupić od wielu dostawców na eBay lub innych serwisach świadczących usługi zakupów przez internet. Średni koszt waha się w okolicach \$70 za płytkę wraz z wyświetlaczem LCD 3,2 cala o rozdzielczości 320x240 pikseli, z zasilaczem oraz zestawem kabli. \cite{landtigerDesc}
 \newline
 Funkcjonalności:
-\begin{enumerate} [label=(\alph*)]
+\begin{itemize} %[label=(\alph*)]
 \item 2 porty RS232, jeden z nich wspiera ISP (In-system Programming),
 \item 2 interfejsy magistrali CAN (Controller Area Network),
 \item interfejs RS485,
@@ -718,7 +718,7 @@ Funkcjonalności:
 \item pobieranie z użyciem JTAG, interfejs dla debugowania,
 \item zintegrowany emulator kompilacji JLINK - wspiera możliwość debugownia online (po kablu USB podłączonym do PC) dla środowisk deweloperskich tj. KEIL, IAR, CooCox i innych,
 \item dodatkowe 5V port zasilający (możliwe jest też za pomocą portu USB.
-\end{enumerate}
+\end{itemize}
 
 \begin{figure}[h]
 \centering
@@ -735,21 +735,33 @@ Port COM1 (UART0) wspiera komunikację z PC w obie strony. Wszelkie funkcje port
 \indent Wyświetlacz LCD jest oparty na kontrolerze SSD1289. Wyświetlacz może zostać odłączony od płyty. Używa on 8-bitowej magistrali \(P2_0..P2_7\). Kontroler ekranu dotykowego jest dostarczony razem z modułem wyświetlacza. Interfejs pomiędzy ekranem dotykowym a LPC1768 jest możliwy dzięki SPI.
 \newline
 Główne różnice pomiędzy LandTigerem a LPC1768:
-\begin{enumerate} [label=(\alph*)]
+\begin{itemize} % [label=(\alph*)]
 \item płyta po podłączeniu do PC nie pokazuje się jako zewnętrzne urządzenie magazynujące,
 \item aby ściągnąć nowe pliki binarne należy użyć ISP lub JTAG,
 \item brak wsparcia dla serialowego portu po linku USB, należy używać RS232 lub portu USB,
 \item brak wsparcia dla logicznego systemu plików,
 \item brak wsparcia dla 4 diód typu LED (istnieje możliwość użycia inncyh).
-\end{enumerate}
-
-Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety, jak się podczas wykonywania testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza wspierającego USB2.0, chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
-\afterpage{\blankpage}
+\end{itemize}
+\indent Rozdział ukazuje, że Mikrokontroler LandTiger jest rozbudowanym urządzeniem zawierającym szereg różnego rodzaju funkcjonalności. Doskonale nadaje się jako urządzenie dla osób, które nie miały zbyt dużej styczności z programowaniem embedded, a jego przejrzyste API oraz dokumentacja pozwala na szybkie wdrożenie się w środowisko. \cite{landtigerDesc}
+%Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety, jak się podczas wykonywania testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza wspierającego USB2.0, chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
+%\afterpage{\blankpage}
 
 \chapter{Implementacja}
 \label{implementationChapter}
-Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu, aby uzyskać możliwość łatwego dodawania nowych udoskonaleń.
-
+Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu, aby uzyskać możliwość łatwego dodawania nowych udoskonaleń. Przed rozpoczęciem projektowania klas należało zaznajomić się ze schematem ideowym płytki LandTiger (Rys. \ref{fig:usbSchema}).
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{./img/usbSchema}
+\caption{Schemat ideowy \cite{landtigerDesc}} 
+\label{fig:usbSchema}
+\end{figure}
+\noindent W projekcie wykorzystywano jedno z przedstawionych na rysunku złączy. Był nim USB\_Device, a co za tym idzie wszystkie zworki musiały zostać odpowiednio przestawione aby umożliwić jego działanie (JP9, JP10, JP11). Najistotniejsze jest to, iż D+ oraz D- przepuszczane są przez filtry dolnoprzepustowe. Istotne jest to ponieważ właśnie tymi interfejsami transmitowane są dane.
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{./img/classDiagram}
+\caption{Diagram klas projektu}
+\label{fig:classDiagram}
+\end{figure}
 \section{Klasa Mode}
 Klasa Mode jest nadzbiorem funkcjonalności. Obudowuje ona podstawowe funkcjonalności takie jak:
 \begin{itemize}
