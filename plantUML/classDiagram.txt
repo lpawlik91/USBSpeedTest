@@ -4,15 +4,14 @@ Mode <|-- AsynchMode
 
 Class Mode {
  + Mode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
- +{abstract} virtual ~Mode();
- +{abstract} virtual int generateSymulatedData(unsigned char*, const int)
- +{abstract} virtual void printFinalInformation()
- +{abstract} virtual void initProcedures()
- +{abstract} virtual void getContext()
- +{abstract} virtual void getDeviceHandle()
- +{abstract} virtual void proceedWithInitUsb()
- +{abstract} virtual void closeLibUsb()
- +{abstract} virtual void doTest()=0
+ +{abstract} generateSymulatedData(unsigned char*, const int)
+ +{abstract} printFinalInformation()
+ +{abstract} initProcedures()
+ +{abstract} getContext()
+ +{abstract} getDeviceHandle()
+ +{abstract} proceedWithInitUsb()
+ +{abstract} closeLibUsb()
+ +{abstract} doTest()=0
  #int _bufforSize
  #unsigned _count
  #int _vid
@@ -26,15 +25,14 @@ Class Mode {
 
 class SynchMode {
  +SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
- +{abstract} virtual ~SynchMode()
- +{abstract} virtual int doTest() override
+ +{abstract} doTest()
 }
 
 class AsynchMode {
  +AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
- +{abstract}virtual ~AsynchMode()
- +{abstract}virtual int doTest() override
- +{abstract}virtual void initProcedures() override
+ +{abstract} doTest()
+ +{abstract} initProcedures()
+ +{abstract} closeLibUsb()
  -pthread_mutex_t _sender_lock
  -pthread_mutex_t _receiver_lock
  -pthread_cond_t _sender_cond

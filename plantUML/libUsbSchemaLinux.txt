@@ -1,0 +1,9 @@
+@startuml
+
+"Aplikacja uzytkownika" --> [ ] "Biblioteka libUSB"
+--> [ ] "Sterownik UsbFs" 
+--> [ ] "UsbCore.c oraz Host Controller Driver"
+--> [ ] "USB Host Controller Hardware"
+
+
+@enduml

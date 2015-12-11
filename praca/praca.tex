@@ -496,6 +496,23 @@ Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i współdzieli ten sam kod
 \chapter{Interfejs udostępniony przez libUSB}
 \label{libUsbChapter}
 \indent Zadaniem rozdziału jest opis działania poszczególnych funkcji użytych w projekcie. Jest to konieczne aby przeglądając implementacje projektu być w stanie bezproblemowo zrozumieć działanie poszczególnych części projektu. Rozdział został podzielony na podstawie struktur oraz funkcji, których użycie widoczne jest w implementacji właściwej. \cite{libusbDoc}
+\newline
+\indent Biblioteka pozwala na łatwy dostęp do poszczególnych funkcjonalności standardów USB. Dzieje się to poprzez udostępnienie API\footnote{API (ang. Application Programming Interface) - interfejs (zazwyczaj zestaw funkcji, struktur) umożliwiający programiście na korzystanie z różnych funkcjonalności biblioteki}, dzięki któremu programista może w pełni wykorzystywać możliwości USB. Poniższy rysunek (Rys. \ref{fig:libUsbSchemaLinux}) przedstawia jak zaprojektowano użycie libUSB pod systemami Linuxowymi. Widać, iż aplikacja użytkownika korzysta tylko i wyłącznie z biblioteki libUSB, natomiast sama biblioteka korzysta ze sterownika UsbFs\footnote{UsbFs (ang. Usb filesystem) - wirtualny system plików dostarczający informacji na temat urządzeń USB (podobnie jak /proc na temat procesów}, dzięki czemu zdobywa informacje na temat urządzeń USB. Kolejnym krokiem jest wykorzystanie UsbCore.c oraz sterownika Host Controller. UsbCore.c jest niskopoziomową implementacją standardu USB dla systemów Unixowych, natomiast systemowy sterownik Host Controller pozwala na odblokowanie komunikacji na zewnątrz. To właśnie tutaj zachodzi wydawanie bezpośrednich komend do złącza USB, które jest podłączone bezpośrednio do urządzenia. 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.35\textwidth]{./img/libUsbSchemaLinux}
+\caption{Schemat działania libUSB pod systemami z rodziny Linux} 
+\label{fig:libUsbSchemaLinux}
+\end{figure}
+\noindent W przypadku działania libUSB dla systemów firmy Microsoft (przedstawione na Rys \ref{fig:libUsbSchemaWindows}) schemat jest nieco uproszczony. Aplikacja korzysta z API udostępnionego przez libUSB (dokładnie z tego samego jak w przypadku działania pod systemem Linux). Natomiast biblioteka libUSB korzysta bezpośrednio ze sterownika zainstalowanego dla konkretnego urządzenia. Pod systemami Windows twórcy biblioteki libUSB stworzyli sterownik, który należy zainstalować oddzielnie dla każdego urządzenia z którym ma przebiegać komunikacja (urządzenie identyfikowane za pomocą vendorId oraz productId - dokładniej opisane w rozdziale \ref{ch:motivationAndBasics}). Poprzez zdanie "za pomocą narzędzi libUSB" (poniższy rys.) rozumiane jest narzędzie pozwalające na łatwą instalacje sterownika dla konkretnego podłączonego urządzenia \cite{zadig}. Sterownik pozwala na komunikacje ze złączem USB.
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.55\textwidth]{./img/libUsbSchemaWindows}
+\caption{Schemat działania libUSB pod systemami z rodziny Windows}
+\label{fig:libUsbSchemaWindows}
+\end{figure}
+\noindent Przedstawione powyżej schematy ukazują zasadę działania biblioteki pod poszczególnymi systemami operacyjnymi. W wypadku Linux'a korzysta on z systemowych sterowników, natomiast w wypadku systemu Windows wymagana jest dodatkowa instalacja specyficznego sterownika, który pozwala na przetłumaczenie libUSB API na konkretne działania.
+
 \section{Charakterystyka wybranych struktur}
 \subsection{libusb\_context}
 \noindent Struktura libusb\_context reprezentuje sesję libusb.
@@ -1611,6 +1628,8 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \newline 
 \url{-9FDED599BAC8184A/WinUsb_HowTo.docx}
 
+\bibitem{zadig} Pete Batard/Akeo 2013-2015 {\em Zadig} [online] \\
+\url{http://zadig.akeo.ie}
 
 \bibitem{libusbDoc} libusb 2012-2015, libusb documentation reference [online]
 \newline 

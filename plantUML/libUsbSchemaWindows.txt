@@ -1,0 +1,6 @@
+@startuml
+
+"Aplikacja uzytkownika" --> [ ] "Biblioteka libUSB" 
+--> [ ] "Sterownik USB stworzony za pomoca narzedzi libUSB"
+--> [ ] "USB Host Controller Hardware"
+@enduml
