@@ -25,7 +25,7 @@ USER_DIR = ..
 CPPFLAGS += -isystem $(GTEST_DIR)/include
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall -Wextra -pthread -I$(USER_DIR)
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -86,5 +86,5 @@ Mode_gt.o: $(USER_DIR)/Mode.hpp $(USER_DIR)/Mode.cpp
 
 libusb_gt.o : libusb_gt.cpp \
 		$(GTEST_HEADERS)
-	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c libusb_gt.cpp
+	$(CXX) $(CPPFLAGS) -std=c++11 $(CXXFLAGS) -c libusb_gt.cpp -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
 
