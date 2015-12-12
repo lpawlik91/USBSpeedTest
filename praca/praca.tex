@@ -748,14 +748,23 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 
 \chapter{Implementacja}
 \label{implementationChapter}
-Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu, aby uzyskać możliwość łatwego dodawania nowych udoskonaleń. Przed rozpoczęciem projektowania klas należało zaznajomić się ze schematem ideowym płytki LandTiger (Rys. \ref{fig:usbSchema}).
+Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu, aby uzyskać możliwość łatwego dodawania nowych udoskonaleń. Przed rozpoczęciem projektowania klas należało zaznajomić się jak przedstawione jest USB na schemacie ideowym płytki LandTiger (Rys. \ref{fig:usbSchema}).
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{./img/usbSchema}
-\caption{Schemat ideowy \cite{landtigerDesc}} 
+\caption{Schemat ideowy USB na płytce LandTiger\cite{landtigerDesc}} 
 \label{fig:usbSchema}
 \end{figure}
-\noindent W projekcie wykorzystywano jedno z przedstawionych na rysunku złączy. Był nim USB\_Device, a co za tym idzie wszystkie zworki musiały zostać odpowiednio przestawione aby umożliwić jego działanie (JP9, JP10, JP11). Najistotniejsze jest to, iż D+ oraz D- przepuszczane są przez filtry dolnoprzepustowe. Istotne jest to ponieważ właśnie tymi interfejsami transmitowane są dane.
+\noindent W projekcie wykorzystywano jedno z przedstawionych na rysunku złączy. Był nim USB\_Device, a co za tym idzie wszystkie zworki musiały zostać odpowiednio przestawione aby umożliwić jego działanie (JP9, JP10, JP11). Na schemacie widoczne jest, iż jest to złącze typu B (grubsze). Składa się z czterech pinów:
+\begin{itemize}
+\item Pin 1 - VBUS, odpowiada za dostarczenie zasilania +5V,
+\item Pin 2 - terminal do przesyłania odwróconego sygnału (D-),
+\item Pin 3 - terminal do przesyłania sygnału (D+)
+\item GND - uziemienie
+\end{itemize}
+\noindent Istotne jest to aby długości D+ oraz D- były takie same, wtedy sygnał pokonuje dokładnie takie same odległości i zapewniona zostaje integralność. W wypadku kiedy odległości są różne mogą wystąpić różnego rodzaju błędu związane z wyeliminowaniem zakłóceń (eliminacja zakłóceń opisana dokładniej w rozdziale \ref{ch:motivationAndBasics}). Na schemacie różnica jest niezauważalna. Dodatkowo na poszczególnych liniach użyto filtry dolnoprzepustowe aby wyeliminować z widma sygnału częstotliwości powyżej częstotliwości Nyquista, czyli częstotliwości z jaką (w wypadku elektroniki) możliwy jest odczyt sygnału bez błędów, takich jak nakładania się składowych widmowych sygnału o wyższych częstotliwościach (niż częstotliwość Nyquista) na składowe o niższych częstotliwościach.
+\newline
+\indent Po zapoznaniu się ze schematem ideowym, należało przystąpić do realizacji projektu. Diagram klas użytych w projekcie znajduje się na rysunku \ref{fig:classDiagram}. Doskonale pokazuje to łatwość rozszerzalności o nowe funkcjonalności aplikacji. Jeżeli w przyszłości uda się opracować nowy sposób przesyłania danych, można rozszerzyć klasę Mode o tą funkcjonalność. Opis poszczególnych klas wraz z użytymi metodami znajduje się w poniższych podrozdziałach.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{./img/classDiagram}
@@ -917,53 +926,16 @@ private:
 \end{lstlisting}
 Używa ona wszystkich domyślnych ustawień (nie przeciąża żadnej metody wirtualnej), oczywiście metoda doTest() wymaga implementacji.
 \subsection{Metoda doTest}
-Metoda w całości przedstawiona w listingu \ref{lst:SynchMode_doTest} i jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony, pomiędzy PC a mikrokontrolerem.
-Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger.
-\begin{lstlisting}[caption={Metoda SynchMode::doTest()},label={lst:SynchMode_doTest}]
+Metoda jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony, pomiędzy PC a mikrokontrolerem.
+Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger. Fragment metody został przedstawiony w listingu \ref{lst:SynchMode_doTest}.
+\begin{lstlisting}[caption={Fragment metody SynchMode::doTest()},label={lst:SynchMode_doTest}]
 int SynchMode::doTest()
 {
-	unsigned char *data_out = new unsigned char[_bufforSize]; //data to write
-	unsigned char* data_in = new unsigned char[_bufforSize];
-	generateSymulatedData(data_out, _bufforSize);
-	int howManyBytesIsSend; 
-	int howManyBytesReceived;
-
-	time_t start_t, end_t;
-    	_timeResult = 0;
-
-	
-	time(&start_t);
-	for(int i = 0; i < _count; ++i)
-	{
+//...
 		int sendStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, &howManyBytesIsSend, 0); 
-		if(sendStatus == 0 && howManyBytesIsSend == _bufforSize)
-		{
-			//here was printing data for debugging only
-		}
-		else
-		{
-			delete [] data_out;
-			throw std::runtime_error("Write Error!");
-		}
-		
-		
+//...		
 		int readStatus = libusb_bulk_transfer(_dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize * sizeof(unsigned char), &howManyBytesReceived, 0);
-		if (readStatus == 0 && howManyBytesReceived == howManyBytesIsSend) 
-		{
-			//here was printing data for debugging only
-		} 
-		else 
-		{
-			delete[] data_in;
-			throw std::runtime_error("Read Error! ");
-		}
-		
-	}
-	time(&end_t);
-	_timeResult = difftime(end_t, start_t);
-	delete[] data_in;
-	delete [] data_out;
-	return 0;
+//...
 }
 \end{lstlisting}
 \section{Klasa AsynchMode}
@@ -991,88 +963,26 @@ private:
 };
 \end{lstlisting}
 Klasa zawiera wzbogaconą inicjalizację o alokację transferów (wysyłającego oraz odbierającego) oraz inicjalizację mutexów.
-Istotnym elementem jest przedstawiony w listingu \ref{lst:ThreadHelper} dodatkowy namespace ułatwiający obsługę callbacków. Znajduje się w nim zarówno obsługa wątku nasłuchującego jak i obsługa poszczególnych zdarzeń.
-\begin{lstlisting}[caption={Definicja przestrzeni nazw oraz odpowiednich struktur do poprawnej obslugi wątków},label={lst:ThreadHelper}]
+Istotnym elementem jest przedstawiony w listingu \ref{lst:ThreadHelper} dodatkowy namespace ułatwiający obsługę callbacków (w listingu przedstawiono jego strukturę). Znajduje się w nim zarówno obsługa wątku nasłuchującego jak i obsługa poszczególnych zdarzeń.
+\begin{lstlisting}[caption={Struktura przestrzeni nazw oraz odpowiednich struktur do poprawnej obslugi wątków},label={lst:ThreadHelper}]
 namespace ThreadHelper
 {
 	struct TransferStatus
 	{
-		time_t startTest;
-		time_t stopTest;
-		int allCompleted;
-		libusb_transfer* senderHandler;
-		libusb_transfer* receiverHandler;
-		int sendCount;
-		int receivedCount;
-		int needToBeSendReceived;
-		libusb_context* ctx;
-		int waitForSender;
-		int waitForReceiver;
-		int particularSendComplete;
-		int particularReceiveComplete;
-		pthread_mutex_t* sender_lock;
-		pthread_mutex_t* receiver_lock;
-		pthread_cond_t* sender_cond;
-		pthread_cond_t* receiver_cond;
+	//...
 	};
-
 	static void LIBUSB_CALL cb_read(struct libusb_transfer *transfer)
 	{
-		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
-			std::cerr << "Reading data error!" << std::endl;
-			return ;
-		}
-		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
-		ts->receivedCount++;
-		ts->particularReceiveComplete = 1;
-	
-		pthread_mutex_lock(ts->sender_lock);
-		ts->waitForSender = 0;
-		pthread_cond_signal(ts->sender_cond);
-		pthread_mutex_unlock(ts->sender_lock);
-		if(ts->receivedCount == ts->needToBeSendReceived)
-		{
-			time(&ts->stopTest);
-			ts->allCompleted = 1;
-		}
-
+		//..
 	}
-
 	static void LIBUSB_CALL cb_send(struct libusb_transfer *transfer)
 	{
-		if (transfer->status != LIBUSB_TRANSFER_COMPLETED) {
-			std::cerr << "Sending data error!" << std::endl;
-			return ;
-		}
-		TransferStatus* ts = static_cast<TransferStatus*>(transfer->user_data);
-		ts->sendCount++;
-		pthread_mutex_lock(ts->receiver_lock);
-		ts->waitForReceiver = 0;
-		ts->particularSendComplete = 1;
-		pthread_cond_signal(ts->receiver_cond);
-		pthread_mutex_unlock(ts->receiver_lock);
-
-	}
-	
+		//...
+	}	
 	void* receiverThread(void* arg)
 	{
-		TransferStatus* transferStatus = static_cast<TransferStatus*>(arg);
-		while(transferStatus->allCompleted != 1) 
-		{
-			pthread_mutex_lock(transferStatus->receiver_lock);
-			while(transferStatus->waitForReceiver) {
-				pthread_cond_wait(transferStatus->receiver_cond, transferStatus->receiver_lock);
-			}
-			transferStatus->waitForReceiver = 1;
-
-			pthread_mutex_unlock(transferStatus->receiver_lock);
-			transferStatus->particularReceiveComplete = 0;
-			libusb_submit_transfer(transferStatus->receiverHandler);
-			while(transferStatus->particularReceiveComplete == 0)
-				libusb_handle_events(transferStatus->ctx);
-		}
+	//..
 	}
-
 }
 \end{lstlisting}
 \subsection{Metoda initProcedures oraz closeLibUsb}
@@ -1112,57 +1022,24 @@ Podobnie jak w wypadku synchronicznego mechanizmu tak i teraz należy dostarczy�
 \begin{lstlisting}[caption={Metoda AsynchMode::doTest()},label={lst:AsynchMode_doTest}]
 int AsynchMode::doTest()
 {
-	unsigned char *data_out = new unsigned char[_bufforSize]; //data to write
-	unsigned char *data_in = new unsigned char[_bufforSize]; //data to read
-	generateSymulatedData(data_out, _bufforSize);
-	int howManyBytesIsSend; 
-	int howManyBytesReceived;
-	ThreadHelper::TransferStatus transferStatus;
-	transferStatus.allCompleted = 0;
-	
-	transferStatus.sendCount = 0;
-	transferStatus.receivedCount = 0;
-	transferStatus.senderHandler = _senderTransfer;
-	transferStatus.receiverHandler = _receiverTransfer;
-	transferStatus.needToBeSendReceived = _count;
-	transferStatus.ctx = _ctx;
-	transferStatus.waitForSender = 0;
-	transferStatus.waitForReceiver = 1;
-	transferStatus.sender_lock = &_sender_lock;
-	transferStatus.sender_cond = &_sender_cond;
-	transferStatus.receiver_lock = &_receiver_lock;
-	transferStatus.receiver_cond = &_receiver_cond;
-	
+//...
 	libusb_fill_bulk_transfer(_senderTransfer, _dev_handle, (2 | LIBUSB_ENDPOINT_OUT), data_out, _bufforSize, ThreadHelper::cb_send, &transferStatus, 0);
 	libusb_fill_bulk_transfer(_receiverTransfer, _dev_handle, (2 | LIBUSB_ENDPOINT_IN), data_in, _bufforSize, ThreadHelper::cb_read, &transferStatus, 0);
-
-	_timeResult = 0.0;
+//..
 	if(pthread_create(&_receiverThread, NULL, ThreadHelper::receiverThread, &transferStatus) != 0)
 	{
 		throw std::runtime_error("Error creating listener thread.");
 	}
-	
-	time(&transferStatus.startTest); 
-	for(int i = 0; i < _count; ++i)
-	{
+//... 
 		pthread_mutex_lock(&_sender_lock);
 		while(transferStatus.waitForSender){
 			pthread_cond_wait(&_sender_cond, &_sender_lock);
 		}
 		transferStatus.waitForSender = 1;
-
 		pthread_mutex_unlock(&_sender_lock);
 		transferStatus.particularSendComplete = 0;
 		libusb_submit_transfer(_senderTransfer);
-		while(transferStatus.particularSendComplete == 0)
-			libusb_handle_events(_ctx);
-		
-	}
-	pthread_join(_receiverThread, NULL);
-	_timeResult = difftime(transferStatus.stopTest, transferStatus.startTest);
-	delete data_out;
-	delete data_in;
-	return 0;
+	//...
 }
 
 \end{lstlisting}
@@ -1172,41 +1049,7 @@ Kod przedstawiony w Listingu \ref{lst:main} doskonale ukazuje prostotę korzysta
 \begin{lstlisting}[caption={Przykład użycia interfejsu synchronicznego lub asynchronicznego w zależności od parametryzacji},label={lst:main}]
 int main(int argc, char* argv[])
 {
-	
-	if(argc < 4) 
-	{
-		std::cout << "use: " << argv[0] << " [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>" << std::endl;
-		std::cout << "First parameter tells if application should be run in Synchronous mode or Asynchronous" << std::endl;
-		std::cout << "Note that max buffer of LandTiger is " << BUFFOR_MAX << "Bytes" << std::endl;
-		return 0; 
-	}
-	bool printOnlyResult = false;
-	if(argc == 5)
-		printOnlyResult = argv[4][0] == '0' ? false : true;
-	
-	DebugPrinter debugPrinter(! printOnlyResult);
-	char selectedMode = std::toupper(argv[1][0]);
-	if(selectedMode != 'A' && selectedMode != 'S')
-	{
-		debugPrinter << "mode set is different than A or S, setting synchronous as default.\n";
-		selectedMode = 'S';
-	}
-		
-	unsigned bufforSize = atoi(argv[2]);
-	if(bufforSize > BUFFOR_MAX) 
-	{
-		debugPrinter << "bufforSize is grather than 64B, setting 64 as default\n";
-		bufforSize = BUFFOR_MAX;
-	}
-	unsigned fullDataSize = atoi(argv[3]);
-	unsigned count = fullDataSize/bufforSize;
-	if(fullDataSize % bufforSize != 0)
-	{
-		debugPrinter << "It is impossible to send " << fullDataSize << "B using " << bufforSize << "B, to simplify application work sending " << (++count) * bufforSize << "B\n";
-	}
-	
-
-	debugPrinter << "Total size to send/receive: " << bufforSize << " x " << count << " = " << bufforSize * count << " Bytes\n";
+	//..
 	try 
 	{
 		std::unique_ptr<Mode> mode;
@@ -1239,17 +1082,12 @@ use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \item fullDataSize - całkowity rozmiar danych do wysłania [B],
 \item printOnlyResult - opcjonalny parametr w wypadku ustawienia na wartość '1' pozwala na łatwe zebranie wyników bez zbędnych informacyjnych wiadomości (same dane). 
 \end{itemize}
-\section{Embedded code}
-Aby test przebiegł prawidłowo konieczne było zaimplementowanie prostego stuba (działającego na mikrokontrolerz LandTiger), mającego za zadanie krótkie potwierdzenie odebrania wiadomości (jako reakcja na zdarzenie) lub wykonanie akcji na kontrolerze. Poniższy listing zawiera przykładowy kod wysyłający jako potwierdzenie otrzymane dane (niestety aby nie wystąpił w wypadku większej ilości przysłanych danych, wysyłana jest zawartość ograniczona do 64 B). \cite{embeddedC, embeddedSystems, bootstrapLinUSB}
+\section{Kod działający po stronie mikrokontrolera}
+Aby test przebiegł prawidłowo konieczne było zaimplementowanie prostej funkcjonalności po stronie mikrokontrolera, mającej za zadanie krótkie potwierdzenie odebrania wiadomości (jako reakcja na zdarzenie) lub wykonanie akcji na kontrolerze. Poniższy listing zawiera przykładowy kod wysyłający jako potwierdzenie otrzymane dane (niestety aby nie wystąpił błąd w wypadku większej ilości przysłanych danych, wysyłana jest zawartość ograniczona do 64 B). \cite{embeddedC, embeddedSystems, bootstrapLinUSB}
 \begin{lstlisting}[caption={Funkcja USB\_Receiver\_Sender},label={lst:FUSBSenderReceiver}]
 void USB_Receiver_Sender()
 {
-	static char serBuf [USB_CDC_BUFSIZE];
-	int  numBytesToRead, numBytesRead, numAvailByte;
-
-	USB_Init();
-	USB_Connect(TRUE);                        // USB Connect
-	while (!USB_Configuration) ;              // wait until USB is configured
+//...
 	while(1)
 	{
 		CDC_OutBufAvailChar (&numAvailByte);
@@ -1310,26 +1148,7 @@ debugPrinter << "It is impossible to send " << fullDataSize << "B using " << buf
 \end{lstlisting}
 aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter} zablokuje wypisywanie tekstu.
 Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
-\newline
-\newline
-Poniżej (listing \ref{lst:makefile} został przedstawiony prosty makefile używany przy kompilacji pod system Unix.
-\begin{lstlisting}[caption={Makefile},label={lst:makefile}]
-libusb: Mode.o SynchMode.o AsynchMode.o Mode.hpp Mode.cpp SynchMode.hpp SynchMode.cpp AsynchMode.hpp
-	g++ -std=c++11 libusbtest2.cpp SynchMode.cpp AsynchMode.cpp Mode.cpp -o libusb -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
-
-AsynchMode.o: Mode.o Mode.hpp Mode.cpp AsynchMode.hpp AsynchMode.cpp
-	g++ -std=c++11 -c AsynchMode.cpp -o AsynchMode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
-
-SynchMode.o: Mode.o Mode.hpp Mode.cpp SynchMode.hpp SynchMode.cpp
-	g++ -std=c++11 -c SynchMode.cpp -o SynchMode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
-
-Mode.o: Mode.hpp Mode.cpp
-	g++ -std=c++11 -c Mode.cpp -o Mode.o -I/usr/include/libusb-1.0 -lusb-1.0 -lpthread
-
-clean:
-	@rm -f *.o libusb
-\end{lstlisting}
-\chapter{Testy oraz ich rezultaty}
+\chapter{Testy wydajności oraz ich rezultaty}
 \label{resultsChapter}
 \indent Oprogramowanie zostało poddane dogłębnym testom systemowym, mającym na celu zweryfikowanie poprawności działania aplikacji oraz jej zgodności z wymaganiami. Wykonywano je na każdym etapie programowania aby uniknąć jakichkolwiek nieumyślnych interakcji w rezultaty działających uprzednio funkcjonalności. Ważne było aby środowisko testowe było znane. W przypadku tego projektu jest to mikrokontroler LandTiger opisany dokładniej w rozdziale \ref{microcontrollerChapter} oraz komputer osobisty o parametrach przedstawionych w tabeli \ref{tbl:pcParameters}.
 \begin{table}[H]
@@ -1348,24 +1167,12 @@ clean:
 %source: 
 \label{tbl:pcParameters}
 \end{table}
-\noindent Istotnym elementem wymagań było to aby aplikacja była wieloplatformowa, włączając przede wszystkim system Windows oraz systemy z rodziny Linux. Tabela \ref{tbl:operationalSystems} przedstawia systemy operacyjne na których wykonywane były testy.
-\begin{table}[H]
-\centering
-\begin{tabular}{|c|c|}
-\hline
-	\rowcolor[gray]{0.8}
-	System operacyjny nr 1 & Windows 8.1 Pro Professional \\ \hline
-	System operacyjny nr 2  & Linux Ubuntu 14.04 \\ \hline
-\end{tabular}
-\captionof{table}{Lista systemów operacyjnych na których wykonywano testy}
-%source: 
-\label{tbl:operationalSystems}
-\end{table}
+\noindent Istotnym elementem wymagań było to aby aplikacja była wieloplatformowa, włączając przede wszystkim system Windows oraz systemy z rodziny Linux. Testy zostały wykonane na systemie Windows 8.1 Pro oraz na Linux Ubuntu 14.04.
 \noindent Analizując poniższe wyniki testów należy mięć na uwadze poniższe fakty i założenia:
 \begin{enumerate}
 \item Początkowym celem było uzyskanie prędkości nie mniejszej niż 140 Mbit/s co daje 17,5 MB/s w obu kierunkach.
 \item Zarówno komputer osobisty jak i płytka LandTiger posiada wbudowane złącze żeńskie standardu USB2.0 (komputer złącze typu A, natomiast płytka złącze typu B).
-\item jak się okazało podczas tworzenia projektu płytka LandTiger, pomimo wlutowanego złącza USB2.0, nie jest w stanie obsłużyć tego standardu. Spowodowane jest to tym iż chip na płycie wspiera jedynie standard USB1.1.
+\item Jak się okazało podczas tworzenia projektu płytka LandTiger, pomimo wlutowanego złącza USB2.0, nie jest w stanie obsłużyć tego standardu. Spowodowane jest to tym iż chip na płycie wspiera jedynie standard USB1.1.
 \item warunkiem koniecznym udanego testu jest niestety wsparcie minimum USB2.0.
 \end{enumerate}
 \section{Testy jednostkowe}
