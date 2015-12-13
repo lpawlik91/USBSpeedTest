@@ -202,23 +202,8 @@ Do najprostszych interfejsów szeregowych zaliczamy z pewnością interfejsy tak
 \end{minipage}
 \end{figure}
 \noindent Złącza typu RS232C można jeszcze spotkać jako interfejs komunikacyjny z drukarkami starego typu, niemniej został on wyparty przez nowsze interfejsy (takie jak np. USB). \\
-\indent Interfejsami najbardziej wydajnymi są USB oraz Ethernet. Są to stosunkowo nowo opracowane (w porównaniu do RS232) i nadal rozwijane interfejsy. Dokładny opis standardu USB znajduje się w rozdziale \ref{USBStandardChapter}. Ethernet jest to ustandaryzowany sposób komunikacji umożliwiający tworzenie komputerowych sieci lokalnych. Początki sięgają roku 1976. Opracowany został w firmie Xerox.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.35\textwidth]{./img/ethernet-cable}
-\caption{Kabel Ethernetowy \cite{ethernetCable}}
-%source: http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg
-\label{fig:EthernetCable}
-\end{figure}
-Kontynuując temat warto wspomnieć, że najtrudniejszym do zaimplementowania protokołem/interfejsem przesyłania danych jest Bluetooth (w wypadku kategoryzacji według takiego wyznacznika). Służy on do bezprzewodowej komunikacji na bardzo krótkim dystansie.
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.35\textwidth]{./img/bluetooth-logo}
-\caption{Bluetooth \cite{bluetooth}}
-%source: http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967
-\label{fig:blueTooth}
-\end{figure}
-\noindent Dość często spotykanym przypadkiem użycia komunikacji bluetooth są zestawy głośnomówiące w samochodach oraz różnego rodzaju urządzenia takie jak słuchawki, głośniki oraz adaptery (np. w zestawie do bezprzewodowej myszki komputerowej dołączany jest adapter bluetooth podpinany pod wejście USB w komputerze).
+\indent Interfejsami najbardziej wydajnymi są USB oraz Ethernet. Są to stosunkowo nowo opracowane (w porównaniu do RS232) i nadal rozwijane interfejsy. Dokładny opis standardu USB znajduje się w rozdziale \ref{USBStandardChapter}.
+Warto również wspomnieć, że najtrudniejszym do zaimplementowania protokołem/interfejsem przesyłania danych jest Bluetooth (w wypadku kategoryzacji według takiego wyznacznika). Służy on do bezprzewodowej komunikacji na bardzo krótkim dystansie.
 \newline
 \indent Podsumowując, interfejsy szeregowe umożliwiają komunikację miedzy urządzeniami, z których jeden najczęściej jest komputerem osobistym. Implementacja każdego interfejsu jest na swój sposób złożona. Kategoryzacja jest możliwa na podstawie różnych wielkości. W tym rozdziale zostały podzielone według złożoności interfejsu (w sensie architektury), wydajności oraz trudności implementacji.
 
@@ -338,8 +323,9 @@ Rys. \ref{fig:sendingDataThroughPHYLayer} przedstawia działanie USB3.0 wraz z k
 Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie współczynnika RD\footnote{RD (ang. Running Disparity) - różnica pomiędzy ilością jedynek i zer w ciągu)}, czyli różnicy pomiędzy ilością jedynek i zer w ciągu. Jak zostało wspomniane wyżej, założenie całego kodowania jest takie aby, ilość zer całości przesyłanych danych oscylowała w okolicach 50\%, więc różnica (RD) dla jednego zestawu 10 bitów danych wynosi +-2.
 \newline
 \indent Realizacja kodowania 5b/6b jest nieco bardziej skomplikowana, polega bowiem na takim dopasowaniu '0' i '1' aby różnica pomiędzy ich ilością była równa +-1 (jest to tak na prawdę RD lub odległość Hamminga\footnote{odległość Hamminga - w kontekście projektu XOR dwóch zbiorów}). Wartość wyjściowa musi być unikalna. Jest to możliwe dzięki dodaniu do zbioru dodatkowego bitu (unikalność mogłaby zostać zachowana bez niego, natomiast nie zostałby spełniony warunek RD = +-1).
-\newline 
-%Todo: monitorowac pozycje tej tabelki
+\newline
+\iffalse 
+%Todo: na razie wylaczone
 %\begin{tabular}{ | a | l | l | l | a | l | l | l | }
 \begin{table}[H]
 \begin{tabular}{|>{\columncolor[gray]{0.85}}c|c|c|c|>{\columncolor[gray]{0.85}}c|c|c|c|c|}
@@ -397,13 +383,14 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 %source: 
 \label{tbl:3bTo4b}
 \end{table}
+\fi
 %\newline
-\noindent Sporą część kodów da się wyliczyć na podstawie zamiany EDCBA -> abcfe (odwrócenie bitów) oraz dodanie wartości '0' lub '1' w zależności od aktualnej wartości RD. Niestety nie dotyczy to wszystkich elementów, tabela \ref{tbl:5bTo6b} ukazuje wszystkie możliwe konfiguracje dla tej konwersji (5b/6b). Przedstawia ona 32 wartości wraz z przekonwertowanymi odpowiednikami (oznaczane D.xx) oraz jedną konwersję dla instrukcji kontrolnej (oznaczona jako K.28).
+\noindent Sporą część kodów da się wyliczyć na podstawie zamiany EDCBA -> abcfe (odwrócenie bitów) oraz dodanie wartości '0' lub '1' w zależności od aktualnej wartości RD. Niestety nie dotyczy to wszystkich elementów. Istnieją 32 wartości wraz z przekonwertowanymi odpowiednikami oraz jedna konwersja dla instrukcji kontrolnej.
 %todo later today
 \newline
-\noindent Tabela \ref{tbl:3bTo4b} przedstawia konwersje 3b/4b. Zawiera dwie specyficzne konwersje: podstawową (ang. primary) D.x.P7 oraz alternatywną (ang. alternative) D.x.A7. Dodatkowa alternatywna konfiguracja dla tego zestawu danych została stworzona w celu uniknięcia 5-elementowego ciągu złożonego z samych zer lub jedynek podczas łączenia z kodowaniem 5b/6b, czyli tworzeniem kodu 8b/10b (a w wypadku samego podstawowego zestawu byłoby to o wiele trudniejsze).
+\noindent Konwersja 3b/4b zawiera dwie specyficzne (podkonwersje): podstawową (ang. primary) oraz alternatywną (ang. alternative). Dodatkowa alternatywna konfiguracja dla tego zestawu danych została stworzona w celu uniknięcia 5-elementowego ciągu złożonego z samych zer lub jedynek podczas łączenia z kodowaniem 5b/6b, czyli tworzeniem kodu 8b/10b (a w wypadku samego podstawowego zestawu byłoby to o wiele trudniejsze).
 \newline
-\noindent Table \ref{tbl:controllchars} przedstawia instrukcje kontrolne w postaci zakodowanej w zależności od Running Disparity (RD). 
+\noindent Tabela \ref{tbl:controllchars} przedstawia instrukcje kontrolne w postaci zakodowanej w zależności od Running Disparity (RD). Jest to doskonały przykład jak wyglądają tego typu kody. 
 \begin{table}[H]
 %\begin{tabular}{ | l | l | l | l | l | l | }
 \centering
@@ -686,6 +673,7 @@ Parametrem funkcji jest wskaźnik do transferu przeznaczony do zwolnienia.
 
 \indent Podsumowując, rozdział ten opisuje najważniejsze z funkcji biblioteki libUSB, które zostały użyte podczas implementacji projektu. Opis każdej z nich zawiera nazwę, parametry, zwracaną wartość w przypadku błędu oraz krótkie wyjaśnienie jej działania.
 %---------
+\afterpage{\blankpage}
 \chapter{Urządzenie testowe}
 \label{microcontrollerChapter}
 Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego zadanie polegało na odbieraniu danych po przeciwnej stronie jak oraz ich przesyłanie w przeciwnym kierunku. Inwestygacja rozpoczęła się od bardzo prostych urządzeń takich jak raspberry pi B+, a zakończyła się na mikrokontrolerze LandTiger.
@@ -745,7 +733,7 @@ Główne różnice pomiędzy LandTigerem a LPC1768:
 \indent Rozdział ukazuje, że Mikrokontroler LandTiger jest rozbudowanym urządzeniem zawierającym szereg różnego rodzaju funkcjonalności. Doskonale nadaje się jako urządzenie dla osób, które nie miały zbyt dużej styczności z programowaniem embedded, a jego przejrzyste API oraz dokumentacja pozwala na szybkie wdrożenie się w środowisko. \cite{landtigerDesc}
 %Parametry mikrokontrolera LandTiger wydawały się być zadowalające aby wykonać na nim testy. Niestety, jak się podczas wykonywania testów okazało (a zostało dokładniej opisane w rozdziale \ref{resultsChapter}) pomimo wlutowanego złącza wspierającego USB2.0, chip na kontrolerze wspiera standard USB1.1. Dzięki wynikom uzyskanym z użyciem LandTiger'a możemy obliczyć możliwości gdyby wsparcie USB2.0 na kontrolerze było zaimplementowane.
 %\afterpage{\blankpage}
-
+\afterpage{\blankpage}
 \chapter{Implementacja}
 \label{implementationChapter}
 Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z biblioteki libUsb. Rozwiązania zostały obudowane w odpowiednie klasy wraz z zastosowaniem polimorfizmu, aby uzyskać możliwość łatwego dodawania nowych udoskonaleń. Przed rozpoczęciem projektowania klas należało zaznajomić się jak przedstawione jest USB na schemacie ideowym płytki LandTiger (Rys. \ref{fig:usbSchema}).
@@ -764,7 +752,7 @@ Implementacja opiera się na wykorzystaniu prostych podstawowych funkcji z bibli
 \end{itemize}
 \noindent Istotne jest to aby długości D+ oraz D- były takie same, wtedy sygnał pokonuje dokładnie takie same odległości i zapewniona zostaje integralność. W wypadku kiedy odległości są różne mogą wystąpić różnego rodzaju błędu związane z wyeliminowaniem zakłóceń (eliminacja zakłóceń opisana dokładniej w rozdziale \ref{ch:motivationAndBasics}). Na schemacie różnica jest niezauważalna. Dodatkowo na poszczególnych liniach użyto filtry dolnoprzepustowe aby wyeliminować z widma sygnału częstotliwości powyżej częstotliwości Nyquista, czyli częstotliwości z jaką (w wypadku elektroniki) możliwy jest odczyt sygnału bez błędów, takich jak nakładania się składowych widmowych sygnału o wyższych częstotliwościach (niż częstotliwość Nyquista) na składowe o niższych częstotliwościach.
 \newline
-\indent Po zapoznaniu się ze schematem ideowym, należało przystąpić do realizacji projektu. Diagram klas użytych w projekcie znajduje się na rysunku \ref{fig:classDiagram}. Doskonale pokazuje to łatwość rozszerzalności o nowe funkcjonalności aplikacji. Jeżeli w przyszłości uda się opracować nowy sposób przesyłania danych, można rozszerzyć klasę Mode o tą funkcjonalność. Opis poszczególnych klas wraz z użytymi metodami znajduje się w poniższych podrozdziałach.
+\indent Po zapoznaniu się ze schematem ideowym, należało przystąpić do realizacji projektu. Diagram klas użytych w projekcie znajduje się na rysunku \ref{fig:classDiagram}. Doskonale pokazuje to łatwość rozszerzalności o nowe funkcjonalności aplikacji. Jeżeli w przyszłości uda się opracować nowy sposób przesyłania danych, można rozszerzyć klasę Mode o tą funkcjonalność. Opis poszczególnych klas wraz z użytymi metodami znajduje się w poniższych podrozdziałach. Klasa abstrakcyjna Mode udostępnia bardzo podstawowe metody służące do inicjalizacji oraz czyszczenia zasobów. W wypadku tworzenia własnego trybu oraz konieczności innej inicjalizacji (lub zwalniania zasobów) należy dostarczyć własną implementacje tych metod. Konieczne jest dostarczenie implementacji testu. Dokładny opis znajduje się poniżej.
 \begin{figure}[H]
 \centering
 \includegraphics[width=1\textwidth]{./img/classDiagram}
@@ -1148,6 +1136,7 @@ debugPrinter << "It is impossible to send " << fullDataSize << "B using " << buf
 \end{lstlisting}
 aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter} zablokuje wypisywanie tekstu.
 Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
+\afterpage{\blankpage}
 \chapter{Testy wydajności oraz ich rezultaty}
 \label{resultsChapter}
 \indent Oprogramowanie zostało poddane dogłębnym testom systemowym, mającym na celu zweryfikowanie poprawności działania aplikacji oraz jej zgodności z wymaganiami. Wykonywano je na każdym etapie programowania aby uniknąć jakichkolwiek nieumyślnych interakcji w rezultaty działających uprzednio funkcjonalności. Ważne było aby środowisko testowe było znane. W przypadku tego projektu jest to mikrokontroler LandTiger opisany dokładniej w rozdziale \ref{microcontrollerChapter} oraz komputer osobisty o parametrach przedstawionych w tabeli \ref{tbl:pcParameters}.
@@ -1195,7 +1184,7 @@ Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 \caption{Zależność prędkości przesyłu danych od wielkości bufora}
 \label{fig:speedTest}
 \end{figure}
-Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje)\footnote{dane uzyskane dzięki programowi USB Flash Benchmark\cite{USBFlashBenchmark}}. Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora, która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
+Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbioru danych w zależności od bufora danych (bufor maleje)\footnote{dane uzyskane dzięki programowi USB Flash Benchmark\cite{USBFlashBenchmark}}. Na wykresie zielona linia przedstawia odczyt danych z użyciem interfejsu USB2.0 natomiast czerwona przedstawia prędkość wysyłania danych. Wybrane wyniki w formie tekstowej są częścią załącznika B niniejszej pracy. Etapem godnym uwagi jest zachowanie wykresu w momencie gdy buffor danych wynosi 64KB, jest to ostatnia stabilna wartość buffora, która umożliwiałaby spełnienie wymagań projektu. W wypadku wartości 32KB widoczny jest jeszcze spełnienie warunku ale tylko dla danych wysyłanych (zielona linia). Pozostałe wartości buffora nie spełniają warunków projektu.
 \newline
 \indent Podczas testów akceptacyjnych równolegle z developmentem okazało się iż płytka użyta w projekcie a dokładniej opisana w rozdziale \ref{microcontrollerChapter} wspiera na swoim chipie jedynie standard USB1.1 pomimo wlutowanego złącza USB2.0. Niestety w wypadku USB1.1 jest to 64B. Większość wyników została wygenerowana za pomocą programu, który nie pozwalał na przekroczenie dopuszczalnego przez LandTiger'a bufforu (tak jak w przypadku Rys. \ref{fig:S_107374200Send} oraz innych)
 \newline
@@ -1203,7 +1192,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.9\textwidth]{./img/S_107374200Send}
-\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ok. 102 MB (tryb synchroniczny)}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora (tryb synchroniczny)}
 \label{fig:S_107374200Send}
 %\end{figure}
 }
@@ -1214,7 +1203,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.7\textwidth]{./img/S_107374200Receive}
-\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~102 MB (tryb synchroniczny)}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora (tryb synchroniczny)}
 \label{fig:S_107374200Receive}
 %\end{figure}
 }
@@ -1237,12 +1226,12 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.7\textwidth]{./img/S_10737420Send}
-\caption{Wykres ilustrujący prędkość wysłania danych w zależności od buffora dla ~10 MB (tryb synchroniczny)}
+\caption{Wykres ilustrujący prędkość wysłania danych w zależności od buffora (tryb synchroniczny)}
 %\end{figure}
 \label{fig:S_10737420Send}
 }
 \end{figure}
-\noindent W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}. W tym przypadku zauważalne są niewielkie odchylenia od wykresu liniowego.
+\noindent W wypadku wysyłania nieco mniejszej próbki danych prędkość obrazuje się jako nieco mniej stabilna. Całość widoczna jest na Rys. \ref{fig:S_10737420Send}.
 
 \begin{figure}[h]
 {
@@ -1254,8 +1243,9 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 }
 \end{figure}
 \noindent Podobnie jak w poprzednim przypadku (dla większej ilości danych), wykres prędkości odbierania danych pokrywa się z wykresem prędkości wysyłania danych (Rys. \ref{fig:S_10737420Receive}).
-\newline
-\indent Wszystkie powyższe wykresy zostały wygenerowane z użyciem mechanizmu synchronicznego. Oznacza to, że obsługa wysyłania oraz odbierania danych zrealizowana została za pomocą wbudowanych bibliotek, co z punktu widzenia kodu aplikacji  realizuje taka sama paczka danych wysłanych oraz odebranych. Podsumowując synchroniczne wysyłanie danych nie należy do najbardziej efektywnych metod, ale pozwala na oszacowanie wyników oraz na zestawienie ich z oczekiwaniami.
+\newpage %todo check this paging
+\indent Wszystkie powyższe wykresy zostały wygenerowane z użyciem mechanizmu synchronicznego. Oznacza to, że obsługa wysyłania oraz odbierania danych zrealizowana została za pomocą wbudowanych bibliotek, co z punktu widzenia kodu aplikacji  realizuje taka sama paczka danych wysłanych oraz odebranych. Podsumowując powyższe wyniki można uznać metodę synchroniczną za nieskuteczną dla standardu USB1.1. Oczekiwane wyniki nie zostały w tym wypadku uzyskane. Mechanizmem blokującym jest wielkość bufora danych przy wysyłaniu lub odbieraniu danych (64B). Jest to zdecydowanie za mało aby ta metoda w tym wypadku była skuteczna ale porównując otrzymane wyniki z teoretycznymi (Rys. \ref{fig:speedTest} oraz dodatek B) otrzymanymi z użyciem USB benchmark, gdzie najmniejsza wielkość bufora wynosiła 1kB oraz wartość otrzymana oscylowała w okolicach 1,26MB-1,36MB można założyć iż wartości otrzymane z użyciem metody synchronicznej są jak najbardziej poprawne, a ograniczeniem, które nie pozwala na uzyskanie oczekiwanych wartości jest jedynie konieczność użycia standardu USB1.1.
+%Synchroniczne wysyłanie danych nie należy do najbardziej efektywnych metod (dotyczy USB1.1), ponieważ wielkość bufora danych (64B) ograniczona poprzez standard USB1.1 
 %Każda operacja zwraca status i ten status musi być weryfikowany aby zlokalizować ewentualny błąd.
 %%%%% Asynch
 \newline
@@ -1264,7 +1254,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.7\textwidth]{./img/A_107374200Send}
-\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~102 MB (tryb asynchroniczny)}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora (tryb asynchroniczny)}
 \label{fig:A_107374200Send}
 }
 
@@ -1281,7 +1271,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \label{fig:A_107374200Receive}
 }
 \end{figure}
-\noindent Analogiczna sytuacja występuje w wypadku odbierania danych (o wielkości ~102 MB) metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a wyniki są bardzo zbliżone do siebie.
+\noindent Analogiczna sytuacja występuje w wypadku odbierania danych metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a wyniki są bardzo zbliżone do siebie.
 
 
 
@@ -1291,7 +1281,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Send}
-\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora dla ~10 MB (tryb asynchroniczny)}
+\caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora (tryb asynchroniczny)}
 \label{fig:A_10737420Send}
 }
 \end{figure}
@@ -1301,16 +1291,14 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 {
 \centering
 \includegraphics[width=0.75\textwidth]{./img/A_10737420Receive}
-\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora dla ~10 MB (tryb asynchroniczny)}
+\caption{Wykres ilustrujący prędkość odbierania danych w zależności od buffora (tryb asynchroniczny)}
 \label{fig:A_10737420Receive}
 }
 \end{figure}
-
-\indent Podsumowując, użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie pozwala na uzyskanie wyników zbliżonych do wartości pożądanej (140 MB/s) bez względu czy korzystaliśmy z metody synchronicznej czy też asynchronicznej. Przyczyną jest tutaj wielkość używanego bufora, z powodów dla których LandTiger nie dopuszcza użycia wiekszego bufora niż 64B. Pozostałe testy oparte zostały na zasymulwanych danych. 
+\noindent Wysyłanie metodą Asynchroniczną również nie przyniosła oczekiwanych rezultatów. Porównując je do wartości zasymulowanych na początku rozdziału z użyciem USB benchmark, pozostawiają wiele do życzenia. Jednak jeśli ponowimy zestawienie wyników z teoretycznymi (podobnie jak to zostało to wykonane w wypadku metody Synchronicznej) to zauważymy pewną analogię iż gdyby istniała możliwość wykorzystania bufora większego niż dopuszczalny przez standard USB1.1, wyniki nie odbiegałyby od teoretycznych.
+\indent Podsumowując, użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie pozwala na uzyskanie wyników zbliżonych do wartości pożądanej (140 MB/s) bez względu na to, czy korzystano z metody synchronicznej czy też asynchronicznej. W obu przypadkach dla bufora o wielkości 64B udało się uzyskać maksymalnie 250 kB/s. Wyniki teoretyczne (dodatek B) przedstawiają dla bufora wielkości 1kB wyniki rzędu 1,26MB/s - 1,36 MB/s. Oznacza to, że przy założeniach otrzymanej dotąd liniowości, prędkość ta zostałaby osiągnięta, w wypadku możliwości użycia bufora wielkości 1kB przez aplikację.
 \newline
-
 \noindent Dodatkowo została przeprowadzona symulacja z uwzględnieniem większego bufora danych, jednak w tym przypadku nie udało się uzyskać prawidłowego odbioru danych  po stronie kontrolera. Oznacza to, że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
-
 \begin{figure}[H]
 {
 \centering
@@ -1328,10 +1316,12 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \label{fig:S_bbuf2}
 }
 \end{figure}
-\noindent Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Został w nim użyty bufor o wartości minimalnej równej 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku był podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz krzywa przechodzi w coraz bardziej poziomą i dąży do wartości 1 MB/s. 
+\noindent Powyższy wykres jest rozwinięciem poprzednika. Obrazuje zmianę prędkości na podstawie zasymulowanych danych oraz przy założeniach poprawnego odebrania danych przez mikrokontroler. Podstawową różnicą jest wielkość użytego bufora w tym przypadku. Został w nim użyty bufor o wartości minimalnej równej 128 B oraz maksymalnej równej 131072 B (128 kB). Bufor w każdym kroku był podwajany. Początkowo wartość uzyskiwanej prędkości wzrasta gwałtownie w każdym kroku, natomiast powyżej wartości 8 kB nie są już tak gwałtowne a wręcz przechodzi w coraz bardziej poziomy wzrost i dąży do wartości 1 MB/s. 
 \newline
-\indent Pomimo zasymulowania sporych danych wraz z użyciem dużego bufora danych nie udało się uzyskać oczekiwanej minimalnej prędkości. Jednym z powodów jest to, że obsługa odbioru danych została zasymulowana po stronie mikrokontrolera dla bufora danych większego niż 64 B (ograniczenia kontrolera). Porównując wyniki do wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
-\afterpage{\blankpage}
+\indent Podsumowując całościowo wszystkie użyte metody w projekcie (Synchroniczna, Asynchroniczna) oraz zwykłą symulacje przesyłu większej ilości danych (pomimo braku możliwej obslugi po stronie mikrokontrolera) można założyć, iż w wypadku realizacji projektu z mikrokontrolerem obsługującym standard nowszy niż USB1.1 rezultaty oczekiwane zostałyby osiągnięte. Dodatkowo zestawiając metodę synchroniczną oraz asynchroniczną z wynikami teoretycznymi można śmiało potwierdzić, że jest to możliwe (zakładając iż trend wykresów nie ulegnie wielkiej zmianie). Należy mieć również na uwadze iż, mogą istnieć wszelkiego rodzaju problemy i zakłócenia trudne do namierzenia na styku złącza USB2.0 -> kabla USB2.0 -> złącza USB1.1 i na odwrót. Potwierdza to jedynie poprzednie założenia. Ostatnie dwa wykresy przedstawiają symulacje wysyłania danych z użyciem większego bufora danych ale bez poprawnej obsługi ich odbioru po stronie mikrokontrolera (ponieważ nie jest to możliwe z powodu ograniczeń płytki). Widoczne jest na nich, iż prędkość rośnie lecz zmienia trend z czysto liniowego w typowo logarytmiczny. Powodem są prawdopodobne zakłócenia wspomniane wcześniej, niemożliwość przetworzenia danych po stronie płytki, a co za tym aplikacja nie wie kiedy wysłanie partii danych się zakończyła i kiedy powinna rozpocząć wysyłanie kolejnej oraz inne obostrzenia USB1.1. Zestawiając do testów urządzenie obsługujące standard USB2.0, brak obsługi otrzymanych danych nie miałby miejsca co zapewniłoby płynność w przesyłaniu większej ilości danych i zapewne wykresy oparte na podobnych wartościach przedstawiałyby dane zgodne z teoretycznymi.
+
+%Porównując wyniki do wartości zasymulowanych na poczatku rozdziału z wykorzystaniem pełnych funkcjonalności USB2.0 można założyć iż w wypadku braku ograniczeń USB1.1 istnieje możliwość powodzenia projektu.
+
 \chapter{Podsumowanie}
 \label{ConclusionChapter}
 \indent Celem projektu było przygotowanie oprogramowania umożliwiającego wysyłanie i odbieranie danych z wykorzystaniem złącza uniwersalnej magistrali szeregowej, czyli USB. Aby zrealizować projekt należało poznać standard USB i zrozumieć jego działanie, jak i innych, mniej lub bardziej zaawansowanych portów szeregowych. Istotne było zrozumienie różnic pomiędzy standardami wydanymi do dnia dzisiejszego jako podstawa teoretyczna do zrealizowania projektu. Projekt posiada zintegrowany system testowania funkcjonalności, aby zapobiec negatywnej ingerencji w istniejące już funkcjonalności.
@@ -1344,7 +1334,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \newline
 \indent Projekt jest udostępniony jako open source i może być w dalszym ciągu rozwijany przez ludzi chcących testować przesył danych po USB implementując różnego rodzaju wariacje sposobów przesyłu danych lub mają pomysł na rozbudowanie aplikacji. Całość została udostępniona włączając mechanizmy umożliwiające odpowiednie rozróżnienie kompilacji na platformę Windowsową oraz Linuxową. Dla platformy Linux został stworzony specjalny skrypt uruchamiający odpowiednio napisane pliki makefile\footnote{makefile - plik ułatwiający budowanie oraz linkowanie plików źródłowych}. Zaletą projektu jest łatwość kompilacji na obie te platformy.
 \newline
-\indent Wyniki przedstawione w projekcie znacznie odbiegają od wartości oczekiwanych. Spowodowane jest to brakiem obsługi USB2.0 po stronie płytki LandTiger (zaprezentowanej w rozdziale \ref{microcontrollerChapter}), a dokładniej na jej chipie. Innymi słowy pomimo fizycznie wlutowanego złącza odpowiadającemu standardowi USB2.0 płytka obsługuje jedynie USB1.1 a dokładniej bufor danych wielkości jedynie 64B. Oznacza to, że w jednym momencie czasowym płytka może odebrać (lub wysłać) maksymalnie 64B danych. W rozdziale \ref{resultsChapter} zostały przedstawione wyniki testów, które rozwiewają wszelkie wątpliwości odnośnie uzyskanych prędkości przesyłu danych. Założenie projektowe nie zostało wykonane z powodów wyżej wymienionych, ale na podstawie uzyskanych danych można założyć iż test z wykorzystaniem płytki wspierającej standard USB2.0 będzie jak najbardziej pozytywny.
+\indent Wyniki przedstawione w projekcie znacznie odbiegają od wartości oczekiwanych. Spowodowane jest to brakiem obsługi USB2.0 po stronie płytki LandTiger (zaprezentowanej w rozdziale \ref{microcontrollerChapter}), a dokładniej na jej chipie. Innymi słowy pomimo fizycznie wlutowanego złącza odpowiadającemu standardowi USB2.0 płytka obsługuje jedynie USB1.1 a dokładniej bufor danych wielkości jedynie 64B. Oznacza to, że w jednym momencie czasowym płytka może odebrać (lub wysłać) maksymalnie 64B danych. W rozdziale \ref{resultsChapter} zostały przedstawione wyniki testów, które rozwiewają wszelkie wątpliwości odnośnie uzyskanych prędkości przesyłu danych. Założenie projektowe nie zostało wykonane do końca z powodów wyżej wymienionych, ale na podstawie uzyskanych danych można założyć iż test z wykorzystaniem płytki wspierającej standard USB2.0 będzie jak najbardziej pozytywny.
 
 \newpage
 \pagestyle{empty}
@@ -1370,6 +1360,13 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \newpage
 \afterpage{\blankpage}
+
+\chapter*{Dodatek B} \label{App:AppendixB}
+\section*{Wybrane wyniki przesyłu danych wygenerowane za pomocą USB benchmark}
+
+\newpage
+\afterpage{\blankpage}
+
 \begin{thebibliography}{1}
 
 \bibitem{RS232C} RS232C picture [online]
@@ -1380,11 +1377,11 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \newline
 \url{https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/VGA-RS-232C-Parallelbus.jpg/369px-VGA-RS-232C-Parallelbus.jpg}
 
-\bibitem{ethernetCable} Ethernetowy connector picture [online] \\
-\url{http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg}
+%\bibitem{ethernetCable} Ethernetowy connector picture [online] %\\
+%\url{http://www.av1-ch.com/wp-content/uploads/2014/07/ethernet-cable.jpg}
 
-\bibitem{bluetooth} Bluetooth logo picture [online] \\
-\url{http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967}
+%\bibitem{bluetooth} Bluetooth logo picture [online] \\
+%\url{http://www.theinquirer.net/IMG/177/311177/bluetooth-logo-2-140x227.png?1447285967}
 
 \bibitem{USBSystemArch} Don Anderson {\em Universal Serial Bus System Architecture } USA: MindShare, Inc., 1997.
 
