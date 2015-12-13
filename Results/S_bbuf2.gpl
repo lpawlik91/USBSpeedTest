@@ -14,7 +14,7 @@ set output fileOutput
 set xlabel "buffer [kB]"
 set ylabel "predkosc [kB/s]"
 #plot[16:4096]  fileInput using 1:4 notitle with lines
-plot[0:140] f(x) lt 3 notitle, fileInput using ($1/1024):4 notitle pt 1 ps 1 lt 1 with points
+plot[0:135] f(x) lt 3 notitle, fileInput using ($1/1024):4 notitle pt 1 ps 1 lt 1 with points
 
 #plot[128:131072] fileInput using 1:4 notitle with lines
 
