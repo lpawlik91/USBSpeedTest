@@ -7,10 +7,14 @@ jpgExt=".eps"
 
 fileInput=fileBase.dataExt
 fileOutput=fileBase.jpgExt
-
-set term post eps 
+f(x)= a*x**b
+fit f(x) fileInput using ($1/1024):4 via a,b
+set term postscript color eps enhanced
 set output fileOutput
-set xlabel "buffer [B]"
-set ylabel "speed [kB/s]"
-plot[128:131072] fileInput using 1:4 notitle with lines
+set xlabel "buffer [kB]"
+set ylabel "predkosc [kB/s]"
+#plot[16:4096]  fileInput using 1:4 notitle with lines
+plot[0:140] f(x) lt 3 notitle, fileInput using ($1/1024):4 notitle pt 1 ps 1 lt 1 with points
+
+#plot[128:131072] fileInput using 1:4 notitle with lines
 

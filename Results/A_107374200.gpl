@@ -8,28 +8,36 @@ jpgExt=".eps"
 fileInput=fileBase.dataExt
 fileOutput=fileBase.sendReceive.jpgExt
 
-set term post eps
+
+f(x)=a*x+b
+fit f(x) fileInput using 1:($7/1024) via a,b
+set term postscript color eps enhanced
 set output fileOutput
 set xlabel "buffer [B]"
-set ylabel "speed [B/s]"
-plot[22:70] fileInput using 1:7 notitle with lines
+set ylabel "predkosc [kB/s]"
+plot[20:66] f(x) lt 3 notitle, fileInput using 1:($7/1024) notitle pt 1 ps 1 lt 1 with points
 
 fileOutput=fileBase.send.jpgExt
 
-set term post eps
-set output fileOutput
-set xlabel "buffer [B]"
-set ylabel "speed [B/s]"
-plot[22:70] fileInput using 1:8 notitle with lines
-
-fileOutput=fileBase.receive.jpgExt
-
+g(x)=c*x+d
+fit g(x) fileInput using 1:($8/1024) via c,d
 set term post eps 
 set output fileOutput
 set xlabel "buffer [B]"
-set ylabel "speed [B/s]"
-plot[22:70] fileInput using 1:9 notitle with lines
+set ylabel "predkosc [kB/s]"
+#plot[0:70] fileInput using 1:8 notitle with lines
+plot[20:66] g(x) lt 3 notitle, fileInput using 1:($8/1024) notitle pt 1 ps 1 lt 1 with points
 
+fileOutput=fileBase.receive.jpgExt
+
+h(x)=e*x+f
+fit h(x) fileInput using 1:($9/1024) via e,f
+set term post eps 
+set output fileOutput
+set xlabel "buffer [B]"
+set ylabel "predkosc [kB/s]"
+#plot[0:70] fileInput using 1:9 notitle with lines
+plot[20:66] h(x) lt 3 notitle, fileInput using 1:($9/1024) notitle pt 1 ps 1 lt 1 with points
 
 
 
