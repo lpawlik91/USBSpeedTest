@@ -1191,7 +1191,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
-\includegraphics[width=0.9\textwidth]{./img/S_107374200Send}
+\includegraphics[width=1\textwidth]{./img/S_107374200Send}
 \caption{Wykres ilustrujący prędkość wysyłania danych w zależności od buffora (tryb synchroniczny)}
 \label{fig:S_107374200Send}
 %\end{figure}
@@ -1334,7 +1334,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \newline
 \indent Projekt jest udostępniony jako open source i może być w dalszym ciągu rozwijany przez ludzi chcących testować przesył danych po USB implementując różnego rodzaju wariacje sposobów przesyłu danych lub mają pomysł na rozbudowanie aplikacji. Całość została udostępniona włączając mechanizmy umożliwiające odpowiednie rozróżnienie kompilacji na platformę Windowsową oraz Linuxową. Dla platformy Linux został stworzony specjalny skrypt uruchamiający odpowiednio napisane pliki makefile\footnote{makefile - plik ułatwiający budowanie oraz linkowanie plików źródłowych}. Zaletą projektu jest łatwość kompilacji na obie te platformy.
 \newline
-\indent Wyniki przedstawione w projekcie znacznie odbiegają od wartości oczekiwanych. Spowodowane jest to brakiem obsługi USB2.0 po stronie płytki LandTiger (zaprezentowanej w rozdziale \ref{microcontrollerChapter}), a dokładniej na jej chipie. Innymi słowy pomimo fizycznie wlutowanego złącza odpowiadającemu standardowi USB2.0 płytka obsługuje jedynie USB1.1 a dokładniej bufor danych wielkości jedynie 64B. Oznacza to, że w jednym momencie czasowym płytka może odebrać (lub wysłać) maksymalnie 64B danych. W rozdziale \ref{resultsChapter} zostały przedstawione wyniki testów, które rozwiewają wszelkie wątpliwości odnośnie uzyskanych prędkości przesyłu danych. Założenie projektowe nie zostało wykonane do końca z powodów wyżej wymienionych, ale na podstawie uzyskanych danych można założyć iż test z wykorzystaniem płytki wspierającej standard USB2.0 będzie jak najbardziej pozytywny.
+\indent Wyniki przedstawione w projekcie znacznie odbiegają od wartości oczekiwanych. Spowodowane jest to brakiem obsługi USB2.0 po stronie płytki LandTiger (zaprezentowanej w rozdziale \ref{microcontrollerChapter}), a dokładniej na jej chipie. Innymi słowy pomimo fizycznie wlutowanego złącza odpowiadającemu standardowi USB2.0 płytka obsługuje jedynie USB1.1 a dokładniej bufor danych wielkości jedynie 64B. Oznacza to, że w jednym momencie czasowym płytka może odebrać (lub wysłać) maksymalnie 64B danych. W rozdziale \ref{resultsChapter} zostały przedstawione wyniki testów, wraz z dogłębną analizą oraz wnioskami dla każdego z trybów oddzielnie, które rozwiewają wszelkie wątpliwości odnośnie uzyskanych prędkości przesyłu danych. Założenie projektowe nie zostało wykonane do końca z powodów wyżej wymienionych, ale na podstawie uzyskanych danych można założyć iż test z wykorzystaniem płytki wspierającej standard USB2.0 (lub nowszy) będzie jak najbardziej pozytywny.
 
 \newpage
 \pagestyle{empty}
@@ -1363,7 +1363,35 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \chapter*{Dodatek B} \label{App:AppendixB}
 \section*{Wybrane wyniki przesyłu danych wygenerowane za pomocą USB benchmark}
-
+\noindent Refreshing devices. \\
+Refreshing devices. [Done] \\ 
+Starting benchmark. \\ 
+Bechmarking G:(048220900002000000C3) \\
+Started at 2015-01-31 03:03:51 \\
+... \\
+4k:1280 Read Speed:5,26MB/s\\
+4k:1280 Read Speed:5,09MB/s\\
+4k:1280 Read Speed:5,17MB/s\\
+4k:1280 Average Read Speed:5,18MB/s\\
+2k:2560 Write Speed:2,55MB/s\\
+2k:2560 Write Speed:2,63MB/s\\
+2k:2560 Write Speed:2,60MB/s\\
+2k:2560 Average Write Speed:2,59MB/s\\
+2k:2560 Read Speed:2,73MB/s\\
+2k:2560 Read Speed:2,75MB/s\\
+2k:2560 Read Speed:2,68MB/s\\
+2k:2560 Average Read Speed:2,72MB/s\\
+1k:5120 Write Speed:1,35MB/s\\
+1k:5120 Write Speed:1,24MB/s\\
+1k:5120 Write Speed:1,26MB/s\\
+1k:5120 Average Write Speed:1,28MB/s\\
+1k:5120 Read Speed:1,31MB/s\\
+1k:5120 Read Speed:1,41MB/s\\
+1k:5120 Read Speed:1,26MB/s\\
+1k:5120 Average Read Speed:1,33MB/s\\
+Deleting file.\\
+Benchmark done.\\
+Ended at 2015-01-31 03:07:36\\
 \newpage
 \afterpage{\blankpage}
 
