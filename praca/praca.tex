@@ -154,7 +154,7 @@ Ocena końcowa pracy przez Recenzenta:
 \chapter{Wstęp}
 \label{beginChapter}
 \pagestyle{fancy}
-W dobie dzisiejszych możliwości rosną również wymagania i oczekiwania. Dotyczy to prawie każdego aspektu życia, począwszy od spraw osobistych, poprzez finansowe, aż po możliwości uzyskiwania danych. Rozwój technologii, zwłaszcza w zakresie elektroniki, w przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. Dla współczesnego człowieka problemem okazuje się czas, zawsze jest go za mało w praktycznie każdej sferze życia. Jest on również istotny w rozwoju technologii oraz uzyskiwaniu konkretnych danych pomiarowych.
+W dobie dzisiejszych możliwości rosną również wymagania i oczekiwania. Dotyczy to~ prawie każdego aspektu życia, począwszy od spraw osobistych, poprzez finansowe, aż po możliwości uzyskiwania danych. Rozwój technologii, zwłaszcza w zakresie elektroniki, w~ przeciągu minionego ćwierćwiecza stał się imponujący. Udało się doprowadzić różne skomplikowane układy scalone do~ rozmiarów wielkości pudełka zapałek, których złożoność obliczeniowa przekracza najśmielsze oczekiwania z przed kilku lat. Dla współczesnego człowieka problemem okazuje się czas, zawsze jest go za mało w praktycznie każdej sferze życia. Jest~ on również istotny w rozwoju technologii oraz uzyskiwaniu konkretnych danych pomiarowych.
 \newline
 \indent Dzisiejsze urządzenia pomiarowe laboratoryjne jak i medyczne (oraz inne) mają za zadanie zbieranie i przesyłanie danych celem późniejszej wizualizacji lub analizy za pomocą dedykowanego oprogramowania. Dane te z reguły są wysyłane w określonym dla danego urządzenia formacie, a co za tym idzie ich rozmiar musi być większy niż w wypadku danych wysyłanych bajt po bajcie.
 \newline
@@ -352,7 +352,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 	D.15 & 01111 & 010111 & 101000 &   D.31 & 11111 & 101011 & 010100 \\ \hline
 	 &  &  &  &   K.28 & 11100 & 001111 & 110000 \\ \hline
 \end{tabular}
-\captionof{table}{Przykład mapowania 5b na 6b \cite{tablesMapping}}
+\captionof{table}{Przykład mapowania 5b na 6b. \cite{tablesMapping}}
 %source: 
 \label{tbl:5bTo6b}
 \end{table}
@@ -379,7 +379,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 	D.x.P7 & 111 & 1110 & 0001 &  &  &  &  \\ \hline
 	D.x.A7 & 111 & 0111 & 1000 & K.x.7 & 111 & 0111 & 1000 \\ \hline
 \end{tabular}
-\captionof{table}{Przykład mapowania 3b na 4b \cite{tablesMapping}}
+\captionof{table}{Przykład mapowania 3b na 4b. \cite{tablesMapping}}
 %source: 
 \label{tbl:3bTo4b}
 \end{table}
@@ -414,7 +414,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 	K.29.7  & 253 & FD & "111 11101 & "101110 1000 & "010001 0111 \\ \hline
 	K.30.7  & 254 & FE & "111 11110 & "011110 1000 & "100001 0111 \\ \hline
 \end{tabular}
-\captionof{table}{Przykład komunikatów kontrolnych \cite{tablesMapping}}
+\captionof{table}{Przykład komunikatów kontrolnych. \cite{tablesMapping}}
 %source: 
 \label{tbl:controllchars}
 \end{table}
@@ -782,7 +782,7 @@ Metoda przedstawiona w Listingu \ref{lst:Mode_closeLibUsb} odpowiada za zwolnien
 
 \section{Klasa SynchMode}
 Klasa SynchMode jest odpowiedzialna za konfigurację USB dla przesyłu synchronicznego. Jest rozszerzeniem klasy Mode.
-\begin{lstlisting}[caption={Deklaracja klasy SynchMode},label={lst:CSynchMode}]
+\begin{lstlisting}[caption={Deklaracja klasy SynchMode.},label={lst:CSynchMode}]
 class SynchMode : public Mode
 {
 public:
@@ -795,7 +795,7 @@ Używa ona wszystkich domyślnych ustawień, Przeciążona jest tylko metoda odp
 \subsection{Metoda doTest}
 Metoda jest odpowiedzialna za wykonanie podstawowego pomiaru czasu przepływu danych w obie strony, pomiędzy PC a mikrokontrolerem.
 Została zaprojektowana w taki sposób aby konkretny bufor danych został wysłany oraz odebrany określoną ilość razy i zwrócony przedział czasowy w jakim udało się to uzyskać. Powodem wysyłania/odbierania danych określoną ilość razy jest fakt sporych ograniczeń jeśli chodzi o chip wbudowany w płytę LandTiger. Fragment metody został przedstawiony w listingu \ref{lst:SynchMode_doTest}.
-\begin{lstlisting}[caption={Fragment metody SynchMode::doTest()},label={lst:SynchMode_doTest}]
+\begin{lstlisting}[caption={Fragment metody SynchMode::doTest().},label={lst:SynchMode_doTest}]
 int SynchMode::doTest()
 {
 //...
@@ -808,7 +808,7 @@ int SynchMode::doTest()
 \section{Klasa AsynchMode}
 Klasa AsynchMode odpowiada za konfigurację USB dla przesyłu asynchronicznego. 
 
-\begin{lstlisting}[caption={Deklaracja klasy AsynchMode},label={lst:CAsynchMode}]
+\begin{lstlisting}[caption={Deklaracja klasy AsynchMode.},label={lst:CAsynchMode}]
 class AsynchMode : public Mode
 {
 public:
@@ -828,7 +828,7 @@ Calość widoczna w listingu \ref{lst:AsynchMode_initProcedures}.
 Analogicznie sytuacja przedstawia się w wypadku zwalniania zasobów. Dodatkową czynnością jest usunięcie mutexów oraz zwolnienie transferów. Całość dostępna w listingu \ref{lst:AsynchMode_closeLibUsb}.
 \subsection{Metoda doTest}
 Podobnie jak w wypadku synchronicznego mechanizmu tak i teraz należy dostarczyć implementację metody doTest(). Natomiast jej działanie jest odmienne, ponieważ polega na wystartowaniu drugiego wątku nasłuchującego odpowiedzi. Całość synchronizowana jest za pomocą mutexów (listing \ref{lst:AsynchMode_doTest} oraz \ref{lst:ThreadHelper}).
-\begin{lstlisting}[caption={Metoda AsynchMode::doTest()},label={lst:AsynchMode_doTest}]
+\begin{lstlisting}[caption={Metoda AsynchMode::doTest().},label={lst:AsynchMode_doTest}]
 int AsynchMode::doTest()
 {
 //...
@@ -855,7 +855,7 @@ int AsynchMode::doTest()
 
 \section{Korzystanie z poszczególnych interfejsów}
 Kod przedstawiony w Listingu \ref{lst:main} doskonale ukazuje prostotę korzystania z libUSB. Użytkownik zobligowany jest do wprowadzenia wielkości bufora danych oraz liczbę określającą ilość powtórzeń z jaką testowa aplikacja wyśle wygenerowane dane (o rozmiarze podanego bufora) do mikrokontrolera. Następnie zostaje wykonana inicjalizacja z użyciem wyżej wymienionych interfejsów (synchronicznego lub asynchronicznego na podstawie parametru).
-\begin{lstlisting}[caption={Przykład użycia interfejsu synchronicznego lub asynchronicznego w zależności od parametryzacji},label={lst:main}]
+\begin{lstlisting}[caption={Przykład użycia interfejsu synchronicznego lub asynchronicznego w zależności od parametryzacji.},label={lst:main}]
 int main(int argc, char* argv[])
 {
 	//..
@@ -882,7 +882,7 @@ int main(int argc, char* argv[])
 \end{lstlisting}
 \subsection{Parametryzacja}
 \noindent Aby ułatwić uruchamianie poszczególnych testów wprowadzono możliwość sparametryzowania wejścia aplikacji:
-\begin{lstlisting}[caption={uruchomienie testu}]
+\begin{lstlisting}[caption={Parametryzacja aplikacji.}]
 use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \end{lstlisting}
 \begin{itemize}
@@ -893,12 +893,12 @@ use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \end{itemize}
 \section{Implementacja pomocnicza}
 \label{sch:additionalImplementation}
-Do implementacji pomocniczej należy klasa ułatwiająca wywoływanie aplikacji celem zebrania wyników. Jest ona zaprojektowana jako prosta, posiadająca przeładowany operator dodawania do strumienia danych. W wypadku tego projektu, dla normalnego działania aplikacji operator pozwala na wypisanie dowolnych danych, ale w wypadku włączenia zbierania danych w postaci kolumnowej ta klasa nie pozwoli na to (całość dostępna w listingu\ref{lst:CDebugPrinter}.). Działanie jest widoczne, jeżeli wywołanie aplikacji zostanie odpowiednio sparametryzowane:
-\begin{lstlisting}[caption={Uruchomienie testu}]
+Do implementacji pomocniczej należy klasa ułatwiająca wywoływanie aplikacji celem zebrania wyników. Jest ona zaprojektowana jako prosta, posiadająca przeładowany operator dodawania do strumienia danych. W wypadku tego projektu, dla normalnego działania aplikacji operator pozwala na wypisanie dowolnych danych, ale w wypadku włączenia zbierania danych w postaci kolumnowej ta klasa nie pozwoli na to (całość dostępna w listingu \ref{lst:CDebugPrinter}~.). Działanie jest widoczne, jeżeli wywołanie aplikacji zostanie odpowiednio sparametryzowane:
+\begin{lstlisting}[caption={Uruchomienie testu.}]
 use: libusb [S/A] <bufforSize> <fullDataSize> optional:<printOnlyResult>
 \end{lstlisting}
 bez ostatniego argumentu, w wypadku wykonania tego fragmentu kodu: 
-\begin{lstlisting}[caption={Wypisywanie w zależności od argumentu wywołania aplikacji}]
+\begin{lstlisting}[caption={Wypisywanie w zależności od argumentu wywołania aplikacji.}]
 debugPrinter << "It is impossible to send " << fullDataSize << "B using " << bufforSize << "B, to simplify application work sending " << (++count) * bufforSize << "B\n";
 \end{lstlisting}
 aplikacja wypisze powyższy tekst, natomiast w wypadku wywołania aplikacji wraz z ostatnim opcjonalnym argumentem <printOnlyResult>=1 spowoduje, że przeładowany operator klasy wspomnianej w listingu \ref{lst:CDebugPrinter}. zablokuje wypisywanie tekstu.
@@ -919,7 +919,7 @@ Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 	 Dysk fizyczny & WDC WD3200BPVT-80ZEST0  (298 GB) \\ \hline
 	USB & 2.0 \\ \hline
 \end{tabular}
-\captionof{table}{Podstawowe parametry komputera na którym wykonywane zostały testy}
+\captionof{table}{Podstawowe parametry komputera na którym wykonywane zostały testy.}
 %source: 
 \label{tbl:pcParameters}
 \end{table}
@@ -1229,7 +1229,7 @@ Ended at 2015-01-31 03:07:36\\
 \section*{Wybrana implementacja}
 
 
-\begin{lstlisting}[caption={Deklaracja klasy Mode},label={lst:CMode}]
+\begin{lstlisting}[caption={Deklaracja klasy Mode.},label={lst:CMode}]
 class Mode
 {
 public:
@@ -1260,7 +1260,7 @@ protected:
 
 };
 \end{lstlisting}
-\begin{lstlisting}[caption={Metoda Mode::getContext()},label={lst:Mode_getContext}]
+\begin{lstlisting}[caption={Metoda Mode::getContext().},label={lst:Mode_getContext}]
 void Mode::getContext()
 {	
 	int r = libusb_init(&_ctx);
@@ -1270,7 +1270,7 @@ void Mode::getContext()
 	}
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Metoda Mode::getDeviceHandler()},label={lst:Mode_getDeviceHandle}]
+\begin{lstlisting}[caption={Metoda Mode::getDeviceHandler().},label={lst:Mode_getDeviceHandle}]
 void Mode::getDeviceHandle()
 {
 	_dev_handle = libusb_open_device_with_vid_pid(_ctx, _vid, _pid);
@@ -1281,7 +1281,7 @@ void Mode::getDeviceHandle()
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption={Metoda Mode::proceedWithInitLibUsb()},label={lst:Mode_proceedWithInitLibUsb}]
+\begin{lstlisting}[caption={Metoda Mode::proceedWithInitLibUsb().},label={lst:Mode_proceedWithInitLibUsb}]
 void Mode::proceedWithInitUsb()
 {
 	if(libusb_kernel_driver_active(_dev_handle, 0) == 1) { //find out if kernel driver is attached
@@ -1297,7 +1297,7 @@ void Mode::proceedWithInitUsb()
 	_debugPrinter << "Claimed Interface\n";
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Metoda Mode::initProcedures()},label={lst:Mode_initProcedures}]
+\begin{lstlisting}[caption={Metoda Mode::initProcedures().},label={lst:Mode_initProcedures}]
 void Mode::initProcedures()
 {
 	getContext(); 
@@ -1317,7 +1317,7 @@ void Mode::closeLibUsb()
 	libusb_exit(_ctx); 
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Metoda AsynchMode::initProcedures},label={lst:AsynchMode_initProcedures}]
+\begin{lstlisting}[caption={Metoda AsynchMode::initProcedures().},label={lst:AsynchMode_initProcedures}]
 void AsynchMode::initProcedures()
 {
 	Mode::initProcedures();
@@ -1335,7 +1335,7 @@ void AsynchMode::initProcedures()
 
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Metoda AsynchMode::closeLibUsb},label={lst:AsynchMode_closeLibUsb}]
+\begin{lstlisting}[caption={Metoda AsynchMode::closeLibUsb().},label={lst:AsynchMode_closeLibUsb}]
 void AsynchMode::closeLibUsb()
 {
 	pthread_mutex_destroy(&_sender_lock);
@@ -1347,7 +1347,7 @@ void AsynchMode::closeLibUsb()
 \end{lstlisting}
 
 
-\begin{lstlisting}[caption={Klasa DebugPrinter},label={lst:CDebugPrinter}]
+\begin{lstlisting}[caption={Klasa DebugPrinter.},label={lst:CDebugPrinter}]
 class DebugPrinter
 {
 public:
