@@ -827,7 +827,7 @@ W wypadku asynchronicznego przesyłania danych należy wykonać kilka dodatkowyc
 Calość widoczna w~ listingu \ref{lst:AsynchMode_initProcedures}.
 Analogicznie sytuacja przedstawia się w~ wypadku zwalniania zasobów. Dodatkową czynnością jest usunięcie mutexów oraz zwolnienie transferów. Całość dostępna w~ listingu \ref{lst:AsynchMode_closeLibUsb}.
 \subsection{Metoda doTest}
-Podobnie jak w~ wypadku synchronicznego mechanizmu tak i~ teraz należy dostarczyć implementację metody doTest(). Natomiast jej działanie jest odmienne, ponieważ polega na wystartowaniu drugiego wątku nasłuchującego odpowiedzi. Całość synchronizowana jest za pomocą mutexów (listing \ref{lst:AsynchMode_doTest} oraz \ref{lst:ThreadHelper}).
+Podobnie jak w~ wypadku synchronicznego mechanizmu tak i~ teraz należy dostarczyć implementację metody doTest(). Natomiast jej działanie jest odmienne, ponieważ polega na wystartowaniu drugiego wątku nasłuchującego odpowiedzi. Całość synchronizowana jest za pomocą mutexów (np. listing \ref{lst:AsynchMode_doTest}).
 \begin{lstlisting}[caption={Metoda AsynchMode::doTest().},label={lst:AsynchMode_doTest}]
 int AsynchMode::doTest()
 {
