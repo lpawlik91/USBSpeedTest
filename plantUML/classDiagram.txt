@@ -3,8 +3,8 @@ Mode <|-- SynchMode
 Mode <|-- AsynchMode
 
 Class Mode {
- + Mode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
- +{abstract} generateSymulatedData(unsigned char*, const int)
+ + Mode()
+ +{abstract} generateSymulatedData()
  +{abstract} printFinalInformation()
  +{abstract} initProcedures()
  +{abstract} getContext()
@@ -12,41 +12,41 @@ Class Mode {
  +{abstract} proceedWithInitUsb()
  +{abstract} closeLibUsb()
  +{abstract} doTest()=0
- #int _bufforSize
- #unsigned _count
- #int _vid
- #int _pid
- #double _timeResult
- #DebugPrinter _debugPrinter
- #bool _printOnlyResult
- #libusb_context* _ctx
- #libusb_device_handle* _dev_handle
+ #_bufforSize
+ #_count
+ #_vid
+ #_pid
+ #_timeResult
+ #_debugPrinter
+ #_printOnlyResult
+ #_ctx
+ #_dev_handle
 }
 
 class SynchMode {
- +SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
+ +SynchMode()
  +{abstract} doTest()
 }
 
 class AsynchMode {
- +AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult)
+ +AsynchMode()
  +{abstract} doTest()
  +{abstract} initProcedures()
  +{abstract} closeLibUsb()
- -pthread_mutex_t _sender_lock
- -pthread_mutex_t _receiver_lock
- -pthread_cond_t _sender_cond
- -pthread_cond_t _receiver_cond
- -libusb_transfer* _senderTransfer
- -libusb_transfer* _receiverTransfer
- -pthread_t _receiverThread
+ -_sender_lock
+ -_receiver_lock
+ -_sender_cond
+ -_receiver_cond
+ -_senderTransfer
+ -_receiverTransfer
+ -_receiverThread
 }
 
 @enduml
 
 
 public:
-	AsynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	AsynchMode();
 	virtual ~AsynchMode();
 	virtual int doTest() override;
 	virtual void initProcedures() override;
@@ -62,12 +62,12 @@ private:
 	libusb_transfer* _receiverTransfer;
 	pthread_t _receiverThread;
 
-	SynchMode(int bufforSize, unsigned count, int vid, int pid, bool printOnlyResult);
+	SynchMode();
 	virtual ~SynchMode();
 	virtual int doTest() override;
 
 
-	virtual int generateSymulatedData(unsigned char*, const int);
+	virtual int generateSymulatedData();
 	virtual void printFinalInformation();
 	virtual void initProcedures();
 	virtual void getContext();
