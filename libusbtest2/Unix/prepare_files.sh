@@ -1,8 +1,8 @@
 #/bin/bash
 DIR=$PWD
 echo "$DIR"
-rm $DIR/*.cpp $DIR/*.hpp $DIR/makefile
-cp ../libusbtest2/*.cpp ../libusbtest2/*.hpp ../libusbtest2/makefile .
+rm $DIR/*.cpp $DIR/*.hpp 
+cp ../libusbtest2/*.cpp ../libusbtest2/*.hpp .
 rm stdafx.cpp
 sed -i -- 's/#include "stdafx.h"//g' *.cpp
 sed -i -- 's/#include "stdafx.h"//g' *.hpp
