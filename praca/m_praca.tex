@@ -30,7 +30,7 @@
  \usepackage{epsfig}
 
 \usepackage{afterpage}
-
+\usepackage[justification=centering]{caption} 
 \newcommand\blankpage{%
     \null
     \thispagestyle{empty}%
@@ -919,6 +919,7 @@ Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 	 Dysk fizyczny & WDC WD3200BPVT-80ZEST0  (298 GB) \\ \hline
 	USB & 2.0 \\ \hline
 \end{tabular}
+\captionsetup{justification=centering}
 \captionof{table}{Podstawowe parametry komputera na którym wykonywane zostały testy.}
 %source: 
 \label{tbl:pcParameters}
@@ -947,6 +948,7 @@ Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 \indent Według założeń USB 2.0 jest w~ stanie obsłużyć oczekiwane 140Mbit/s (17,5 MB/s). Wykres przedstawiony na Rys. \ref{fig:speedTest} doskonale to obrazuje.
 \begin{figure}[H]
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=0.9\textwidth]{./img/speedTest}
 \caption{Zależność prędkości przesyłu danych od wielkości bufora.}
 \label{fig:speedTest}
@@ -958,8 +960,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/S_107374200Receive}
-\caption{Wykres ilustrujący prędkość przesyłu danych w~ zależności od bufora dla danych wielkości ok. 102MB (tryb synchroniczny).}
+\caption{Zależność prędkości przesyłania danych w~ trybie synchronicznym w~ zależności od~ wielkości bufora dla danych wielkości ok. 102 MB.}
+%\caption{Wykres ilustrujący prędkość przesyłu danych w~ zależności od bufora dla danych wielkości ok. 102MB (tryb synchroniczny).}
 \label{fig:S_107374200Receive}
 %\end{figure}
 }
@@ -981,8 +985,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/S_10737420Receive}
-\caption{Wykres ilustrujący prędkość wysłania danych w~ zależności od buffora wielkości ok. 10MB (tryb synchroniczny).}
+\caption{Zależność prędkości przesyłania danych w~ trybie synchronicznym w~ zależności od~ wielkości bufora dla danych wielkości ok. 10 MB.}
+%  Wykres ilustrujący prędkość wysłania danych w~ zależności od buffora wielkości ok. 10MB (tryb synchroniczny).}
 %\end{figure}
 \label{fig:S_10737420Receive}
 }
@@ -998,8 +1004,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/A_107374200Receive}
-\caption{Wykres ilustrujący prędkość wysyłania danych w~ zależności od buffora (tryb asynchroniczny).}
+\caption{Zależność prędkości przesyłania danych w~ trybie asynchronicznym w~ zależności od~ wielkości bufora dla danych wielkości ok. 102 MB.}
+%\caption{Wykres ilustrujący prędkość wysyłania danych w~ zależności od buffora (tryb asynchroniczny).}
 \label{fig:A_107374200Receive}
 }
 
@@ -1012,8 +1020,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/A_10737420Receive}
-\caption{Wykres ilustrujący prędkość przesyłu danych w~ zależności od wielkości bufora danych dla danych wielkości ok. 10MB (tryb asynchroniczny).}
+\caption{Zależność prędkości przesyłania danych w~ trybie asynchronicznym w~ zależności od~ wielkości bufora dla danych wielkości ok. 10 MB.}
+%\caption{Wykres ilustrujący prędkość przesyłu danych w~ zależności od wielkości bufora danych dla danych wielkości ok. 10MB (tryb asynchroniczny).}
 \label{fig:A_10737420Receive}
 }
 \end{figure}
@@ -1026,8 +1036,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/S_bbuf1}
-\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z~ użyciem bufora z~ przedziału 16 B - 4 kB.}
+\caption{Zależność prędkości przesyłania danych w~ zależności od~ wielkości bufora z~ przedziału 16~ B~ - 4 kB~}
+%\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z~ użyciem bufora z~ przedziału 16~ B~ - 4 kB~.}
 \label{fig:S_bbuf1}
 }
 \end{figure}
@@ -1035,8 +1047,10 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 \begin{figure}[H]
 {
 \centering
+\captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/S_bbuf2}
-\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z~ użyciem bufora z~ przedziału 128B - 128kB.}
+\caption{Zależność prędkości przesyłania danych w~ zależności od~ wielkości bufora z~ przedziału 128~ B~ - 12 kB~.}
+%\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z~ użyciem bufora z~ przedziału 128~ B~ - 12 kB~.}
 \label{fig:S_bbuf2}
 }
 \end{figure}
