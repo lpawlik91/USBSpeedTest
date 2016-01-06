@@ -501,16 +501,17 @@ Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i~ współdzieli ten sam ko
 \noindent Przedstawione powyżej schematy ukazują zasadę działania biblioteki pod poszczególnymi systemami operacyjnymi. W~ wypadku Linux'a korzysta on z~ systemowych sterowników, natomiast w~ wypadku systemu Windows wymagana jest dodatkowa instalacja specyficznego sterownika, który pozwala na przetłumaczenie libUSB API na konkretne działania.
 
 \section{Charakterystyka użytych funkcji}
-\subsection{libusb\_init}
-\indent Funkcja ta odpowiada za inicjalizację biblioteki.
+\begin{itemize}
+{
+%\subsection{libusb\_init}
+\item \textbf{libusb\_init} - funkcja ta odpowiada za inicjalizację biblioteki.
 %\newline
 Musi on zostać wywołana przed jakiejkolwiek inną funkcją z~ biblioteki libUsb.
 %\newline
 Jeśli w~ argumencie nie zostanie dostarczony żaden wskaźnik (wyjściowy) kontekstu, zostanie stworzony kontekst domyślny. W~ przypadku jeśli domyślny kontekst już istnieje zostanie on ponownie użyty (bez inicjalizacji).
 %\newline
 Funkcja zwraca wartość 0 w~ wypadku powodzenia, w~ przeciwnej sytuacji zwraca kod błędu.
-\subsection{libusb\_open\_device\_with\_vid\_pid}
-\indent Wygodna funkcja służąca do odszukania konkretnego urządzenia na podstawie jego vendorId oraz productId (są to parametry charakteryzujące każde urządzenie).
+\item \textbf{libusb\_open\_device\_with\_vid\_pid} - wygodna funkcja służąca do odszukania konkretnego urządzenia na podstawie jego vendorId oraz productId (są to parametry charakteryzujące każde urządzenie).
 %\newline
 Używana jest w~ przypadkach kiedy z~ góry jest znane vendorId oraz productId. Najczęstsze zastosowania znajdują przy pisaniu aplikacji w~ celu przetestowaniu jakiejś określoną funkcjonalność. Funkcja pozwala uniknąć wywołania libusb\_get\_device\_list() i~ dbania o~ odpowiednie czyszczenie pamięci po liście.
 %\newline
@@ -519,8 +520,7 @@ Pierwszym jej parametrem jest kontekst uzyskany za pomocą libusb\_init().
 Natomiast kolejnymi parametrami są vendorId oraz productId.
 %\newline
 Funkcja zwraca uchwyt do znalezionego urządzenia, lub NULL w~ wypadku kiedy nie może znaleźć pożądanego urządzenia (o podanym productId oraz vendorId) lub błędu.
-\subsection{libusb\_kernel\_driver\_active}
-\indent Funkcja sprawdzająca czy sterownik jądra kernela jest aktywny na interfejsie.
+\item \textbf{libusb\_kernel\_driver\_active} - funkcja sprawdzająca czy sterownik jądra kernela jest aktywny na interfejsie.
 %\newline
 W wypadku kiedy sterownik jądra jest aktywny nie możliwe jest zgłoszenie użycia interfejsu, a~ co za tym idzie libUSB nie może wykonać operacji wejścia/wyjścia.
 %\newline
@@ -529,10 +529,8 @@ Funkcjonalność nie jest dostępna w~ systemie Windows.
 Do jej zadań należy przekazać uchwyt do urządzenia oraz numer interfejsu.
 %\newline
 Na wyjściu zwraca ona wartość 0, jeśli żaden sterownik jądra nie jest aktywny, wartość 1 w~ wypadku jeśli istnieje aktywny sterownik jądra.
-\newline
-Do zwracanych błędów miedzy innymi należą: LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostanie odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana lub gdy występuje inny rodzaj błędu (nie wymieniony wyżej).
-\subsection{libusb\_detach\_kernel\_driver}
-\indent Dzięki funkcji możliwe jest odłączenie sterownika jądra kernela od interfejsu.
+Do zwracanych błędów miedzy innymi należy: LIBUSB~\_ERROR\_NO\_DEVICE jeśli urządzenie zostanie odłączone.
+\item \textbf{libusb\_detach\_kernel\_driver} - dzięki funkcji możliwe jest odłączenie sterownika jądra kernela od interfejsu.
 %\newline
 Sukces operacji umożliwi zgłoszenie użycia interfejsu i~ wykonanie operacji wejścia/wyjścia.
 %\newline
@@ -540,15 +538,14 @@ Funkcjonalność nie jest dostępna dla systemu Windows.
 %\newline
 Parametrami są uchwyt do urządzenia oraz numer interfejsu.
 %\newline
-Funkcja zwraca wartość 0 w~ momencie powodzenia, natomiast w~ przeciwnym wypadku LIBUSB\_ERROR\_NOT\_FOUND jeśli żaden sterownik nie był aktywny, LIBUSB\_ERROR\_INVALID\_PARAM jeśli interfejs nie istnieje, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone, LIBUSB\_ERROR\_NOT\_SUPPORTED dla platform, gdzie funkcjonalność nie jest wspierana lub gdy występuje inny rodzaj błędu (nie wymieniony w~ tej sekcji)
-\subsection{libusb\_claim\_interface}
-\indent Dzięki funkcji libusb\_claim\_interface() możliwe jest zgłoszenie użycia danego interfejsu dla danego urządzenia.
+Funkcja zwraca wartość 0 w~ momencie powodzenia, natomiast w~ przeciwnym wypadku jeśli żaden sterownik nie był aktywny wartość zwracana wynosi LIBUSB\_ERROR\_NOT\_FOUND, LIBUSB\_ERROR\_INVALID\_PARAM jeśli interfejs nie istnieje, jeśli urządzenie zostało odłączone wartość ta jest równa LIBUSB\_ERROR\_NO\_DEVICE , natomiast dla platform, gdzie funkcjonalność nie jest wspierana lub gdy występuje inny rodzaj błędu (nie wymieniony w~ tej sekcji) zwraca LIBUSB\_ERROR\_NOT\_SUPPORTED.
+\item \textbf{libusb\_claim\_interface} - dzięki funkcji libusb\_claim\_interface() możliwe jest zgłoszenie użycia danego interfejsu dla danego urządzenia.
 %\newline
 Wywołanie funkcji jest wymagane przed wykonaniem operacji wejścia/wyjścia dla dowolnego punktu końcowego interfejsu.
 %\newline
 Jest dozwolone wywołanie funkcji dla interfejsu już wcześniej zgłoszonego, w~ tym wypadku zostanie zwrócona wartość 0 bez wykonywania żadnych operacji.
 %\newline
-W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia (zmienna ustawiana za pomocą funkcji: libusb\_set\_auto\_detach\_kernel\_driver()) sterownik jądra zostanie odłączony (jeśli to konieczne), w~ przypadku niepowodzenia zostanie zwrócony błąd odłączenia.
+W wypadku jeśli zmienna auto\_detach\_kernel\_driver jest ustawiona na wartość 1 dla danego urządzenia sterownik jądra zostanie odłączony (jeśli to konieczne), w~ przypadku niepowodzenia zostanie zwrócony błąd odłączenia.
 %\newline
 Sama procedura wewnątrz funkcji nie jest skomplikowana, nie wymaga wysyłania czegokolwiek po magistrali. Są to proste instrukcje mówiące systemowi operacyjnemu iż aplikacja chce korzystać z~ danego interfejsu.
 %\newline
@@ -559,8 +556,7 @@ Parametrami są uchwyt do urządzenia oraz numer interfejsu zgłaszanego.
 Wartość 0 zostaje zwrócona w~ wypadku powodzenia operacji.
 %\newline
 W wypadku niepowodzenia kody błędu t.j. LIBUSB\_ERROR\_NOT\_FOUND jeśli podany interfejs nie istnieje, LIBUSB\_ERROR\_BUSY jeśli inny program lub sterownik zarezerwował dany interfejs, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
-\subsection{libusb\_bulk\_transfer}
-\indent Dzięki funkcji możliwy jest przesył większej grupy danych. Jest to jedna z~ najważniejszych funkcji użytych w~ projekcie.
+\item \textbf{libusb\_bulk\_transfer} - dzięki funkcji możliwy jest przesył większej grupy danych. Jest to jedna z~ najważniejszych funkcji użytych w~ projekcie.
 %\newline
 Kierunek jest określony na podstawie bitów kierunkowych punktu końcowego interfejsu.
 %\newline
@@ -575,8 +571,7 @@ Funkcja przyjmuje następujące parametry: uchwyt urządzenia z~ którym aplikac
 W przypadku poprawności działania funkcja zwraca wartość 0 oraz ilość przetransferowanych danych przekazanych do funkcji za pomocą wskaźnika.
 %\newline
 W przeciwnym wypadku funkcja zwraca: LIBUSB\_ERROR\_TIMEOUT jeśli transfer przekroczył określony czas, LIBUSB\_ERROR\_PIPE jeśli wystąpił błąd związany z~ punktem końcowym, LIBUSB\_ERROR\_OVERFLOW jeśli urządzenie wysłało więcej danych niż przewidziane w~ buforze, LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
-\subsection{libusb\_release\_interface}
-\indent Funkcja zwalnia rezerwacje wcześniej zgłoszonego interfejsu za pomocą funkcji opisanej wyżej (libusb\_claim\_interface).
+\item \textbf{libusb\_release\_interface} - funkcja zwalnia rezerwacje wcześniej zgłoszonego interfejsu za pomocą funkcji opisanej wyżej (libusb\_claim\_interface).
 %\newline
 Zwolnienie wszystkich interfejsów jest wymagane przed zamknięciem urządzenia.
 %\newline
@@ -589,8 +584,7 @@ Parametrami są: uchwyt urządzenia oraz numer interfejsu dla niego poprzednio z
 Metoda zwraca 0 gdy wszystkie operacje się powiodą.
 %\newline
 W przeciwnym wypadku zwraca: LIBUSB\_ERROR\_NOT\_FOUND, jeśli interfejs nie został poprzednio zarezerwowany (zgłoszony do użycia) lub LIBUSB\_ERROR\_NO\_DEVICE jeśli urządzenie zostało odłączone oraz inne.
-\subsection{libusb\_close}
-\indent Zwalnia uchwyt do urządzenia.
+\item \textbf{libusb\_close} - zwalnia uchwyt do urządzenia.
 %\newline
 Wymagane jest, aby była wołana na wszystkich używanych poprzednio uchwytach.
 %\newline
@@ -599,17 +593,13 @@ Jej zadaniem jest zniszczenie referencji stworzonej za pomocą libusb\_open() dl
 Jest to funkcja nie blokująca.
 %\newline
 Parametrem jest uchwyt przeznaczony do zamknięcia.
-
-\subsection{libusb\_exit}
-\indent Funkcja zamyka dostęp do biblioteki.
+\item \textbf{libusb\_exit} - funkcja zamyka dostęp do biblioteki.
 %\newline
 Powinna być wołana po zamknięciu wszystkich otwartych urządzeń, ale przed zakończeniem działania programu.
 %\newline
 Parametrem jest kontekst, który ma zostać zamknięty, w~ wypadku wartości NULL wybierany jest domyślny.
-
 %% asyn interface
-\subsection{libusb\_alloc\_transfer}
-\indent Funkcja przygotowuje transfer z~ wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
+\item \textbf{libusb\_alloc\_transfer} - funkcja przygotowuje transfer z~ wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
 %\newline
 Zwraca ona uchwyt do zainicjalizowanego transferu. Kiedy wszystkie operacje zostaną na nim wykonane należy wywołać libusb\_free\_transfer().
 %\newline
@@ -622,10 +612,9 @@ Alokowanie transferu jako izochroniczny (z podana ilością deskryptorów pakiet
 Funkcja jako prametr przyjmuje ilość izochronicznych deskryptorów pakietów.
 %\newline
 Zwracaną wartością jest zalokowany transfer lub NULL w~ wypadku błędu.
-\subsection{libusb\_fill\_bulk\_transfer}
-\indent Funkcja pozwala na łatwe przygotowanie struktury libusb\_transfer na transfer masowy.
-\newline
-Parametrami są:
+\newpage %todo check it everytime
+\item \textbf{libusb\_fill\_bulk\_transfer} - funkcja pozwala na łatwe przygotowanie struktury o nazwie libusb\_transfer na transfer masowy.
+Funkcja przyjmuje poniższe parametry:
 \begin{itemize}
 \item uchwyt do ustawianego transferu,
 \item uchwyt do urządzenia, dla którego ustawiany jest transfer,
@@ -636,16 +625,14 @@ Parametrami są:
 \item dodatkowe dane, które programista może opcjonalnie wysłać do funkcji wywołanej po zakończeniu transferu,
 \item czas oczekiwania w~ milisekundach na zakończenie transferu.
 \end{itemize}
-\subsection{libusb\_submit\_transfer}
-\indent Funkcja wykonuje podany (ustawiony) transfer.
+\item \textbf{libusb\_submit\_transfer} - funkcja wykonuje podany (ustawiony) transfer.
 %\newline
 Wykonuje ona operacje na interfejsie po czym bezzwłocznie kończy działanie.
 %\newline
 Jedynym parametrem jaki przyjmuje funkcja jest wskaźnik do transferu jaki ma zostać wykonany.
-\newline
+%\newline
 W wypadku kiedy wszystko się powiedzie funkcja zwraca wartość równą 0, w~ pozostałych przypadkach zwraca kod błędu tj. LIBUSB\_ERROR\_NO\_DEVICE w~ wypadku kiedy urządzenie nie jest podłączone, LIBUSB\_ERROR\_BUSY w~ przypadku jeśli akcja została już wykonana, LIBUSB\_ERROR\_NOT\_SUPPORTED jeśli flagi transferu (ustawienia) nie są wspierane przez system operacyjny oraz inne.
-\subsection{libusb\_free\_transfer}
-\indent Funkcja odpowiada za zwolnienie pamięci zajętą przez strukturę libusb\_transfer
+\item \textbf{libusb\_free\_transfer} - funkcja odpowiada za zwolnienie pamięci zajętą przez strukturę libusb\_transfer
 %\newline
 Powinna być zawołana dla wszystkich transferów zaalokowanych przez libus\_alloc\_transfer().
 %\newline
@@ -657,10 +644,12 @@ Niedozwolone jest zwalnianie pamięci po niezakończonym (aktywnym) jeszcze tran
 %\newline
 Parametrem funkcji jest wskaźnik do transferu przeznaczony do zwolnienia.
 \newline
+}
+\end{itemize}
+\indent \indent Podsumowując, rozdział ten opisuje najważniejsze z~ funkcji biblioteki libUSB, które zostały użyte podczas implementacji projektu. Opis każdej z~ nich zawiera nazwę, parametry, zwracaną wartość w~ przypadku błędu oraz krótkie wyjaśnienie jej działania.
 
-\indent Podsumowując, rozdział ten opisuje najważniejsze z~ funkcji biblioteki libUSB, które zostały użyte podczas implementacji projektu. Opis każdej z~ nich zawiera nazwę, parametry, zwracaną wartość w~ przypadku błędu oraz krótkie wyjaśnienie jej działania.
 %---------
-\afterpage{\blankpage}
+%\afterpage{\blankpage}
 \chapter{Urządzenie testowe}
 \label{microcontrollerChapter}
 Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego zadanie polegało na odbieraniu danych po przeciwnej stronie jak oraz ich przesyłanie w~ przeciwnym kierunku. Inwestygacja rozpoczęła się od bardzo prostych urządzeń takich jak raspberry pi B+, a~ zakończyła się na mikrokontrolerze LandTiger.
