@@ -111,6 +111,46 @@
 \makestatement
 
 \newpage
+
+\rightline{Kraków, styczeń 2016r.}
+\begin{flushleft}
+{\bf Tematyka pracy magisterskiej i praktyki dyplomowej Łukasza Pawlika, studenta V roku studiów kierunku informatyka stosowana, specjalności modelowanie i analiza danych.}\\
+\end{flushleft}
+\begin{flushleft}
+Temat pracy magisterskiej:\\
+{\bf Opracowanie systemu szybkiego przesyłania danych z~ wykorzystaniem standardu USB}\\
+\end{flushleft}
+\begin{tabular}{rl}
+
+Opiekun pracy:                  & dr inż. Bartosz Mindur\\
+Recenzenci pracy:               &  \\
+Miejsce praktyki dyplomowej:    & WFiIS AGH, Kraków\\
+\end{tabular}
+
+\begin{center}
+{\bf Program pracy magisterskiej i praktyki dyplomowej}
+\end{center}
+
+\begin{enumerate}
+\item Omówienie realizacji pracy magisterskiej z opiekunem.
+\item Zebranie i opracowanie materiałów dydaktycznych dotyczącej tematu pracy.
+\item Praktyka dyplomowa:
+\begin{itemize}
+\item gromadzenie wiedzy na temat standardu USB oraz istniejących bibliotek do jego obsługi;
+\item weryfikacja możliwości standardu USB2.0 z użyciem USBBenchmark, analiza otrzymanych wyników pod kontem użycia standardu w projekcie;
+\item wybór odpowiedniego standardu USB do projektu;
+\item analiza wad i zalet bibliotek udostępniających interfejs programisty dla USB celem wyboru odpowiedniej biblioteki;
+\item wybór urządzenia zewnętrznego, mającego na celu sprawne przetestowanie projektu;
+\item sporządzenie sprawozdania z praktyki;
+\end{itemize}
+\item Implementacja projektu.
+\item Wykonanie testów na wybranym urządzeniu.
+\item Zebranie i opracowanie wyników testu.
+\item Analiza wyników.
+\item Opracowanie redakcyjne pracy.
+\end{enumerate}
+\afterpage{\blankpage}
+\newpage
 \thispagestyle{plain}
 Merytoryczna ocena pracy przez Opiekuna:
 \vspace{\stretch{14}}
@@ -144,8 +184,8 @@ Ocena końcowa pracy przez Recenzenta:
 %\pagenumbering{arabic}
 \tableofcontents
 \afterpage{\blankpage}
-\lstlistoflistings
-\afterpage{\blankpage}
+%\lstlistoflistings
+%\afterpage{\blankpage}
 
 
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
@@ -174,6 +214,11 @@ W dobie dzisiejszych możliwości rosną również wymagania i~ oczekiwania. Dot
 \indent Podstawową motywacją rozpoczęcia pracy nad projektem była chęć zdobycia wiedzy w~ zakresie komunikacji opartej na interfejsach szeregowych. Jest to wiedza, która może zostać wykorzystana w~ przyszłości, a~ tego typu projekty z~ pewnością prowadzą do samodoskonalenia umiejętności człowieka, który się ich podejmie. Ważnym elementem było zaczerpniecie jak największej wiedzy na temat interfejsów szeregowych oraz samego USB.
 \newline
 \indent Głównym celem projektu było osiągnięcie odpowiedniej prędkości przesyłu danych pomiędzy komputerem osobistym a~ urządzeniem zewnętrznym. Prędkością oczekiwaną było 140 Mbit/s co w~ przeliczeniu na megabajty daje 17,5 MB/s w~ obu kierunkach. Projekt miał za zadanie posłużyć jako program umożliwiający przesyłanie zadanej ilości danych z~ prędkością nie mniejszą od oczekiwanej. Mogłoby to znaleźć zastosowanie w~ wielu dziedzinach życia, wszędzie tam gdzie urządzenie udostępniałoby interfejs USB i~ umożliwiałoby przesłanie danych poprzez wykorzystanie jego możliwości. Doskonałym przykładem, w~ których możliwe byłoby zastosowanie projektu jest oprogramowanie powiązane z~ odczytem danych z~ urządzeń medycznych (np. tomografu, rezonansu magnetycznego), które przesyłają dane w~ formacie DICOM\footnote{DICOM (ang. Digital Imaging and Communications in Medicine) - standard opracowany celem ujednolicenia przesyłania obrazów w~ medycynie}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{./img/usbCable}
+\caption{Standardowy kabel USB ze złączem A (płaskim) oraz złączem B.\cite{usbCable}}
+\end{figure}
 %todo wiecej naukowego podejscia projektu ??
 \section{Opis interfejsów szeregowych oraz ich zastosowanie}
 \label{s:serialInterface}
@@ -213,7 +258,7 @@ Uniwersalna Magistrala Szeregowa jest to standard opracowany w~ latach 90. XX w.
 \newline
 \indent USB szybko zastąpiło porty szeregowe oraz równoległe podobnie jak inne urządzenia będące źródłem zasilania dla innych układów scalonych. Istnieją trzy podstawowe rodzaje złączy USB, dla których kryterium podziału stanowi wielkość (wtyczki). Najstarszy rozmiar (używany np. w~ pendrive'ach - typ A) występuje w~ standardach USB1.1, USB2.0, USB3.0, mini-USB (początkowo tylko dla złącza typu B, jak w~ wypadku wielu aparatów cyfrowych) oraz mikro-USB występuje również w~ trzech wariantach dla USB1.1, USB2.0, USB3.0 (dla przykładu używany w~ nowych telefonach komórkowych). 
 \newline
-\indent W~ przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A~ lub typem B). Tylko złącze typu A~ jest odpowiedzialne za dostarczenie zasilania do złącza typu B. Zostało ono zaprojektowane w~ taki sposób aby uniknąć elektrycznych przeciążeń, a~ co za tym idzie uszkodzeniu urządzenia. Istnieją również kable ze złączami typu A~ na obu końcach, ale nie należą do popularnych (i należy postępować z~ nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A~ (męskie) z~ jednej strony oraz złącze typu B z~ drugiej (również męskie) oraz wejście w~ komputerze lub urządzeniu elektronicznym (żeńskie). W~ przyjętej praktyce złącze typu~ A~ jest zazwyczaj największej (z możliwych) wielkości, natomiast B w~ zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc, DevUSBPher}
+\indent W~ przeciwieństwie do innych kabli do przesyłu danych (np. Ethernet, HDMI) każdy koniec kabla zakończony jest innym typem złącza (typem A~ lub typem B). Tylko złącze typu A~ jest odpowiedzialne za dostarczenie zasilania do złącza typu B. Zostało ono zaprojektowane w~ taki sposób aby uniknąć elektrycznych przeciążeń, a~ co za tym idzie uszkodzeniu urządzenia. Istnieją również kable ze złączami typu A~ na obu końcach, ale nie należą do popularnych (i należy postępować z~ nimi ostrożnie). Kable USB maja zazwyczaj złącze typu A~ (męskie) z~ jednej strony oraz złącze typu B z~ drugiej (również męskie) oraz wejście w~ komputerze lub urządzeniu elektronicznym (żeńskie). W~ przyjętej praktyce złącze typu A~ jest zazwyczaj największej (z możliwych) wielkości, natomiast B w~ zależności od potrzeb użycia kabla (full, mini, micro). \cite{USBSystemArch, USB20Doc, USB30Doc, DevUSBPher}
 
 \begin{figure}[h]
 \centering
@@ -434,7 +479,7 @@ Dwa ostatnie bity ustala się oddzielnie dla tych dwóch kodowań, na podstawie 
 \newline
 \indent Testy dzielą się na kilka grup ze względu na ich funkcjonalność. Podstawowym rodzajem są testy jednostkowe (UT\footnote{UT - Unit Tests}) polegające na testowaniu zachowania poszczególnej funkcji czy też metody. Internet szerzy się od różnego rodzaju frameworków dla UT. Do jednych z~ najpopularniejszych należy Google Test (jeśli chodzi o~ C++), który posiada bardzo łatwy do nauczenia się i~ przystępny framework. Za ich pomocą można testować wynik wyjściowy poszczególnych metod/funkcji, jak również sprawdzać działanie jeśli za argumenty przyjmują wskaźniki. Istnieje również możliwość łatwego zbadania co dana metoda zrobiła z~ danym obiektem (którego wskaźnik został podany jako argument).
 \newline
-\indent Kolejnym rodzajem testów jakie powinny być przeprowadzane w~ miarę możliwości są testy komponentowe (SCT\footnote{SCT - Software Component Tests}). W~ tym wypadku testowanie odbywa się na zupełnie innych zasadach i~ nie zawsze jest aplikowalne do każdego projektu. Testy komponentowe należy tworzyć jeżeli projekt/produkt zawiera w~ sobie więcej niż jeden komponent\footnote{tutaj w~ rozumieniu procesu} oraz istnieje zaprojektowana interakcja na interfejsach zdefiniowanych miedzy nimi. Innymi słowy warunkiem koniecznym jest aby te dwa (lub więcej) komponenty komunikowały się ze sobą za pomocą wiadomości. Istotą komponent testów jest to, iż przygotowuje się zbliżone środowisko do docelowego (jeżeli aplikacja działa na hardwarze o~ określonej architekturze katalogów to należy dostarczyć zbliżoną architekturę do docelowej, często stosuje się do tego kontenery), a~ następnie uruchamia się tylko i~ wyłącznie testowany komponent, a~ jego otoczenie (inne procesy komunikujące się z~ nim w~ projekcie) symuluje. Cały test polega na bombardowaniu testowanego komponentu wiadomościami aby wymusić odpowiednie zachowanie. Dla przykładu istnieją 3 komponenty A, B oraz C, testowanym jest komponent B, wiadomo, że w~ docelowym zachowaniu komponent A~ wysyła do komponentu ~B wiadomość ~x, a~ komponent ~B po wykonaniu kilku operacji wysyła wiadomość ~y do komponentu~ C. Programista testując komponent B powinien mu wstrzyknąć wiadomość x (której struktura w~ teście jest znana) za pomocą symulowanego komponentu A~ i~ sprawdzić czy w~ takim przypadku symulowany komponent C otrzyma wiadomość y. Jeśli tak się niestanie oznacza to, że jeszcze jakaś część komponentu B nie została zaimplementowana według wymagań, w~ przeciwnym wypadku test uznał pewną zależność komponentów za poprawną. Popularnymi językami w~ których istnieje możliwość pisania testów komponentowych są Python oraz ttcn3.
+\indent Kolejnym rodzajem testów jakie powinny być przeprowadzane w~ miarę możliwości są testy komponentowe (SCT\footnote{SCT - Software Component Tests}). W~ tym wypadku testowanie odbywa się na zupełnie innych zasadach i~ nie zawsze jest aplikowalne do każdego projektu. Testy komponentowe należy tworzyć jeżeli projekt/produkt zawiera w~ sobie więcej niż jeden komponent\footnote{tutaj w~ rozumieniu procesu} oraz istnieje zaprojektowana interakcja na interfejsach zdefiniowanych miedzy nimi. Innymi słowy warunkiem koniecznym jest aby te dwa (lub więcej) komponenty komunikowały się ze sobą za pomocą wiadomości. Istotą komponent testów jest to, iż przygotowuje się zbliżone środowisko do docelowego (jeżeli aplikacja działa na hardwarze o~ określonej architekturze katalogów to należy dostarczyć zbliżoną architekturę do docelowej, często stosuje się do tego kontenery), a~ następnie uruchamia się tylko i~ wyłącznie testowany komponent, a~ jego otoczenie (inne procesy komunikujące się z~ nim w~ projekcie) symuluje. Cały test polega na bombardowaniu testowanego komponentu wiadomościami aby wymusić odpowiednie zachowanie. Dla przykładu istnieją 3 komponenty A, B oraz C, testowanym jest komponent~ B~, wiadomo, że w~ docelowym zachowaniu komponent A~ wysyła do komponentu B wiadomość x, a~ komponent B po wykonaniu kilku operacji wysyła wiadomość y do komponentu~ C. Programista testując komponent B powinien mu wstrzyknąć wiadomość x (której struktura w~ teście jest znana) za pomocą symulowanego komponentu A~ i~ sprawdzić czy w~ takim przypadku symulowany komponent C otrzyma wiadomość y. Jeśli tak się niestanie oznacza to, że jeszcze jakaś część komponentu B nie została zaimplementowana według wymagań, w~ przeciwnym wypadku test uznał pewną zależność komponentów za poprawną. Popularnymi językami w~ których istnieje możliwość pisania testów komponentowych są Python oraz ttcn3.
 \newline
 \indent Istnieje również automatyzacja testów. Stosuje się ją w~ wypadku większych zmian aby mieć pewność iż wprowadzanie nowych funkcjonalności nie naruszyło poprzednich. Automatyzuje się przede wszystkim testy weryfikacyjne (SyVe\footnote{SyVe - System Verification}), które w~ standardowym (albo w~ większości procesów) polegają na manualnym testowaniu danych funkcjonalności i~ weryfikowaniu czy otrzymany został pożądany rezultat. Istotną rolę pełnią również testy integracyjne aplikowalne tylko do większych projektów, w~ których istotną role odgrywa współdziałanie wielu komponentów, z~ reguły implementowane przez różne zespoły.
 \newline
@@ -469,7 +514,7 @@ Wspiera standardy USB:
 \section{Biblioteka winUSB}
 Microsoft Windows począwszy od systemu Windows Vista wprowadził nowy zestaw bibliotek umożliwiający developerom korzystnie z~ portów USB. WinUSB udostępnia proste API, które pozwala aplikacji na bezpośredni dostęp do portów USB. Został stworzony w~ gruncie rzeczy dla prostych urządzeń obsługiwanych tylko przez jedną aplikację, takich jak urządzenia do odczytu wskaźników pogodowych czy też innych programów, które potrzebują szybkiego i~ bezpośredniego dostępu do portu. WinUSB udostępnia API aby odblokować developera przy pracy z~ portami USB z~ poziomu user-mode. W~ Windowsie 7 USB Media Transfer Protocol (MTP) używa winUSB zamiast poprzednio stosowanych rozwiązań kernela (krenel mode filter driver).
 
-Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i~ jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z~ oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z~ aparatów cyfrowych. Przykładową implementacją może być przypadek przesyłania danych bezpośrednio z~ cyfrowych urządzeń odtwarzających muzykę oraz pliki video z~ urządzeń pozwalających na ich odtworzenie.
+Media Transfer Protocol jest rozszerzeniem PTP (Picture Transfer Protocol) i~ jest protokołem pozwalającym na przesyłanie atomowe plików audio oraz wideo z~ oraz do urządzenia. PTP początkowo został zaprojektowany do ściągania zdjęć, obrazów z~ aparatów cyfrowych. Przykładową implementacją może być przypadek przesyłania danych bezpośrednio z~ cyfrowych urządzeń odtwarzających muzykę oraz pliki video do komputera.
 
 MTP jest częścią frameworku "Windows Media" blisko związanym z~ odtwarzaczem Windows Media Player. Systemy Windows począwszy od Windows XP SP2 wspierają MTP. Windows XP wymaga Windows Media Player w~ wersji 10 lub wyższej, późniejsze wersje systemu wspierają już go domyślnie. Microsoft posiada dodatkowo możliwość zainstalowania MTP na wcześniejszych wersjach systemu ręcznie do wersji Microsoft Windows 98.
 
@@ -484,7 +529,7 @@ Od tamtej pory MTP jest oficjalnym rozszerzeniem PTP i~ współdzieli ten sam ko
 \label{libUsbChapter}
 \indent Zadaniem rozdziału jest opis działania poszczególnych funkcji użytych w~ projekcie. Jest to konieczne aby przeglądając implementacje projektu być w~ stanie bezproblemowo zrozumieć działanie poszczególnych części projektu. Rozdział został podzielony na podstawie struktur oraz funkcji, których użycie widoczne jest w~ implementacji właściwej. \cite{libusbDoc}
 \newline
-\indent Biblioteka pozwala na łatwy dostęp do poszczególnych funkcjonalności standardów USB. Dzieje się to poprzez udostępnienie API\footnote{API (ang. Application Programming Interface) - interfejs (zazwyczaj zestaw funkcji, struktur) umożliwiający programiście na korzystanie z~ różnych funkcjonalności biblioteki}, dzięki któremu programista może w~ pełni wykorzystywać możliwości USB. Poniższy rysunek (Rys. \ref{fig:libUsbSchemaLinux}) przedstawia jak zaprojektowano użycie libUSB pod systemami Linuxowymi. Widać, iż aplikacja użytkownika korzysta tylko i~ wyłącznie z~ biblioteki libUSB, natomiast sama biblioteka korzysta ze sterownika UsbFs\footnote{UsbFs (ang. Usb filesystem) - wirtualny system plików dostarczający informacji na temat urządzeń USB (podobnie jak /proc na temat procesów}, dzięki czemu zdobywa informacje na temat urządzeń USB. Kolejnym krokiem jest wykorzystanie UsbCore.c oraz sterownika Host Controller. UsbCore.c jest niskopoziomową implementacją standardu USB dla systemów Unixowych, natomiast systemowy sterownik Host Controller pozwala na odblokowanie komunikacji na zewnątrz. To właśnie tutaj zachodzi wydawanie bezpośrednich komend do złącza USB, które jest podłączone bezpośrednio do urządzenia. 
+\indent Biblioteka pozwala na łatwy dostęp do poszczególnych funkcjonalności standardów USB. Dzieje się to poprzez udostępnienie API\footnote{API (ang. Application Programming Interface) - interfejs (zazwyczaj zestaw funkcji, struktur) umożliwiający programiście na korzystanie z~ różnych funkcjonalności biblioteki}, dzięki któremu programista może w~ pełni wykorzystywać możliwości USB. Poniższy rysunek (Rys. \ref{fig:libUsbSchemaLinux}) przedstawia jak zaprojektowano użycie libUSB pod systemami Linuxowymi. Widać, iż aplikacja użytkownika korzysta tylko i~ wyłącznie z~ biblioteki libUSB, natomiast sama biblioteka korzysta ze sterownika UsbFs\footnote{UsbFs (ang. Usb filesystem) - wirtualny system plików dostarczający informacji na temat urządzeń USB (podobnie jak /proc na temat procesów}, dzięki czemu zdobywa informacje na temat urządzeń USB. Kolejnym krokiem jest wykorzystanie UsbCore.c oraz sterownika Host Controller. UsbCore.c jest niskopoziomową implementacją standardu USB dla systemów Unixowych, natomiast systemowy sterownik Host Controller pozwala na odblokowanie komunikacji na zewnątrz. To właśnie tutaj zachodzi wydawanie bezpośrednich komend do złącza USB, które jest podłączone do urządzenia. 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.35\textwidth]{./img/libUsbSchemaLinux}
@@ -601,7 +646,7 @@ Parametrem jest kontekst, który ma zostać zamknięty, w~ wypadku wartości NUL
 %% asyn interface
 \item \textbf{libusb\_alloc\_transfer} - funkcja przygotowuje transfer z~ wyspecyfikowaną ilością 	izochronicznych deskryptorów pakietów.
 %\newline
-Zwraca ona uchwyt do zainicjalizowanego transferu. Kiedy wszystkie operacje zostaną na nim wykonane należy wywołać libusb\_free\_transfer().
+Zwraca ona uchwyt do zainicjalizowanego transferu. Kiedy wszystkie operacje zostaną na nim wykonane należy wywołać metodę odpowiadającą za zwolnienie pamięci po przygotowanym transferze.
 %\newline
 Transfer przygotowywany dla nieizochronicznego punktu końcowego należy wywoływać z~ wartością zero jako ilość izochronicznych pakietów.
 %\newline
@@ -652,7 +697,7 @@ Parametrem funkcji jest wskaźnik do transferu przeznaczony do zwolnienia.
 %\afterpage{\blankpage}
 \chapter{Urządzenie testowe}
 \label{microcontrollerChapter}
-Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego zadanie polegało na odbieraniu danych po przeciwnej stronie jak oraz ich przesyłanie w~ przeciwnym kierunku. Inwestygacja rozpoczęła się od bardzo prostych urządzeń takich jak raspberry pi B+, a~ zakończyła się na mikrokontrolerze LandTiger.
+Aby zrealizować projekt konieczne było użycie dodatkowego hardwaru, którego zadanie polegało na odbieraniu danych po przeciwnej stronie jak oraz ich przesyłanie w~ przeciwnym kierunku. Inwestygacja rozpoczęła się od bardzo prostych urządzeń takich jak raspberry~ pi~ B+~, a~ zakończyła się na mikrokontrolerze LandTiger.
 
 \begin{figure}[h]
 \centering
@@ -895,7 +940,7 @@ Klasa została stworzona tylko po to aby ułatwić przyszłe zbieranie wyników.
 \afterpage{\blankpage}
 \chapter{Testy wydajności oraz ich rezultaty}
 \label{resultsChapter}
-\indent Oprogramowanie zostało poddane dogłębnym testom systemowym, mającym na celu zweryfikowanie poprawności działania aplikacji oraz jej zgodności z~ wymaganiami. Wykonywano je na każdym etapie programowania aby uniknąć jakichkolwiek nieumyślnych interakcji w~ rezultaty działających uprzednio funkcjonalności. Ważne było aby środowisko testowe było znane. W~ przypadku tego projektu jest to mikrokontroler LandTiger opisany dokładniej w~ rozdziale \ref{microcontrollerChapter} oraz komputer osobisty o~ parametrach przedstawionych w~ tabeli \ref{tbl:pcParameters}.
+\indent Oprogramowanie zostało poddane dogłębnym testom systemowym, mającym na celu zweryfikowanie poprawności działania aplikacji oraz jej zgodności z~ wymaganiami. Wykonywano je na każdym etapie programowania aby uniknąć jakichkolwiek nieumyślnych interakcji w~ rezultaty działających uprzednio funkcjonalności. Ważne było aby środowisko testowe było znane. W~ przypadku tego projektu jest to mikrokontroler LandTiger opisany dokładniej w~ rozdziale \ref{microcontrollerChapter} oraz komputer osobisty o~ parametrach przedstawionych w~ poniższej tabeli. %tabeli~ \ref{tbl:pcParameters}~.
 \begin{table}[H]
 \centering
 \begin{tabular}{|c|c|}
@@ -958,7 +1003,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 }
 \end{figure}
 %%todo
-\noindent Na Rys. \ref{fig:S_107374200Receive} widoczny jest wyraźny wzrost szybkości wysyłania oraz odbierania danych wraz ze zwiększeniem bufora. Jest to doświadczenie wykonane na stosunkowo małym buforze, spowodowane jest to ograniczeniami płytki LandTiger. Można zaobserwować liniową zależność pomiędzy zobrazowanymi wielkościami. Różnice pomiędzy prędkością wysyłania a~ odbierania są niezauważalne przy tak małej ilości danych.
+\noindent Na Rys. \ref{fig:S_107374200Receive} widoczny jest wyraźny wzrost szybkości wysyłania oraz odbierania danych wraz ze zwiększeniem bufora. Jest to doświadczenie wykonane na stosunkowo małym buforze, spowodowane jest to ograniczeniami płytki LandTiger. Można zaobserwować liniową zależność pomiędzy zobrazowanymi wielkościami. Różnice pomiędzy prędkością wysyłania a~ odbierania są niezauważalne przy tak małej ilości danych. Minimalny rozmiar bufora danych w powyższym teście to 22~ B~, natomiast maksymalny jest równy ograniczeniu płytki czyli 64~ B~. Na podstawie wykresu można założyć, iż~ tendencja wzrostu prędkości przesyłu danych dla bufora z~ przedziału 22~ B~ - 64~ B~ dla przesyłu synchronicznego rośnie liniowo. Niestety, wartość dla największego możliwego bufora danych nie przekracza 260~ kB/s. 
 %44\begin{figure}[htpb]
 
 %\begin{figure}[H]
@@ -989,7 +1034,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 %Każda operacja zwraca status i~ ten status musi być weryfikowany aby zlokalizować ewentualny błąd.
 %%%%% Asynch
 \newline
-\indent Zupełnie innym podejściem charakteryzuje się metoda asynchroniczna w~ której korzysta się z~ nieblokujących metod. Istotne jest, aby zauważyć, że o~ synchronizacje dba programista (ponieważ po łączu w~ jednym czasie mogą przebiegać dane tylko w~ jedną stronę). Na podstawie przeprowadzonego doświadczenia można stwierdzić, że implementacja była dużo bardziej kosztowna i~ wymagała przeznaczenia więcej czasu aby zadbać o~ poprawną synchronizacje danych. Niemniej to ona doprowadziła do większej kontroli nad zarządzaniem przełączania wysyłania oraz odbierania danych. W~ wypadku przesyłanych danych z~ wykorzystaniem LandTiger'a, a~ co za tym idzie wykorzystaniem jedynie dostępnego rozmiaru buforu danych wielkości 64B, zmiany są praktycznie niezauważalne.
+\indent Zupełnie innym podejściem charakteryzuje się metoda asynchroniczna w~ której korzysta się z~ nieblokujących metod. Istotne jest, aby zauważyć, że o~ synchronizacje dba programista (ponieważ po łączu w~ jednym czasie mogą przebiegać dane tylko w~ jedną stronę). Na podstawie przeprowadzonego doświadczenia można stwierdzić, że implementacja była dużo bardziej kosztowna i~ wymagała przeznaczenia więcej czasu aby zadbać o~ poprawną synchronizacje danych. Niemniej to ona doprowadziła do większej kontroli nad zarządzaniem przełączania wysyłania oraz odbierania danych. W~ wypadku przesyłanych danych z~ wykorzystaniem LandTiger'a, a~ co za tym idzie wykorzystaniem jedynie dostępnego rozmiaru buforu danych wielkości 64B, zmiany są praktycznie niezauważalne. 
 \begin{figure}[H]
 {
 \centering
@@ -1002,7 +1047,7 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \end{figure}
 
-\noindent Jak widać na Rys. \ref{fig:A_107374200Receive} zależność liniowa również występuje dla tej ilości danych jak przy przesyle asynchronicznym. Sytuacja ta występuje zarówno w~ wypadku odbierania jak i~ wysyłania danych metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z~ metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a~ wyniki są bardzo zbliżone do siebie.
+\noindent Jak widać na Rys. \ref{fig:A_107374200Receive} zależność liniowa również występuje dla tej ilości danych jak przy przesyle asynchronicznym. Sytuacja ta występuje zarówno w~ wypadku odbierania jak i~ wysyłania danych metodą asynchroniczną. Wykres jest liniowy jak jego odpowiednik z~ metody synchronicznej (Rys. \ref{fig:S_107374200Receive}) a~ wyniki są~ bardzo zbliżone do siebie. Podobnie jak w poprzednim wypadku prędkość przy możliwie największym użytym buforze danych (64~ B~) nie przekroczyła 260~ kB/s~.
 
 %%%%%%
 
@@ -1019,20 +1064,21 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \noindent Jeśli przeprowadzimy testy dla mniejszej ilości danych to zauważalny jest brak liniowości takiego wykresu (Rys. \ref{fig:A_10737420Receive}). Spowodowane jest to zmniejszoną ilością wysyłanej próbki danych, przez co uzyskano mniejszą stabilność. \\
 \indent Wysyłanie metodą Asynchroniczną również nie przyniosła oczekiwanych rezultatów. Porównując je do wartości zasymulowanych na początku rozdziału z~ użyciem USB benchmark, pozostawiają wiele do życzenia. Jednak jeśli ponowimy zestawienie wyników z~ teoretycznymi (podobnie jak to zostało to wykonane w~ wypadku metody Synchronicznej) to zauważymy pewną analogię iż gdyby istniała możliwość wykorzystania bufora większego niż dopuszczalny przez standard USB1.1, wyniki nie odbiegałyby od teoretycznych.
-\indent Podsumowując, użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64B) nie pozwala na uzyskanie wyników zbliżonych do wartości pożądanej (140 MB/s) bez względu na to, czy korzystano z~ metody synchronicznej czy też asynchronicznej. W~ obu przypadkach dla bufora o~ wielkości 64B udało się uzyskać maksymalnie 250 kB/s. Wyniki teoretyczne (dodatek B) przedstawiają dla bufora wielkości 1kB wyniki rzędu 1,26MB/s - 1,36 MB/s. Oznacza to, że przy założeniach otrzymanej dotąd liniowości, prędkość ta zostałaby osiągnięta, w~ wypadku możliwości użycia bufora wielkości 1kB przez aplikację.
 \newline
-\noindent Dodatkowo została przeprowadzona symulacja z~ uwzględnieniem większego bufora danych, jednak w~ tym przypadku nie udało się uzyskać prawidłowego odbioru danych  po stronie kontrolera. Oznacza to, że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2} wykresy przedstawiają wygenerowane wyniki.
+\indent Podsumowując, użycie bufora dopuszczalnego przez mikrokontroler LandTiger (czyli bufora nie większego niż 64~ B~) nie pozwala na uzyskanie wyników zbliżonych do wartości pożądanej (140 MB/s) bez względu na to, czy korzystano z~ metody synchronicznej czy też asynchronicznej. W~ obu przypadkach dla bufora o~ wielkości 64~ B~ nie udało się uzyskać więcej niż 260~ kB/s~. Wyniki teoretyczne (dodatek B) przedstawiają dla bufora wielkości 1~ kB~ wyniki rzędu 1,26~ MB/s~ - 1,36~ MB/s~. Oznacza to, że~ przy założeniach otrzymanej dotąd liniowości, prędkość ta zostałaby osiągnięta, w~ wypadku możliwości użycia bufora wielkości 1~ kB~ przez aplikację.
+\newline
+\indent Dodatkowo została przeprowadzona symulacja z~ uwzględnieniem większego bufora danych, jednak w~ tym przypadku nie udało się uzyskać prawidłowego odbioru danych  po stronie kontrolera. Oznacza to, że te dane mogą zostać potraktowane jedynie jako przypuszczenia jak wyglądałby wykres gdyby dane były przetworzone prawidłowo. Poniższe (Rys. \ref{fig:S_bbuf1} oraz Rys. \ref{fig:S_bbuf2}) wykresy przedstawiają wygenerowane wyniki. Podczas analizy wykresów warto zwrócić uwagę na sposób w jaki rozkładają się otrzymane wyniki (w obu poniższych przypadkach).
 \begin{figure}[H]
 {
 \centering
 \captionsetup{justification=centering}
 \includegraphics[width=1\textwidth]{./img/S_bbuf1}
-\caption{Zależność prędkości przesyłania danych w~ zależności od~ wielkości bufora z~ przedziału 16~ B~ - 4 kB~}
+\caption{Zależność prędkości przesyłania danych w~ zależności od~ wielkości bufora z~ przedziału 16~ B~ - 4 kB~.}
 %\caption{Wykres ilustrujący zmianę prędkości przesyłania danych z~ użyciem bufora z~ przedziału 16~ B~ - 4 kB~.}
 \label{fig:S_bbuf1}
 }
 \end{figure}
-\noindent Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu poprawnego odbioru danych po stronie kontrolera. Zależność liniowa całkowicie zaniknęła. Wartości rozmiaru bufora danych jest podwajana z~ każdym zgięciem krzywej (początkowa wartość 16 B, końcowa 4096 B = 4 kB), a~ więc rozbieżność przesyłu danych jest duża. Warto zauważyć iż pomimo dość dużego bufora danych prędkość nie przekroczyła 1 MB/s (max wartość 905,702 kB/s).
+\noindent Powyższy wykres obrazuje zmianę prędkości wysyłania przy założeniu poprawnego odbioru danych po stronie kontrolera. Zależność liniowa całkowicie zaniknęła. Wartości rozmiaru bufora danych jest podwajana z~ każdym krokiem (początkowa wartość 16 B, końcowa 4096~ B~ = 4~ kB~), a~ więc rozbieżność przesyłu danych jest duża. Warto zauważyć iż pomimo dość dużego bufora danych prędkość nie przekroczyła 1~ MB/s~. Maksymalna prędkość jaką udało się uzyskać z użyciem bufora danych wielkości 4~ kB~ wyniosła 905,702~ kB/s~. Jest to nadal wynik niezadowalający, jeśli chodzi o wymagania projektu ale należy mieć na uwadze, iż~ test ten jest jedynie symulacją opartą na pewnych założeniach. Środowisko oparte na mikrokontrolerze wspierającym obsługę USB2.0 pozwoliłby na bezbłędne obsłużenie danych po stronie płytki, co zapewne zmniejszyło by opóźnienia.
 \begin{figure}[H]
 {
 \centering
@@ -1065,6 +1111,8 @@ Rysunek \ref{fig:speedTest} przedstawia wykres prędkości wysyłania oraz odbio
 
 \newpage
 \begin{thebibliography}{1}
+\bibitem{usbCable} usbCable picture [online] \\
+\url{http://pclab.pl/zdjecia/prasowe/000015955225ce0f.jpg}
 
 \bibitem{RS232C} RS232C picture [online]
 \newline
